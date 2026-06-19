@@ -24,3 +24,40 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+  }
+
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .cv-builder-chrome {
+    display: none;
+  }
+
+  .cv-print-layout {
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+
+  .cv-preview-root {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0;
+    padding: 2.5rem;
+    box-sizing: border-box;
+  }
+}

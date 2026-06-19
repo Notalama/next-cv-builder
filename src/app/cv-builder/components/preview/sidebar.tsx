@@ -41,7 +41,7 @@ export function PreviewSidebar({ data }: PreviewSidebarProps) {
   const [github, linkedIn] = (data.links ?? "").split(",");
 
   return (
-    <div className="w-full md:w-1/4 print:w-1/4 bg-slate-50 p-4 rounded-xl border border-slate-100 print:bg-slate-50 print:border-slate-200 shrink-0">
+    <div className="w-full md:w-1/4 print:w-1/4 bg-slate-50 rounded-xl border border-slate-100 print:bg-slate-50 print:border-slate-200 shrink-0">
       <PhotoBlock photo={data.photo} fullName={data.fullName} />
 
       <div className="mb-6">

@@ -58,7 +58,7 @@ export default function CvBuilderPage() {
   };
 
   return (
-    <div className="flex w-full items-start justify-center gap-4 p-4">
+    <div className="cv-print-layout flex w-full items-start justify-center gap-4 p-4 print:block print:p-0">
       <FormProvider {...form}>
         {!isPreviewOnly && (
           <div className="cv-builder-chrome shrink-0">

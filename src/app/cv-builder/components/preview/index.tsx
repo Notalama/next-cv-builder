@@ -10,7 +10,7 @@ export type CvBuilderPreviewProps = {
 
 export default function CvBuilderPreview({ data }: CvBuilderPreviewProps) {
   return (
-    <div className="cv-preview-root w-full max-w-5xl mx-auto my-4 bg-white p-6 md:p-8 shadow-sm print:shadow-none print:my-0 print:p-0 text-slate-800 antialiased font-sans">
+    <div className="cv-preview-root w-full max-w-5xl mx-auto my-4 bg-white p-10 md:p-10 shadow-sm print:shadow-none print:my-0 print:mx-0 print:max-w-none text-slate-800 antialiased font-sans">
       <div className="flex flex-col md:flex-row gap-8 print:flex-row print:gap-8">
         <PreviewSidebar data={data} />
 

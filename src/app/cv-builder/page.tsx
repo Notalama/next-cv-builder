@@ -3,10 +3,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import cvPreset from "@/app/assets/cv-preset.json";
 import CvBuilderForm from "./components/form";
 import CvBuilderPreview from "./components/preview";
 import { CvBuilderToolbar } from "./components/toolbar";
 import { type CvFormValues, cvFormSchema } from "./schema";
+import { applySavedResults } from "./utils/apply-saved-results";
 import { exportCvPreviewPdf } from "./utils/export-pdf";
 
 export default function CvBuilderPage() {
@@ -41,6 +43,19 @@ export default function CvBuilderPage() {
   });
 
   const previewData = form.watch();
+  const applyPresetFromJson = () => {
+    const result = applySavedResults(JSON.stringify(cvPreset));
+
+    if (!result.ok) {
+      console.error("Invalid CV preset schema:", result.message);
+      window.alert(
+        "Preset JSON is incompatible with current CV schema. Please update src/app/assets/cv-preset.json.",
+      );
+      return;
+    }
+
+    form.reset(result.data);
+  };
 
   return (
     <div className="flex w-full items-start justify-center gap-4 p-4">
@@ -51,6 +66,7 @@ export default function CvBuilderPage() {
               isPreviewOnly={isPreviewOnly}
               onTogglePreviewOnly={() => setIsPreviewOnly(true)}
               onExportPdf={exportCvPreviewPdf}
+              onApplyPreset={applyPresetFromJson}
             />
           </div>
         )}
@@ -61,6 +77,7 @@ export default function CvBuilderPage() {
                 isPreviewOnly={isPreviewOnly}
                 onTogglePreviewOnly={() => setIsPreviewOnly(false)}
                 onExportPdf={exportCvPreviewPdf}
+                onApplyPreset={applyPresetFromJson}
               />
             </div>
           )}

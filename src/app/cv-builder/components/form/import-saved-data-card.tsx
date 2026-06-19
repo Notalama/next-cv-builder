@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { type CvFormValues, cvFormSchema } from "@/app/cv-builder/schema";
+import type { CvFormValues } from "@/app/cv-builder/schema";
+import { applySavedResults } from "@/app/cv-builder/utils/apply-saved-results";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,24 +20,16 @@ export function ImportSavedDataCard() {
 
   const { reset } = useFormContext<CvFormValues>();
 
-  const applySavedResults = () => {
+  const handleApplySavedResults = () => {
     setImportError(null);
+    const result = applySavedResults(savedFormPayload);
 
-    try {
-      const parsed = JSON.parse(savedFormPayload);
-      const result = cvFormSchema.safeParse(parsed);
-
-      if (!result.success) {
-        setImportError(
-          "Invalid object format. Please paste a valid saved form JSON object.",
-        );
-        return;
-      }
-
-      reset(result.data);
-    } catch {
-      setImportError("Invalid JSON. Please paste a valid JSON object.");
+    if (!result.ok) {
+      setImportError(result.message);
+      return;
     }
+
+    reset(result.data);
   };
 
   return (
@@ -57,7 +50,7 @@ export function ImportSavedDataCard() {
         {importError ? (
           <p className="text-sm text-destructive">{importError}</p>
         ) : null}
-        <Button type="button" variant="outline" onClick={applySavedResults}>
+        <Button type="button" variant="outline" onClick={handleApplySavedResults}>
           Apply Saved Results
         </Button>
       </CardContent>

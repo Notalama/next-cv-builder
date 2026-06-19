@@ -6,15 +6,20 @@ type CvBuilderToolbarProps = {
   isPreviewOnly: boolean;
   onTogglePreviewOnly: () => void;
   onExportPdf: () => void;
+  onApplyPreset: () => void;
 };
 
 export function CvBuilderToolbar({
   isPreviewOnly,
   onTogglePreviewOnly,
   onExportPdf,
+  onApplyPreset,
 }: CvBuilderToolbarProps) {
   return (
     <div className="flex shrink-0 flex-wrap gap-2">
+      <Button type="button" variant="outline" size="sm" className="gap-2" onClick={onApplyPreset}>
+        Apply preset
+      </Button>
       <Button type="button" variant="outline" size="sm" className="gap-2" onClick={onTogglePreviewOnly}>
         {isPreviewOnly ? (
           <>

@@ -1,4 +1,5 @@
 import { BadgeList } from "@/app/cv-builder/components/preview/badge-list";
+import { ContactLink } from "@/app/cv-builder/components/preview/contact-link";
 import { PreviewSectionHeading } from "@/app/cv-builder/components/preview/section-heading";
 import type { CvFormValues } from "@/app/cv-builder/schema";
 import { splitCommaList } from "@/app/cv-builder/template";
@@ -65,18 +66,8 @@ export function PreviewSidebar({ data }: PreviewSidebarProps) {
             <strong className="text-slate-800">Location:</strong>{" "}
             {data.location}
           </p>
-          {github?.trim() && (
-            <p>
-              <strong className="text-slate-800">GitHub:</strong>{" "}
-              {github.trim()}
-            </p>
-          )}
-          {linkedIn?.trim() && (
-            <p>
-              <strong className="text-slate-800">LinkedIn:</strong>{" "}
-              {linkedIn.trim()}
-            </p>
-          )}
+          {github?.trim() && <ContactLink label="GitHub" url={github} />}
+          {linkedIn?.trim() && <ContactLink label="LinkedIn" url={linkedIn} />}
         </div>
       </div>
 

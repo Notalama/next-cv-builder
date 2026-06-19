@@ -15,12 +15,14 @@ export type CvBuilderFormProps = {
   isPreviewOnly: boolean;
   onTogglePreviewOnly: () => void;
   onExportPdf: () => void;
+  onApplyPreset: () => void;
 };
 
 export default function CvBuilderForm({
   isPreviewOnly,
   onTogglePreviewOnly,
   onExportPdf,
+  onApplyPreset,
 }: CvBuilderFormProps) {
   const { handleSubmit } = useFormContext<CvFormValues>();
 
@@ -44,6 +46,7 @@ export default function CvBuilderForm({
           isPreviewOnly={isPreviewOnly}
           onTogglePreviewOnly={onTogglePreviewOnly}
           onExportPdf={onExportPdf}
+          onApplyPreset={onApplyPreset}
         />
       </div>
       <FocusedFieldProvider>

@@ -57,7 +57,9 @@ body {
     width: 210mm;
     min-height: 297mm;
     margin: 0;
-    padding: 2.5rem;
+    padding: 10.5mm;
     box-sizing: border-box;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
   }
 }

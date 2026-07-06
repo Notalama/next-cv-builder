@@ -15,8 +15,8 @@
       "level": "Native"
     }
   ],
-  "primarySkills": "Angular, React, Vue, TypeScript, Javascript, Tailwind CSS, HTML",
-  "secondarySkills": "RxJS, NGRX, Redux, Next.js, Konva.js, Three.js, Node.js, MongoDB, Firebase, AWS, Jenkins, React Native, Ionic, MaterialUI, GraphQL",
+  "primarySkills": "Angular, React, Vue, TypeScript, Javascript, HTML",
+  "secondarySkills": "RxJS, NGRX, Redux, Next.js, Konva.js, Three.js, Node.js, MongoDB, Firebase, AWS, Jenkins, React Native, Ionic, Tailwind CSS, MaterialUI, GraphQL",
   "domains": "E-commerce, FinTech, Automotive, Logistics",
   "aboutMe": "Performance-driven Lead Front-End Engineer with over 9 years of professional software architecture experience. Specialized in building highly scalable micro-frontend architectures, high-performance web spaces, and modular monorepo configurations. Proven track record of guiding cross-functional agile engineering groups, setting codebase health patterns, and optimizing bundle distribution sizes for enterprise products.",
   "techPrinciples": "Strict Type Safety & Code Completeness: Enforcing deep static analysis and clean design boundaries to minimize run-time crashes.\nModular Monorepos over Monoliths: Leveraging isolated encapsulation tracks for multi-team distribution speeds.\nPerformance-First Rendering: Obsession with Core Web Vitals, tree-shaking, smart caching, and payload budgeting.",
@@ -25,16 +25,16 @@
       "companyName": "GlobalLogic",
       "period": "December 2025 – May 2026",
       "position": "Lead Front-end Developer",
-      "domain": "Intelligent Railway Infrastructure",
-      "description": "Lead Front-end developer. \nAI-driven eyes-and-ears system for the rail industry. By fusing 3D spatial data from LiDAR with visual intelligence from stereo cameras and precise positioning from odometry, the tool creates a continuous, high-fidelity report of track conditions. This allows operators to visualize the 'unseen' wear and tear of their network, ensuring safer journeys and lower operational costs.\nKey Responsibilities",
-      "technologies": "Angular, Azure DevOps, HLS, OpenStreetMap"
+      "domain": "Logistics",
+      "description": "Acted as the sole frontend architect for an AI-driven rail industry system. Engineered a high-performance dashboard that synchronized real-time OpenStreetMap animations with multiple simultaneous HLS video streams, driving the UI state entirely via dynamic telemetry data and Angular Signals. Fully owned the client-side architecture, performance optimization and Azure DevOps CI/CD integration.",
+      "technologies": "Angular 20, RxJS, Azure DevOps, HLS, OpenStreetMap"
     },
     {
       "companyName": "GlobalLogic",
       "period": "February 2025 – November 2025",
       "position": "Senior Front-end Developer",
       "domain": "Sports and Telemedia",
-      "description": "Senior Front-end developer. \nSports breakdown and analytics platform used by leagues, colleges, and teams around the world. Beyond the core responsibilities of data visualization and analytics reporting- including implementing a complex role-based access control system - my contribution centered on the end-to-end development of a telestration module which is a graphic tool on top of a video.",
+      "description": "Architected and delivered a complex sports telestration module using Konva.js, allowing real-time vector graphic overlays on top of active video playbacks. Developed a custom, private core package on top of Video.js with specialized video processing and playback plugins. Implemented a custom RBAC system for secure application workflows and built high-performance dashboards for rendering heavy dynamic analytical data.",
       "technologies": "Vue.js, Konva.js, Typescript, GitHub Actions, Cursor AI, Pinia, Tailwind, Video.js"
     },
     {
@@ -42,32 +42,41 @@
       "period": "August 2023 – May 2024",
       "position": "Senior Front-end Developer",
       "domain": "Logistics",
-      "description": "Senior Front-end developer.\nAs a front-end developer for both the mobile and web applications, I contributed to the development of a management tool aimed at providing transportation options and guiding users through building pathways, along with facilitating ticket purchases. This involved crafting intuitive user interfaces and ensuring seamless functionality across various devices and platforms. My role encompassed implementing design specifications, optimizing user experiences, and collaborating closely with the development team to achieve project goals.",
-      "technologies": "Angular, Ionic, Signal, Azure DevOps, GitHub Actions, Unit testing"
+      "description": "Developed web and mobile apps for transportation platform. Integrated complex multi-role authentication via Keycloak and optimized data prefetching using Angular Resolvers. Maintained a Ionic mobile application, implementing interactive route rendering with Leaflet maps and securing ticket purchases via Stripe integration. Maintained a strict 65% unit test coverage pipeline.",
+      "technologies": "Angular 14, Ionic, Keycloak, Stripe, Leaflet, Azure DevOps, GitHub Actions, Jest"
     },
     {
       "companyName": "GlobalLogic",
       "period": "June 2022 – August 2023",
       "position": "Senior Front-end Developer",
-      "domain": "E-Commerce",
-      "description": "Senior Front-end developer.\nE-Commerce Marketplace: \nLed the development of a secure buyer-seller marketplace, delivering dynamic product listings, secure checkout/payment integration, and an interactive user review ecosystem.\nVector Graphic Editor: \nArchitected and built a high-performance vector design tool featuring advanced canvas drawing utilities, precise shape manipulation, and multi-format export engines.",
-      "technologies": "Angular, Konvajs, Github Actions, Azure DevOps"
+      "domain": "Automotive",
+      "description": "Led the development of a secure buyer-seller marketplace, delivering dynamic product listings, secure checkout/payment integration, and an interactive user review ecosystem.\n Vector Graphic Editor:\n Architected and built a high-performance vector design tool featuring advanced canvas drawing utilities, precise SPlines shape manipulation, and multi-format export engines.",
+      "technologies": "Angular 14, Konvajs, Github Actions, Azure DevOps"
+    },
+
+    {
+      "companyName": "Eleks",
+      "period": "June 2022 – August 2023",
+      "position": "Senior Front-end Developer",
+      "domain": "Corporate Applications",
+      "description": "Developed high-performance corporate applications under Scrum. \nPromoted from sole developer to Team Lead, scaling the frontend team to 3 engineers (mentored a Junior, managed a Middle). Architected a PWA with advanced camera utility and Firebase services (fully configured infrastructure and push notifications). Maintained and successfully deployed an internal React Native app to the App Store and Google Play Market.",
+      "technologies": "Angular 8, React, Redux, PWA, React Native, Firebase, GitHub Actions"
     },
     {
       "companyName": "KeenEthics",
       "period": "September 2018 – February 2020",
       "position": "Full-stack JavaScript Developer",
       "domain": "FinTech",
-      "description": "Full-stack Javascript developer.\nDevelopment of a job search and recruitment application for mobile platforms, specifically Android and iOS. The application was built using React Native.",
-      "technologies": "React, React Native, Redux, Express.js, Node.js MongoDB, Jira, Bitbucket"
+      "description": "Full-stack development of a cross-platform web and mobile job search and recruitment ecosystem (iOS & Android) from scratch to production deployment. Delivered high-fidelity UI/UX based on Figma designs and built scalable backend services to support user onboarding and engagement. \nImplemented a role-based UI from Figma, configured Firebase infrastructure with Push Notifications, and authored unit tests, increasing code coverage to 65%.",
+      "technologies": "React, React Native, Redux, Node.js, Express.js, MongoDB, Firebase, Jest"
     },
     {
       "companyName": "Inverita",
       "period": "December 2017 – August 2018",
       "position": "Front-end Developer",
       "domain": "FinTech",
-      "description": "Front-end developer.\nBusiness Investment and Fundraising Platform for a UAE-based company. The platform was designed to facilitate a unique, efficient flow for connecting investors with projects and vice-versa. My responsibilities included the full lifecycle of front-end development, from component creation and feature implementation to bug fixing and performance optimization. I worked within a 10-person cross-functional team (FE, BE, QA, BA, Designer) utilizing both SCRUM and Kanban methodologies. I focused on delivering a high-quality, responsive, and secure user experience for this B2B enterprise application.",
-      "technologies": "Angular, PrimeNG, Sass, Bootstrap, Jira"
+      "description": "Business Investment and Fundraising Platform for a UAE-based company. My responsibilities included the full lifecycle of front-end development, from component creation and feature implementation to bug fixing and performance optimization. I worked within a 10-person cross-functional team (FE, BE, QA, BA, Designer) utilizing both SCRUM and Kanban methodologies. I focused on delivering a high-quality, responsive, and secure user experience for this B2B application.",
+      "technologies": "Angular 5, PrimeNG, Sass, Bootstrap, Jira"
     }
   ]
 }

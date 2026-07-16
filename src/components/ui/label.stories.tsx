@@ -1,11 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-
-import { Label } from './label';
-import { Input } from './input';
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { Input } from "./input";
+import { Label } from "./label";
 
 const meta = {
   component: Label,
-  tags: ['ai-generated'],
+  tags: ["ai-generated"],
 } satisfies Meta<typeof Label>;
 
 export default meta;
@@ -19,8 +18,8 @@ export const Default: Story = {
     </div>
   ),
   args: {
-    htmlFor: 'email',
-    children: 'Email address',
+    htmlFor: "email",
+    children: "Email address",
   },
 };
 
@@ -31,6 +30,6 @@ export const WithRequiredMarker: Story = {
     </Label>
   ),
   args: {
-    htmlFor: 'phone',
+    htmlFor: "phone",
   },
 };

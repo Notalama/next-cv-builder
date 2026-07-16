@@ -1,9 +1,12 @@
-import CvBuilderPage from "@/app/cv-builder/page";
+import { redirect } from "next/navigation";
+import { getServerSession } from "@/lib/auth/session";
+import { isFeatureEnabled } from "@/lib/features/flags";
 
-export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <CvBuilderPage />
-    </div>
-  );
+export default async function Home() {
+  if (!isFeatureEnabled("enable_database")) {
+    redirect("/cv-builder");
+  }
+
+  const session = await getServerSession();
+  redirect(session != null ? "/dashboard" : "/auth/login");
 }

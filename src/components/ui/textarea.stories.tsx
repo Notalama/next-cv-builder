@@ -1,12 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { expect } from 'storybook/test';
-
-import { Textarea } from './textarea';
-import { Label } from './label';
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect } from "storybook/test";
+import { Label } from "./label";
+import { Textarea } from "./textarea";
 
 const meta = {
   component: Textarea,
-  tags: ['ai-generated'],
+  tags: ["ai-generated"],
 } satisfies Meta<typeof Textarea>;
 
 export default meta;
@@ -20,12 +19,12 @@ export const Default: Story = {
     </div>
   ),
   args: {
-    placeholder: 'Brief overview of your experience and focus areas.',
+    placeholder: "Brief overview of your experience and focus areas.",
   },
   play: async ({ canvas }) => {
-    await expect(canvas.getByLabelText('About me')).toHaveAttribute(
-      'placeholder',
-      'Brief overview of your experience and focus areas.',
+    await expect(canvas.getByLabelText("About me")).toHaveAttribute(
+      "placeholder",
+      "Brief overview of your experience and focus areas.",
     );
   },
 };
@@ -33,6 +32,6 @@ export const Default: Story = {
 export const Disabled: Story = {
   args: {
     disabled: true,
-    value: 'This field cannot be edited.',
+    value: "This field cannot be edited.",
   },
 };

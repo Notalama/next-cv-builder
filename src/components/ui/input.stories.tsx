@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { expect } from 'storybook/test';
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect } from "storybook/test";
 
-import { Input } from './input';
-import { Label } from './label';
+import { Input } from "./input";
+import { Label } from "./label";
 
 const meta = {
   component: Input,
-  tags: ['ai-generated'],
+  tags: ["ai-generated"],
 } satisfies Meta<typeof Input>;
 
 export default meta;
@@ -20,12 +20,12 @@ export const Default: Story = {
     </div>
   ),
   args: {
-    placeholder: 'John Doe',
+    placeholder: "John Doe",
   },
   play: async ({ canvas }) => {
-    await expect(canvas.getByLabelText('Full name')).toHaveAttribute(
-      'placeholder',
-      'John Doe',
+    await expect(canvas.getByLabelText("Full name")).toHaveAttribute(
+      "placeholder",
+      "John Doe",
     );
   },
 };
@@ -33,13 +33,13 @@ export const Default: Story = {
 export const Disabled: Story = {
   args: {
     disabled: true,
-    value: 'Read only value',
+    value: "Read only value",
   },
 };
 
 export const Invalid: Story = {
   args: {
-    'aria-invalid': true,
-    placeholder: 'Invalid email',
+    "aria-invalid": true,
+    placeholder: "Invalid email",
   },
 };

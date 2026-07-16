@@ -1,89 +1,38 @@
-"use client";
+import { CvBuilder } from "@/app/cv-builder/_components/cv-builder";
+import { getCvDocument } from "@/app/dashboard/actions";
+import { ButtonLink } from "@/components/ui/button";
+import { requireSession } from "@/lib/auth/session";
+import { isFeatureEnabled } from "@/lib/features/flags";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import cvPreset from "@/app/assets/cv-preset.json";
-import CvBuilderForm from "./components/form";
-import CvBuilderPreview from "./components/preview";
-import { CvBuilderToolbar } from "./components/toolbar";
-import { type CvFormValues, cvFormSchema } from "./schema";
-import { applySavedResults } from "./utils/apply-saved-results";
-import { exportCvPreviewPdf } from "./utils/export-pdf";
+export default async function CvBuilderPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ id?: string | string[] }>;
+}) {
+  const databaseEnabled = isFeatureEnabled("enable_database");
+  if (databaseEnabled) {
+    await requireSession();
+  }
 
-export default function CvBuilderPage() {
-  const [isPreviewOnly, setIsPreviewOnly] = useState(false);
+  const params = await searchParams;
+  const cvId = typeof params.id === "string" ? params.id : undefined;
 
-  const form = useForm<CvFormValues>({
-    resolver: zodResolver(cvFormSchema),
-    defaultValues: {
-      fullName: "",
-      role: "",
-      photo: "",
-      email: "",
-      phone: "",
-      location: "",
-      links: "",
-      languages: [{ name: "", level: "" }],
-      primarySkills: "",
-      secondarySkills: "",
-      domains: "",
-      aboutMe: "",
-      techPrinciples: "",
-      projects: [
-        {
-          companyName: "",
-          period: "",
-          position: "",
-          description: "",
-          technologies: "",
-        },
-      ],
-    },
-  });
-
-  const previewData = form.watch();
-  const applyPresetFromJson = () => {
-    const result = applySavedResults(JSON.stringify(cvPreset));
-
-    if (!result.ok) {
-      console.error("Invalid CV preset schema:", result.message);
-      window.alert(
-        "Preset JSON is incompatible with current CV schema. Please update src/app/assets/cv-preset.json.",
-      );
-      return;
-    }
-
-    form.reset(result.data);
-  };
+  let initialData = null;
+  if (databaseEnabled && cvId) {
+    const document = await getCvDocument(cvId);
+    initialData = document?.data ?? null;
+  }
 
   return (
-    <div className="cv-print-layout flex w-full items-start justify-center gap-4 p-4 print:block print:p-0">
-      <FormProvider {...form}>
-        {!isPreviewOnly && (
-          <div className="cv-builder-chrome shrink-0">
-            <CvBuilderForm
-              isPreviewOnly={isPreviewOnly}
-              onTogglePreviewOnly={() => setIsPreviewOnly(true)}
-              onExportPdf={exportCvPreviewPdf}
-              onApplyPreset={applyPresetFromJson}
-            />
-          </div>
-        )}
-        <div className={isPreviewOnly ? "w-full max-w-5xl" : "shrink-0"}>
-          {isPreviewOnly && (
-            <div className="cv-builder-chrome mb-4 flex justify-end">
-              <CvBuilderToolbar
-                isPreviewOnly={isPreviewOnly}
-                onTogglePreviewOnly={() => setIsPreviewOnly(false)}
-                onExportPdf={exportCvPreviewPdf}
-                onApplyPreset={applyPresetFromJson}
-              />
-            </div>
-          )}
-          <CvBuilderPreview data={previewData} />
+    <main className="relative h-dvh overflow-hidden print:h-auto print:overflow-visible">
+      {databaseEnabled && (
+        <div className="cv-hide-on-print absolute top-4 left-4 z-10">
+          <ButtonLink href="/dashboard" variant="outline" size="sm">
+            Dashboard
+          </ButtonLink>
         </div>
-      </FormProvider>
-    </div>
+      )}
+      <CvBuilder cvId={cvId} initialData={initialData} />
+    </main>
   );
 }

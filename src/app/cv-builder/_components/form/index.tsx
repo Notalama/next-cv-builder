@@ -51,8 +51,7 @@ export default function CvBuilderForm({
     });
   };
 
-  const onInvalid = (errors: FieldErrors<CvFormValues>) => {
-    console.log("CV form validation errors:", errors);
+  const onInvalid = (_errors: FieldErrors<CvFormValues>) => {
     toast.error("Please fix validation errors before saving.");
   };
 

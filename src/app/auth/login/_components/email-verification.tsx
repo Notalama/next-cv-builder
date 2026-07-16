@@ -7,7 +7,9 @@ import type { EmailVerificationProps } from "@/models/auth";
 
 export function EmailVerification({ email }: EmailVerificationProps) {
   const [timeToNextResend, setTimeToNextResend] = useState(30);
-  const interval = useRef<NodeJS.Timeout>(undefined);
+  const interval = useRef<ReturnType<typeof setInterval> | undefined>(
+    undefined,
+  );
 
   const startEmailVerificationCountdown = useCallback((time = 30) => {
     setTimeToNextResend(time);

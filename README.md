@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CV Builder
 
-## Getting Started
+Next.js app for building a professional CV with live preview, PDF export, presets, and a speed reader. Includes optional authentication (Better Auth), email flows, and Stripe billing.
 
-First, run the development server:
+## Local development
 
 ```bash
+npm install
+cp .env.example .env
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). The CV builder works with no configuration.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Database (optional)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Database and auth are **disabled by default**. To enable them, set in `.env`:
 
-## Learn More
+```bash
+ENABLE_DATABASE=true
+DATABASE_URL=postgresql://...
+BETTER_AUTH_SECRET=...
+BETTER_AUTH_URL=http://localhost:3000
+```
 
-To learn more about Next.js, take a look at the following resources:
+Then apply the schema:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run db:migrate
+# or for quick local prototyping:
+npm run db:push
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy on Vercel (from GitHub)
 
-## Deploy on Vercel
+The project **builds successfully without environment variables** — the CV builder pages (`/`, `/cv-builder`, `/cv-builder/speed-reader`) work as static/client routes. Auth requires `ENABLE_DATABASE=true` plus Postgres and Better Auth env vars.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 1. Push to GitHub
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Ensure the repo is on GitHub (this project: `Notalama/next-cv-builder`).
+
+### 2. Import in Vercel
+
+1. Go to [vercel.com/new](https://vercel.com/new) and import the GitHub repository.
+2. Vercel auto-detects **Next.js** — leave the defaults:
+   - **Build command:** `npm run build`
+   - **Install command:** `npm install`
+   - **Output directory:** (default)
+3. **Node.js:** 20.x or newer (`engines.node` in `package.json`).
+
+### 3. Environment variables
+
+Copy from [`.env.example`](./.env.example) into **Vercel → Project → Settings → Environment Variables**.
+
+| Variable | Required for | Notes |
+|----------|--------------|-------|
+| `ENABLE_DATABASE` | Auth | Set to `true` to enable Postgres and authentication (default: off) |
+| `DATABASE_URL` | Auth (when enabled) | Postgres connection string (Neon / Vercel Postgres recommended) |
+| `BETTER_AUTH_SECRET` | Auth (when enabled) | Random string, 32+ characters |
+| `BETTER_AUTH_URL` | Auth | Production URL, e.g. `https://your-app.vercel.app` |
+| `POSTMARK_SERVER_TOKEN` | Email sign-up / reset | From [Postmark](https://postmarkapp.com) |
+| `POSTMARK_FROM_EMAIL` | Email | Verified sender address |
+| `GITHUB_*` / `DISCORD_*` | OAuth | Optional; omit to hide providers |
+| `STRIPE_*` | Billing | Optional |
+| `ARCJET_API_KEY` | Rate limiting | Optional; auth works without it |
+
+After the first deploy, set `BETTER_AUTH_URL` to the **actual** Vercel URL and redeploy if you used a placeholder.
+
+### 4. Run database migrations (production)
+
+After `DATABASE_URL` is set, apply migrations once against the production database:
+
+```bash
+# From your machine with DATABASE_URL pointing at production:
+npm run db:migrate
+```
+
+Or use a CI job / Vercel deploy hook. Migration files live in `src/drizzle/migrations/`.
+
+### 5. OAuth callback URLs (if using GitHub / Discord)
+
+Register these redirect URLs in each provider console:
+
+- `https://your-app.vercel.app/api/auth/callback/github`
+- `https://your-app.vercel.app/api/auth/callback/discord`
+
+### 6. Deploy
+
+Push to `main` (or your production branch). Vercel builds and deploys automatically.
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Development server |
+| `npm run build` | Production build |
+| `npm run start` | Start production server locally |
+| `npm run lint` | Biome lint/check |
+| `npm run db:generate` | Generate Drizzle migrations from schema |
+| `npm run db:migrate` | Apply migrations |
+| `npm run db:push` | Push schema directly (dev only) |
+
+## Project structure
+
+- `src/app/cv-builder/` — CV form, preview, speed reader
+- `src/app/auth/` — Login, 2FA, password reset
+- `src/app/api/auth/` — Better Auth API route
+- `src/models/` — Shared TypeScript types and Zod schemas
+- `src/drizzle/` — Database schema and migrations
+- `src/lib/auth/` — Auth, Stripe, OAuth configuration
+- `src/lib/emails/` — Transactional email templates (Postmark)

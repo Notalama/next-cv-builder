@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { Button } from "./button";
 import {
   Card,
   CardContent,
@@ -7,12 +7,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from './card';
-import { Button } from './button';
+} from "./card";
 
 const meta = {
   component: Card,
-  tags: ['ai-generated'],
+  tags: ["ai-generated"],
 } satisfies Meta<typeof Card>;
 
 export default meta;

@@ -1,0 +1,88 @@
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import cvPreset from "@/app/assets/cv-preset.json";
+import CvBuilderForm from "@/app/cv-builder/_components/form";
+import {
+  CV_PREVIEW_TEMPLATES,
+  DEFAULT_CV_PREVIEW_TEMPLATE_ID,
+} from "@/app/cv-builder/_components/preview/templates";
+import { CvBuilderToolbar } from "@/app/cv-builder/_components/toolbar";
+import { applySavedResults } from "@/app/cv-builder/_utils/apply-saved-results";
+import { exportCvPreviewPdf } from "@/app/cv-builder/_utils/export-pdf";
+import {
+  CV_FORM_DEFAULT_VALUES,
+  type CvFormValues,
+  cvFormSchema,
+} from "@/models/cv";
+import type { CvBuilderProps, CvPreviewTemplateId } from "@/models/cv-builder";
+
+export function CvBuilder({ cvId, initialData }: CvBuilderProps) {
+  const [isPreviewOnly, setIsPreviewOnly] = useState(false);
+  const [templateId, setTemplateId] = useState<CvPreviewTemplateId>(
+    DEFAULT_CV_PREVIEW_TEMPLATE_ID,
+  );
+
+  const form = useForm<CvFormValues>({
+    resolver: zodResolver(cvFormSchema),
+    defaultValues: initialData ?? CV_FORM_DEFAULT_VALUES,
+  });
+
+  const previewData = form.watch();
+  const SelectedTemplate = CV_PREVIEW_TEMPLATES[templateId].Component;
+
+  const applyPresetFromJson = useCallback(() => {
+    const result = applySavedResults(JSON.stringify(cvPreset));
+
+    if (!result.ok) {
+      console.error("Invalid CV preset schema:", result.message);
+      window.alert(
+        "Preset JSON is incompatible with current CV schema. Please update src/app/assets/cv-preset.json.",
+      );
+      return;
+    }
+
+    form.reset(result.data);
+  }, [form]);
+
+  return (
+    <div className="cv-print-layout flex h-full w-full items-stretch justify-center gap-4 overflow-hidden p-4 print:block print:h-auto print:max-h-none print:overflow-visible print:p-0">
+      <FormProvider {...form}>
+        {!isPreviewOnly && (
+          <div className="cv-hide-on-print scrollbar-hidden h-full min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-y-contain">
+            <CvBuilderForm
+              isPreviewOnly={isPreviewOnly}
+              onTogglePreviewOnly={() => setIsPreviewOnly(true)}
+              onExportPdf={exportCvPreviewPdf}
+              onApplyPreset={applyPresetFromJson}
+              templateId={templateId}
+              onTemplateChange={setTemplateId}
+              cvId={cvId}
+            />
+          </div>
+        )}
+        <div
+          className={`cv-preview-scroll scrollbar-hidden h-full min-h-0 overflow-y-auto overscroll-y-contain ${
+            isPreviewOnly ? "w-full max-w-5xl flex-1" : "min-w-0 flex-1"
+          }`}
+        >
+          {isPreviewOnly && (
+            <div className="cv-hide-on-print mb-4 flex justify-end">
+              <CvBuilderToolbar
+                isPreviewOnly={isPreviewOnly}
+                onTogglePreviewOnly={() => setIsPreviewOnly(false)}
+                onExportPdf={exportCvPreviewPdf}
+                onApplyPreset={applyPresetFromJson}
+                templateId={templateId}
+                onTemplateChange={setTemplateId}
+              />
+            </div>
+          )}
+          <SelectedTemplate data={previewData} />
+        </div>
+      </FormProvider>
+    </div>
+  );
+}

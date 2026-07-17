@@ -1,6 +1,10 @@
-import { FileText, Plus } from "lucide-react";
+import { FileText, LogOut, Plus } from "lucide-react";
 import Link from "next/link";
-import { createCvDocument, listUserCvs } from "@/app/dashboard/actions";
+import {
+  createCvDocument,
+  listUserCvs,
+  signOut,
+} from "@/app/dashboard/actions";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -31,12 +35,20 @@ export default async function DashboardPage() {
             Welcome back, {session.user.name || session.user.email}
           </p>
         </div>
-        <form action={createCvDocument}>
-          <Button type="submit" className="gap-2">
-            <Plus className="size-4" />
-            New CV
-          </Button>
-        </form>
+        <div className="flex flex-wrap items-center gap-2">
+          <form action={createCvDocument}>
+            <Button type="submit" className="gap-2">
+              <Plus className="size-4" />
+              New CV
+            </Button>
+          </form>
+          <form action={signOut}>
+            <Button type="submit" variant="outline" className="gap-2">
+              <LogOut className="size-4" />
+              Log out
+            </Button>
+          </form>
+        </div>
       </header>
 
       <section className="space-y-3">

@@ -1,21 +1,18 @@
-import { drizzle, type NodePgDatabase } from "drizzle-orm/node-postgres";
-import { isFeatureEnabled } from "@/lib/features/flags";
+import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 import * as schema from "./schema";
 
-let dbInstance: NodePgDatabase<typeof schema> | null = null;
+let dbInstance: PostgresJsDatabase<typeof schema> | null = null;
 
-export function getDb(): NodePgDatabase<typeof schema> {
-  if (!isFeatureEnabled("enable_database")) {
-    throw new Error(
-      "Database is disabled. Set ENABLE_DATABASE=true to use Postgres.",
-    );
-  }
-
+export function getDb(): PostgresJsDatabase<typeof schema> {
   const databaseUrl = process.env.DATABASE_URL;
   if (!databaseUrl) {
-    throw new Error("DATABASE_URL is required when ENABLE_DATABASE=true.");
+    throw new Error("DATABASE_URL is required.");
   }
 
-  dbInstance ??= drizzle(databaseUrl, { schema });
+  // Disable prefetch as it is not supported for "Transaction" pool mode
+  dbInstance ??= drizzle(postgres(databaseUrl, { prepare: false }), {
+    schema,
+  });
   return dbInstance;
 }

@@ -63,7 +63,11 @@ function createAuthInstance() {
     secret: process.env.BETTER_AUTH_SECRET,
     baseURL: process.env.BETTER_AUTH_URL,
     trustedOrigins: process.env.BETTER_AUTH_URL
-      ? [process.env.BETTER_AUTH_URL]
+      ? [
+          process.env.BETTER_AUTH_URL,
+          "http://localhost:3000",
+          "https://next-cv-builder-16xij28hm-borys-koblents-projects.vercel.app",
+        ]
       : undefined,
     user: {
       changeEmail: {
@@ -208,12 +212,6 @@ function createAuthInstance() {
 }
 
 export function getAuth(): ReturnType<typeof createAuthInstance> {
-  if (!isFeatureEnabled("enable_database")) {
-    throw new Error(
-      "Authentication is disabled. Set ENABLE_DATABASE=true to enable it.",
-    );
-  }
-
   if (authInstance == null) {
     authInstance = createAuthInstance();
   }

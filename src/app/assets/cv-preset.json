@@ -32,7 +32,7 @@
     },
     {
       "companyName": "GlobalLogic",
-      "period": "February 2025 – November 2025",
+      "period": "November 2024 – November 2025",
       "position": "Senior Front-end Developer",
       "domain": "Sports and Telemedia",
       "description": "Architected and delivered a complex sports telestration module using Konva.js and Vue.js, allowing real-time vector graphic overlays on top of active video playbacks. Developed a custom, private core package on top of Video.js with specialized video processing and playback plugins. Implemented a custom RBAC system for secure application workflows and built high-performance dashboards for rendering heavy dynamic analytical data.",
@@ -40,7 +40,7 @@
     },
     {
       "companyName": "GlobalLogic",
-      "period": "August 2023 – May 2024",
+      "period": "August 2023 – August 2024",
       "position": "Senior Front-end Developer",
       "domain": "Logistics",
       "description": "Developed web and mobile apps for transportation platform. Integrated complex multi-role authentication via Keycloak and optimized data prefetching using Angular Resolvers. Maintained a Ionic mobile application, implementing interactive route rendering with Leaflet maps and securing ticket purchases via Stripe integration. Maintained a strict 65% unit test coverage pipeline.",
@@ -91,7 +91,7 @@
   "education": [
     {
       "institution": "Woolf & GoIT Neoversity",
-      "period": "2023 - 2026",
+      "period": "2024 - 2026",
       "degree": "Master of Science in Computer Science: Software Engineering"
     },
     {

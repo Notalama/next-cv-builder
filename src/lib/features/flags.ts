@@ -11,7 +11,6 @@ export type FeatureFlagTarget = {
 export type FeatureFlagValue = boolean | FeatureFlagTarget;
 
 const defaults = {
-  enable_database: false,
   enable_postmark: false,
   enable_email_confirmation: false,
   enable_passkey: false,
@@ -34,7 +33,6 @@ function isEnvTrue(name: string): boolean {
 export function getAppConfig(): AppConfig {
   return {
     features: {
-      enable_database: isEnvTrue("ENABLE_DATABASE"),
       enable_postmark: isEnvTrue("ENABLE_POSTMARK"),
       enable_email_confirmation: isEnvTrue("ENABLE_EMAIL_CONFIRMATION"),
       // NEXT_PUBLIC_ so the login client UI can read it.

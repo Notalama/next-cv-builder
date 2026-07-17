@@ -1,6 +1,6 @@
 # CV Builder
 
-Next.js app for building a professional CV with live preview, PDF export, presets, and a speed reader. Includes optional authentication (Better Auth), email flows, and Stripe billing.
+Next.js app for building a professional CV with live preview, PDF export, presets, and a speed reader. Includes authentication (Better Auth), email flows, and Stripe billing.
 
 ## Local development
 
@@ -10,14 +10,13 @@ cp .env.example .env
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The CV builder works with no configuration.
+Open [http://localhost:3000](http://localhost:3000).
 
-### Database (optional)
+### Database
 
-Database and auth are **disabled by default**. To enable them, set in `.env`:
+Auth and Postgres are always required. Set in `.env`:
 
 ```bash
-ENABLE_DATABASE=true
 DATABASE_URL=postgresql://...
 BETTER_AUTH_SECRET=...
 BETTER_AUTH_URL=http://localhost:3000
@@ -32,8 +31,6 @@ npm run db:push
 ```
 
 ## Deploy on Vercel (from GitHub)
-
-The project **builds successfully without environment variables** — the CV builder pages (`/`, `/cv-builder`, `/cv-builder/speed-reader`) work as static/client routes. Auth requires `ENABLE_DATABASE=true` plus Postgres and Better Auth env vars.
 
 ### 1. Push to GitHub
 
@@ -54,9 +51,8 @@ Copy from [`.env.example`](./.env.example) into **Vercel → Project → Setting
 
 | Variable | Required for | Notes |
 |----------|--------------|-------|
-| `ENABLE_DATABASE` | Auth | Set to `true` to enable Postgres and authentication (default: off) |
-| `DATABASE_URL` | Auth (when enabled) | Postgres connection string (Neon / Vercel Postgres recommended) |
-| `BETTER_AUTH_SECRET` | Auth (when enabled) | Random string, 32+ characters |
+| `DATABASE_URL` | Auth | Postgres connection string (Neon / Vercel Postgres / Supabase) |
+| `BETTER_AUTH_SECRET` | Auth | Random string, 32+ characters |
 | `BETTER_AUTH_URL` | Auth | Production URL, e.g. `https://your-app.vercel.app` |
 | `POSTMARK_SERVER_TOKEN` | Email sign-up / reset | From [Postmark](https://postmarkapp.com) |
 | `POSTMARK_FROM_EMAIL` | Email | Verified sender address |

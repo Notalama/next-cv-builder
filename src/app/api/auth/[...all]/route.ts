@@ -10,7 +10,6 @@ import arcjet, {
 } from "@arcjet/next";
 import { toNextJsHandler } from "better-auth/next-js";
 import { getAuth } from "@/lib/auth/auth";
-import { isFeatureEnabled } from "@/lib/features/flags";
 
 const arcjetKey = process.env.ARCJET_API_KEY;
 
@@ -41,36 +40,15 @@ const emailSettings = {
   deny: ["DISPOSABLE", "INVALID", "NO_MX_RECORDS"],
 } satisfies EmailOptions;
 
-function databaseDisabledResponse() {
-  return Response.json(
-    {
-      error: {
-        message:
-          "Database is disabled. Set ENABLE_DATABASE=true to use authentication.",
-        code: "DATABASE_DISABLED",
-      },
-    },
-    { status: 503 },
-  );
-}
-
 function getAuthHandlers() {
   return toNextJsHandler(getAuth());
 }
 
 export async function GET(request: Request) {
-  if (!isFeatureEnabled("enable_database")) {
-    return databaseDisabledResponse();
-  }
-
   return getAuthHandlers().GET(request);
 }
 
 export async function POST(request: Request) {
-  if (!isFeatureEnabled("enable_database")) {
-    return databaseDisabledResponse();
-  }
-
   const clonedRequest = request.clone();
 
   if (aj) {

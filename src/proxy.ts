@@ -1,6 +1,5 @@
 import { getSessionCookie } from "better-auth/cookies";
 import { type NextRequest, NextResponse } from "next/server";
-import { isFeatureEnabled } from "@/lib/features/flags";
 
 const PROTECTED_PATHS = ["/dashboard", "/cv-builder"];
 
@@ -12,14 +11,6 @@ function isProtectedPath(pathname: string) {
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  console.log("proxy", pathname);
-  if (!isFeatureEnabled("enable_database")) {
-    if (pathname === "/") {
-      return NextResponse.redirect(new URL("/cv-builder", request.url));
-    }
-    return NextResponse.next();
-  }
-
   const sessionCookie = getSessionCookie(request);
   const hasSession = sessionCookie != null;
 

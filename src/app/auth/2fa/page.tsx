@@ -3,15 +3,10 @@ import { redirect } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getAuth } from "@/lib/auth/auth";
-import { isFeatureEnabled } from "@/lib/features/flags";
 import { BackupCodeTab } from "./_components/backup-code-tab";
 import { TotpForm } from "./_components/totp-form";
 
 export default async function TwoFactorPage() {
-  if (!isFeatureEnabled("enable_database")) {
-    return null;
-  }
-
   const session = await getAuth().api.getSession({ headers: await headers() });
   if (session != null) return redirect("/dashboard");
 

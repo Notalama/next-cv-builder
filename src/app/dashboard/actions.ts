@@ -1,9 +1,11 @@
 "use server";
 
 import { and, desc, eq } from "drizzle-orm";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getDb } from "@/drizzle/db";
 import { cvDocument } from "@/drizzle/schema";
+import { getAuth } from "@/lib/auth/auth";
 import { requireSession } from "@/lib/auth/session";
 import type { CvFormValues } from "@/models/cv";
 import type { CvDocumentSummary } from "@/models/cv-document";
@@ -104,4 +106,9 @@ export async function saveCvDocument({
   });
 
   return { id: newId };
+}
+
+export async function signOut() {
+  await getAuth().api.signOut({ headers: await headers() });
+  redirect("/auth/login");
 }

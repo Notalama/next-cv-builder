@@ -21,11 +21,15 @@ import { sendWelcomeEmail } from "../emails/welcome-email";
 import { STRIPE_PLANS } from "./stripe";
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-const stripeConfigured = stripeSecretKey != null && stripeSecretKey.length > 0;
+const stripeConfigured =
+  stripeSecretKey != null && stripeSecretKey.trim().length > 0;
 
-const stripeClient = new Stripe(stripeSecretKey ?? "sk_test_placeholder", {
-  apiVersion: "2025-08-27.basil",
-});
+const stripeClient = new Stripe(
+  stripeConfigured ? stripeSecretKey : "sk_test_placeholder",
+  {
+    apiVersion: "2025-08-27.basil",
+  },
+);
 
 let authInstance: ReturnType<typeof createAuthInstance> | null = null;
 
@@ -66,6 +70,9 @@ function createAuthInstance() {
       ? [
           process.env.BETTER_AUTH_URL,
           "http://localhost:3000",
+          "http://localhost:3001",
+          "http://127.0.0.1:3000",
+          "http://127.0.0.1:3001",
           "https://next-cv-builder-16xij28hm-borys-koblents-projects.vercel.app",
         ]
       : undefined,
@@ -112,6 +119,9 @@ function createAuthInstance() {
         enabled: true,
         maxAge: 60,
       },
+    },
+    rateLimit: {
+      enabled: process.env.DISABLE_AUTH_RATE_LIMIT !== "true",
     },
     plugins: [
       twoFactor(),

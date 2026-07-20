@@ -19,7 +19,7 @@
   "secondarySkills": "RxJS, NGRX, Redux, Next.js, Konva.js, Three.js, Node.js, MongoDB, Firebase, AWS, Jenkins, React Native, Ionic, Tailwind CSS, MaterialUI, GraphQL, Figma",
   "skillCategories": "JavaScript libraries: React, Angular, Vue\nState Management: Redux, NGRX, Zustand, Pinia\nCSS: Tailwind CSS, CSS Modules, Styled Components, Sass, MUI\nData fetching: RESTful API, GraphQL, TanStack Query\nTesting & Quality: Jest, Vitest, Storybook, Jasmine, Playwright, BDD \nBackend & APIs: Next.js, Node.js, Express.js, MongoDB, noSQL\nBuild tools (optional): Webpack, Vite\nCloud & DevOps: AWS, Docker, Kubernetes, CI/CD Pipelines\nEngineering Practices: System Design, Agile (Scrum), Code Reviews",
   "domains": "E-commerce, FinTech, Automotive, Logistics",
-  "aboutMe": "Senior Front-End Engineer and Architect with 10+ years of experience designing high-performance web applications.\nSpecialized in scaling enterprise ecosystems through micro-frontends, modular workspace monorepos, and reactive\nstate management. Proven track record of bridging the gap between frontend architecture and cloud infrastructure,\nutilizing Angular, React, TypeScript, and AWS to build robust deployment workflows and scalable systems.",
+  "aboutMe": "Senior Front-End Engineer and with 10+ years of experience designing high-performance web applications.\nSpecialized in scaling enterprise ecosystems through micro-frontends, modular workspace monorepos, and reactive\nstate management. Proven track record of bridging the gap between frontend architecture and cloud infrastructure,\nutilizing Angular, React, TypeScript, and AWS to build robust deployment workflows and scalable systems.",
   "techPrinciples": "Strict Type Safety & Code Completeness: Enforcing deep static analysis and clean design boundaries to minimize run-time crashes.\nModular Monorepos over Monoliths: Leveraging isolated encapsulation tracks for multi-team distribution speeds.\nPerformance-First Rendering: Obsession with Core Web Vitals, tree-shaking, smart caching, and payload budgeting.",
   "projects": [
     {
@@ -35,7 +35,7 @@
       "period": "November 2024 – November 2025",
       "position": "Senior Front-end Developer",
       "domain": "Sports and Telemedia",
-      "description": "Architected and delivered a complex sports telestration module using Konva.js and Vue.js, allowing real-time vector graphic overlays on top of active video playbacks. Developed a custom, private core package on top of Video.js with specialized video processing and playback plugins. Implemented a custom RBAC system for secure application workflows and built high-performance dashboards for rendering heavy dynamic analytical data.",
+      "description": "Architected and delivered a complex sports telestration module using Konva.js and Vue.js, allowing real-time vector graphic overlays on top of active video playbacks. Developed a custom, private core package on top of Video.js with video processing and playback plugins. Implemented a custom RBAC system for secure application workflows and built high-performance dashboards for rendering heavy dynamic analytical data.",
       "technologies": "Vue.js, Konva.js, Typescript, GitHub Actions, Cursor AI, Pinia, Tailwind, Video.js"
     },
     {

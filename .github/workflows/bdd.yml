@@ -1,0 +1,89 @@
+name: BDD Tests
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: bdd-tests-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bdd:
+    name: Playwright BDD
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: cv_builder_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d cv_builder_test"
+          --health-interval 2s
+          --health-timeout 5s
+          --health-retries 15
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/cv_builder_test
+      BETTER_AUTH_SECRET: ci-better-auth-secret-at-least-32-chars
+      BETTER_AUTH_URL: http://localhost:3001
+      ENABLE_POSTMARK: "false"
+      ENABLE_EMAIL_CONFIRMATION: "false"
+      NEXT_PUBLIC_ENABLE_PASSKEY: "false"
+      DISABLE_AUTH_RATE_LIMIT: "true"
+      CI: "true"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Write .env.test
+        run: |
+          printf '%s\n' \
+            'DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cv_builder_test' \
+            'BETTER_AUTH_SECRET=ci-better-auth-secret-at-least-32-chars' \
+            'BETTER_AUTH_URL=http://localhost:3001' \
+            'ENABLE_POSTMARK=false' \
+            'ENABLE_EMAIL_CONFIRMATION=false' \
+            'NEXT_PUBLIC_ENABLE_PASSKEY=false' \
+            'DISABLE_AUTH_RATE_LIMIT=true' \
+            > .env.test
+
+      - name: Apply database migrations
+        run: npm run db:migrate:test
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run BDD tests
+        run: npm run test:bdd
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

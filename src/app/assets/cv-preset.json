@@ -35,7 +35,7 @@
       "period": "November 2024 – November 2025",
       "position": "Senior Front-end Developer",
       "domain": "Sports and Telemedia",
-      "description": "Architected and delivered a complex sports telestration module using Konva.js and Vue.js, allowing real-time vector graphic overlays on top of active video playbacks. Developed a custom, private core package on top of Video.js with specialized video processing and playback plugins. Implemented a custom RBAC system for secure application workflows and built high-performance dashboards for rendering heavy dynamic analytical data.",
+      "description": "Architected and delivered a complex sports telestration module using Konva.js and Vue.js, allowing real-time vector graphic overlays on top of active video playbacks. Developed a custom, private core package on top of Video.js with video processing and playback plugins. Implemented a custom RBAC system for secure application workflows and built high-performance dashboards for rendering heavy dynamic analytical data.",
       "technologies": "Vue.js, Konva.js, Typescript, GitHub Actions, Cursor AI, Pinia, Tailwind, Video.js"
     },
     {

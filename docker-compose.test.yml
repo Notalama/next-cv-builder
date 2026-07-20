@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: cv-builder-test-db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cv_builder_test
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d cv_builder_test"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+    volumes:
+      - cv_builder_test_pg:/var/lib/postgresql/data
+
+volumes:
+  cv_builder_test_pg:

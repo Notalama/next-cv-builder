@@ -19,6 +19,7 @@ export function OverviewSection() {
           label="About Me / Experience Summary"
           placeholder="Brief overview of your architectural history, years of experience, and general background..."
           multiline
+          improvable
           inputClassName="min-h-[100px]"
         />
         <TextFormField

@@ -72,4 +72,23 @@ export class CvBuilderPage {
   async clickScrollToBottom() {
     await this.scrollToBottomButton().click();
   }
+
+  improveTextButton(fieldLabel: string) {
+    return this.page
+      .getByRole("button", {
+        name: `Improve ${fieldLabel} text`,
+      })
+      .first();
+  }
+
+  fieldByLabel(fieldLabel: string) {
+    return this.page.getByLabel(fieldLabel, { exact: true }).first();
+  }
+
+  async improveTextFor(fieldLabel: string) {
+    const field = this.fieldByLabel(fieldLabel);
+    await field.scrollIntoViewIfNeeded();
+    await this.improveTextButton(fieldLabel).click();
+    await this.page.getByText(/Text improved/).waitFor({ state: "visible" });
+  }
 }

@@ -41,6 +41,7 @@ export interface TextFormFieldProps {
   type?: string;
   inputClassName?: string;
   itemClassName?: string;
+  improvable?: boolean;
 }
 
 export interface CvTextFieldConfig {

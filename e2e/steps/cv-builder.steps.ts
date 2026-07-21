@@ -93,3 +93,17 @@ Then("I see the save CV button", async ({ page }) => {
     })
     .toBe(true);
 });
+
+When("I improve text for {string}", async ({ page }, fieldLabel: string) => {
+  const builder = new CvBuilderPage(page);
+  await builder.improveTextFor(fieldLabel);
+});
+
+Then(
+  "the {string} field shows improved text",
+  async ({ page }, fieldLabel: string) => {
+    const builder = new CvBuilderPage(page);
+    const field = builder.fieldByLabel(fieldLabel);
+    await expect(field).toHaveValue(/\[Improved for /);
+  },
+);

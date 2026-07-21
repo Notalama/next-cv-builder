@@ -21,6 +21,7 @@ export function SkillsSection() {
             name="primarySkills"
             label="Primary Skills"
             placeholder="React, TypeScript, Next.js, Tailwind CSS (Comma separated)"
+            improvable
           />
           <TextFormField
             name="secondarySkills"
@@ -33,6 +34,7 @@ export function SkillsSection() {
             placeholder="Frontend Development: React.js, Redux"
             multiline
             inputClassName="min-h-[180px] resize-y font-mono text-xs"
+            improvable
           />
           <TextFormField
             name="domains"

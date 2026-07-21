@@ -50,6 +50,7 @@ export function ProjectCard({ index, canRemove, onRemove }: ProjectCardProps) {
             label="Description & Your Role"
             placeholder="Detail what the system does and explicitly what your responsibilities and contributions were..."
             multiline
+            improvable
             inputClassName="min-h-[110px] resize-y"
           />
           <TextFormField

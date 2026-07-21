@@ -43,7 +43,7 @@
       "period": "August 2023 – August 2024",
       "position": "Senior Front-end Developer",
       "domain": "Logistics",
-      "description": "Developed web and mobile apps for transportation platform. Integrated complex multi-role authentication via Keycloak and optimized data prefetching using Angular Resolvers. Maintained a Ionic mobile application, implementing interactive route rendering with Leaflet maps and securing ticket purchases via Stripe integration. Maintained a strict 65% unit test coverage pipeline.",
+      "description": "Developed web and mobile apps for transportation platform. Integrated complex multi-role authentication via Keycloak and optimized data prefetching using Angular Resolvers. Maintained a Ionic mobile application, implementing interactive route rendering with Leaflet maps and securing ticket purchases via Stripe integration. Maintained a strict 65% unit test coverage pipeline, monitored and enforced via Sonar.",
       "technologies": "Angular 14, Ionic, Keycloak, Stripe, Leaflet, Azure DevOps, GitHub Actions, Jest"
     },
     {

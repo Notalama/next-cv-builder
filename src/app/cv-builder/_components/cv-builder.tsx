@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import cvPreset from "@/app/assets/cv-preset.json";
 import CvBuilderForm from "@/app/cv-builder/_components/form";
@@ -9,6 +9,7 @@ import {
   CV_PREVIEW_TEMPLATES,
   DEFAULT_CV_PREVIEW_TEMPLATE_ID,
 } from "@/app/cv-builder/_components/preview/templates";
+import { ScrollControls } from "@/app/cv-builder/_components/scroll-controls";
 import { CvBuilderToolbar } from "@/app/cv-builder/_components/toolbar";
 import { applySavedResults } from "@/app/cv-builder/_utils/apply-saved-results";
 import { exportCvPreviewPdf } from "@/app/cv-builder/_utils/export-pdf";
@@ -24,6 +25,7 @@ export function CvBuilder({ cvId, initialData }: CvBuilderProps) {
   const [templateId, setTemplateId] = useState<CvPreviewTemplateId>(
     DEFAULT_CV_PREVIEW_TEMPLATE_ID,
   );
+  const formScrollRef = useRef<HTMLDivElement>(null);
 
   const form = useForm<CvFormValues>({
     resolver: zodResolver(cvFormSchema),
@@ -51,16 +53,22 @@ export function CvBuilder({ cvId, initialData }: CvBuilderProps) {
     <div className="cv-print-layout flex h-full w-full items-stretch justify-center gap-4 overflow-hidden p-4 print:block print:h-auto print:max-h-none print:overflow-visible print:p-0">
       <FormProvider {...form}>
         {!isPreviewOnly && (
-          <div className="cv-hide-on-print scrollbar-hidden h-full min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-y-contain">
-            <CvBuilderForm
-              isPreviewOnly={isPreviewOnly}
-              onTogglePreviewOnly={() => setIsPreviewOnly(true)}
-              onExportPdf={exportCvPreviewPdf}
-              onApplyPreset={applyPresetFromJson}
-              templateId={templateId}
-              onTemplateChange={setTemplateId}
-              cvId={cvId}
-            />
+          <div className="relative h-full min-h-0 min-w-0 flex-1">
+            <div
+              ref={formScrollRef}
+              className="cv-hide-on-print scrollbar-hidden h-full min-h-0 overflow-y-auto overscroll-y-contain"
+            >
+              <CvBuilderForm
+                isPreviewOnly={isPreviewOnly}
+                onTogglePreviewOnly={() => setIsPreviewOnly(true)}
+                onExportPdf={exportCvPreviewPdf}
+                onApplyPreset={applyPresetFromJson}
+                templateId={templateId}
+                onTemplateChange={setTemplateId}
+                cvId={cvId}
+              />
+            </div>
+            <ScrollControls scrollContainerRef={formScrollRef} />
           </div>
         )}
         <div

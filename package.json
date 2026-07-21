@@ -13,7 +13,7 @@
     "format": "biome format --write",
     "test": "vitest run --project unit",
     "test:watch": "vitest --project unit",
-    "test:storybook": "vitest run --project storybook",
+    "test:storybook": "cross-env VITEST_STORYBOOK=true vitest run --project storybook",
     "test:bdd": "bddgen && playwright test",
     "test:bdd:ui": "bddgen && playwright test --ui",
     "test:bdd:headed": "bddgen && playwright test --headed",

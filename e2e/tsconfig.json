@@ -1,15 +1,17 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "noEmit": true,
+    "plugins": [],
+    "moduleResolution": "bundler",
+    "types": ["node"],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["../src/*"]
     }
   },
   "include": [
-    "e2e/**/*.ts",
-    "playwright.config.ts",
-    "src/drizzle/**/*.ts"
+    "./**/*.ts",
+    "../playwright.config.ts",
+    "../src/drizzle/**/*.ts"
   ],
-  "exclude": ["node_modules", ".features-gen"]
+  "exclude": ["../node_modules", "../.features-gen"]
 }

@@ -1,13 +1,14 @@
 import { expect } from "@playwright/test";
 import { DashboardPage } from "../pages/dashboard.page";
 import { LoginPage } from "../pages/login.page";
+import { uniqueEmail } from "../support/auth";
 import {
   buildUserInput,
   Given,
-  Then,
-  When,
   signInViaApi,
   signUpViaApi,
+  Then,
+  When,
 } from "../support/fixtures";
 
 Given("I am not signed in", async ({ context }) => {
@@ -26,7 +27,8 @@ Given("I am signed in as an admin", async ({ context, asAdmin }) => {
 
 Given(
   "I have registered with email {string} and password {string}",
-  async ({}, email: string, password: string) => {
+  async ({ $testInfo }, email: string, password: string) => {
+    void $testInfo;
     await signUpViaApi(
       buildUserInput({
         email,
@@ -50,6 +52,25 @@ When("I visit the login page", async ({ page }) => {
   await login.goto();
 });
 
+When("I click on sign-up tab", async ({ page }) => {
+  await page.getByRole("tab", { name: "Sign Up" }).click();
+});
+
+When(
+  "I fill the sign-up form as name {string}, password {string} and favorite number {string}",
+  async ({ page }, name: string, password: string, favoriteNumber: string) => {
+    const email = uniqueEmail("signup"); // e.g. signup+1737...@example.com
+    await page.getByLabel("Name").fill(name);
+    await page.getByLabel("Email").fill(email);
+    await page.getByLabel("Password").fill(password);
+    await page.getByLabel("Favorite Number").fill(favoriteNumber);
+  },
+);
+
+When("I click sign-up button", async ({ page }) => {
+  await page.getByRole("button", { name: "Sign Up" }).click();
+});
+
 When(
   "I sign in with email {string} and password {string}",
   async ({ page }, email: string, password: string) => {
@@ -66,6 +87,13 @@ When(
     await context.addCookies(cookies);
   },
 );
+
+Then("I am on the sign-up page", async ({ page }) => {
+  await expect(page).toHaveURL(/\/auth\/sign-up/);
+  await expect(page.getByRole("tab", { name: "Sign Up" })).toBeVisible();
+  await expect(page.getByLabel("Email")).toBeVisible();
+  await expect(page.getByLabel("Password")).toBeVisible();
+});
 
 Then("I am redirected to the login page", async ({ page }) => {
   await expect(page).toHaveURL(/\/auth\/login/);

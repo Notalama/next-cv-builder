@@ -34,6 +34,8 @@ function webServerEnv(): Record<string, string> {
     ENABLE_EMAIL_CONFIRMATION: "false",
     NEXT_PUBLIC_ENABLE_PASSKEY: "false",
     DISABLE_AUTH_RATE_LIMIT: "true",
+    AI_IMPROVE_MOCK: "true",
+    GEMINI_API_KEY: "",
     ARCJET_API_KEY: "",
     STRIPE_SECRET_KEY: "",
     STRIPE_WEBHOOK_SECRET: "",

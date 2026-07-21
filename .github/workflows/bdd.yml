@@ -39,6 +39,7 @@ jobs:
       ENABLE_EMAIL_CONFIRMATION: "false"
       NEXT_PUBLIC_ENABLE_PASSKEY: "false"
       DISABLE_AUTH_RATE_LIMIT: "true"
+      AI_IMPROVE_MOCK: "true"
       CI: "true"
 
     steps:
@@ -67,6 +68,7 @@ jobs:
             'ENABLE_EMAIL_CONFIRMATION=false' \
             'NEXT_PUBLIC_ENABLE_PASSKEY=false' \
             'DISABLE_AUTH_RATE_LIMIT=true' \
+            'AI_IMPROVE_MOCK=true' \
             > .env.test
 
       - name: Apply database migrations

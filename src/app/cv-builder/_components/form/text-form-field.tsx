@@ -1,6 +1,7 @@
 "use client";
 
 import { useFormContext } from "react-hook-form";
+import { ImproveTextButton } from "@/app/cv-builder/_components/form/improve-text-button";
 import { useFocusedField } from "@/app/cv-builder/_components/form/focused-field-context";
 import {
   FormControl,
@@ -22,6 +23,7 @@ export function TextFormField({
   type,
   inputClassName,
   itemClassName,
+  improvable = false,
 }: TextFormFieldProps) {
   const { control } = useFormContext<CvFormValues>();
   const { setFocusedField } = useFocusedField();
@@ -32,7 +34,14 @@ export function TextFormField({
       name={name}
       render={({ field }) => (
         <FormItem className={itemClassName}>
-          {label ? <FormLabel>{label}</FormLabel> : null}
+          {label || improvable ? (
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              {label ? <FormLabel>{label}</FormLabel> : <span />}
+              {improvable && label ? (
+                <ImproveTextButton fieldPath={name} fieldLabel={label} />
+              ) : null}
+            </div>
+          ) : null}
           <FormControl>
             {multiline ? (
               <Textarea

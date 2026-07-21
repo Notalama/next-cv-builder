@@ -107,3 +107,43 @@ Then(
     await expect(field).toHaveValue(/\[Improved for /);
   },
 );
+
+When(
+  "I fill the vacancy description with {string}",
+  async ({ page }, text: string) => {
+    const builder = new CvBuilderPage(page);
+    await builder.fillVacancyDescription(text);
+  },
+);
+
+When("I generate a perfect CV for the vacancy", async ({ page }) => {
+  const builder = new CvBuilderPage(page);
+  await builder.generatePerfectCv();
+});
+
+Then(
+  "the {string} field shows vacancy-aware improved text",
+  async ({ page }, fieldLabel: string) => {
+    const builder = new CvBuilderPage(page);
+    const field = builder.fieldByLabel(fieldLabel);
+    await expect(field).toHaveValue(/with vacancy context\]/);
+  },
+);
+
+Then(
+  "the {string} field shows vacancy-tailored text",
+  async ({ page }, fieldLabel: string) => {
+    const builder = new CvBuilderPage(page);
+    const field = builder.fieldByLabel(fieldLabel);
+    await expect(field).toHaveValue(/\[Tailored to vacancy\]/);
+  },
+);
+
+Then(
+  "the {string} field has value {string}",
+  async ({ page }, fieldLabel: string, value: string) => {
+    const builder = new CvBuilderPage(page);
+    const field = builder.fieldByLabel(fieldLabel);
+    await expect(field).toHaveValue(value);
+  },
+);

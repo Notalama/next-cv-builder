@@ -5,6 +5,7 @@ export const improveTextRequestSchema = z.object({
   fieldPath: z.string().min(1),
   text: z.string().min(1),
   role: z.string().min(1).default("Professional"),
+  vacancyText: z.string().trim().min(1).optional(),
 });
 
 export type ImproveTextRequest = z.infer<typeof improveTextRequestSchema>;
@@ -22,17 +23,27 @@ Keep the same language as the input. Return only the improved text with no quote
 const DEFAULT_GEMINI_MODEL = "gemini-3.1-flash-lite";
 
 function buildUserPrompt(input: ImproveTextRequest): string {
-  return [
+  const lines = [
     `Target role: ${input.role}`,
     `CV field: ${input.fieldLabel} (${input.fieldPath})`,
-    "Original text:",
-    input.text,
-  ].join("\n");
+  ];
+
+  if (input.vacancyText != null) {
+    lines.push(
+      "Target vacancy description (tailor the wording and keywords to it):",
+      input.vacancyText,
+    );
+  }
+
+  lines.push("Original text:", input.text);
+  return lines.join("\n");
 }
 
 function mockImproveText(input: ImproveTextRequest): ImproveTextResult {
+  const context =
+    input.vacancyText != null ? " with vacancy context" : "";
   return {
-    improvedText: `[Improved for ${input.role}] ${input.text.trim()}`,
+    improvedText: `[Improved for ${input.role}${context}] ${input.text.trim()}`,
     mocked: true,
   };
 }

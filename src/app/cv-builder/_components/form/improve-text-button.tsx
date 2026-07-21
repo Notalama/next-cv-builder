@@ -4,6 +4,7 @@ import { Sparkles } from "lucide-react";
 import { useState, useTransition } from "react";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
+import { useVacancy } from "@/app/cv-builder/_components/form/vacancy-context";
 import { improveCvFieldText } from "@/app/cv-builder/actions";
 import { Button } from "@/components/ui/button";
 import { LoadingSwap } from "@/components/ui/loading-swap";
@@ -20,6 +21,7 @@ export function ImproveTextButton({
   fieldLabel,
 }: ImproveTextButtonProps) {
   const { getValues, setValue } = useFormContext<CvFormValues>();
+  const { vacancyText } = useVacancy();
   const [isPending, startTransition] = useTransition();
   const [isImproving, setIsImproving] = useState(false);
 
@@ -40,12 +42,12 @@ export function ImproveTextButton({
           fieldLabel,
           text,
           role,
+          vacancyText: vacancyText.trim() || undefined,
         });
         setValue(fieldPath, result.improvedText, {
           shouldDirty: true,
           shouldValidate: true,
         });
-        console.log("result", result);
         toast.success(
           result.mocked
             ? "Text improved (mock AI)"

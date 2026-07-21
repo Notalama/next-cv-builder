@@ -1,6 +1,11 @@
 "use server";
 
 import {
+  type GenerateCvRequest,
+  type GenerateCvResult,
+  generateCvForVacancy,
+} from "@/lib/ai/generate-cv";
+import {
   type ImproveTextRequest,
   type ImproveTextResult,
   improveCvText,
@@ -12,4 +17,11 @@ export async function improveCvFieldText(
 ): Promise<ImproveTextResult> {
   await requireSession();
   return improveCvText(input);
+}
+
+export async function generateCvForVacancyAction(
+  input: GenerateCvRequest,
+): Promise<GenerateCvResult> {
+  await requireSession();
+  return generateCvForVacancy(input);
 }

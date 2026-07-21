@@ -91,4 +91,27 @@ export class CvBuilderPage {
     await this.improveTextButton(fieldLabel).click();
     await this.page.getByText(/Text improved/).waitFor({ state: "visible" });
   }
+
+  vacancyDescriptionField() {
+    return this.page.getByLabel("Vacancy Description", { exact: true });
+  }
+
+  generateCvButton() {
+    return this.page.getByRole("button", {
+      name: "Generate perfect CV for the vacancy",
+    });
+  }
+
+  async fillVacancyDescription(text: string) {
+    const field = this.vacancyDescriptionField();
+    await field.scrollIntoViewIfNeeded();
+    await field.fill(text);
+  }
+
+  async generatePerfectCv() {
+    await this.generateCvButton().click();
+    await this.page
+      .getByText(/CV generated for vacancy/)
+      .waitFor({ state: "visible" });
+  }
 }

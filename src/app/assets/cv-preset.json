@@ -51,7 +51,7 @@
       "period": "June 2022 – August 2023",
       "position": "Senior Front-end Developer",
       "domain": "Automotive",
-      "description": "Led the development of a secure buyer-seller marketplace, delivering dynamic product listings, secure Stripe checkout/payment integration, and an interactive user review ecosystem.\nUsing Konva.js and built a high-performance vector design tool featuring advanced canvas drawing utilities, precise SPlines shape manipulation, and multi-format export.",
+      "description": "Led the Next.js development of a secure buyer-seller marketplace, delivering dynamic product listings, secure Stripe payment integration, and an interactive user review ecosystem.\nUsing Konva.js and built a high-performance vector design tool featuring advanced canvas drawing utilities, precise SPlines shape manipulation, and multi-format export.",
       "technologies": "Angular 14, Konvajs, Github Actions, Azure DevOps"
     },
 

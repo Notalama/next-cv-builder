@@ -1,5 +1,7 @@
 import { findIp } from "@arcjet/ip";
 import arcjet, {
+  type ArcjetDecision,
+  type ArcjetEmailType,
   type BotOptions,
   detectBot,
   type EmailOptions,
@@ -40,8 +42,37 @@ const emailSettings = {
   deny: ["DISPOSABLE", "INVALID", "NO_MX_RECORDS"],
 } satisfies EmailOptions;
 
+const emailDenialMessages: Partial<Record<ArcjetEmailType, string>> = {
+  INVALID: "Email address format is invalid.",
+  DISPOSABLE: "Disposable email addresses are not allowed.",
+  NO_MX_RECORDS: "Email domain is not valid.",
+};
+
 function getAuthHandlers() {
   return toNextJsHandler(getAuth());
+}
+
+function toDenialResponse(decision: ArcjetDecision): Response | null {
+  if (!decision.isDenied()) {
+    return null;
+  }
+
+  const { reason } = decision;
+
+  if (reason.isRateLimit()) {
+    return new Response(null, { status: 429 });
+  }
+
+  if (reason.isEmail()) {
+    const message =
+      reason.emailTypes
+        .map((type) => emailDenialMessages[type])
+        .find((value) => value != null) ?? "Invalid email.";
+
+    return Response.json({ message }, { status: 400 });
+  }
+
+  return new Response(null, { status: 403 });
 }
 
 export async function GET(request: Request) {
@@ -51,34 +82,17 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const clonedRequest = request.clone();
 
-  if (aj) {
-    const decision = await checkArcjet(request);
-
-    if (decision.isDenied()) {
-      if (decision.reason.isRateLimit()) {
-        return new Response(null, { status: 429 });
-      }
-      if (decision.reason.isEmail()) {
-        let message: string;
-
-        if (decision.reason.emailTypes.includes("INVALID")) {
-          message = "Email address format is invalid.";
-        } else if (decision.reason.emailTypes.includes("DISPOSABLE")) {
-          message = "Disposable email addresses are not allowed.";
-        } else if (decision.reason.emailTypes.includes("NO_MX_RECORDS")) {
-          message = "Email domain is not valid.";
-        } else {
-          message = "Invalid email.";
-        }
-
-        return Response.json({ message }, { status: 400 });
-      }
-
-      return new Response(null, { status: 403 });
-    }
+  if (!aj) {
+    return getAuthHandlers().POST(request);
   }
 
-  return getAuthHandlers().POST(clonedRequest);
+  const decision = await checkArcjet(clonedRequest);
+  const denialResponse = toDenialResponse(decision);
+  if (denialResponse != null) {
+    return denialResponse;
+  }
+
+  return getAuthHandlers().POST(request);
 }
 
 async function checkArcjet(request: Request) {

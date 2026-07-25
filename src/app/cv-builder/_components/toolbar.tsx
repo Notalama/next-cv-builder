@@ -3,6 +3,7 @@
 import {
   BookOpenText,
   ChevronDown,
+  Eraser,
   Eye,
   FileDown,
   PanelLeftOpen,
@@ -25,6 +26,7 @@ export function CvBuilderToolbar({
   onTogglePreviewOnly,
   onExportPdf,
   onApplyPreset,
+  onClearForm,
   templateId,
   onTemplateChange,
 }: CvBuilderControlsProps) {
@@ -73,6 +75,16 @@ export function CvBuilderToolbar({
         onClick={onApplyPreset}
       >
         Apply preset
+      </Button>
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        className="gap-2"
+        onClick={onClearForm}
+      >
+        <Eraser className="size-4" />
+        Clear form
       </Button>
       <Button
         type="button"

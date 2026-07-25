@@ -1,4 +1,15 @@
-import { type CvImportResult, cvFormSchema } from "@/models/cv";
+import cvPreset from "@/app/assets/cv-preset.json";
+import {
+  CV_FORM_DEFAULT_VALUES,
+  type CvFormValues,
+  type CvImportResult,
+  cvFormSchema,
+} from "@/models/cv";
+
+export function getCvPresetValues(): CvFormValues {
+  const result = applySavedResults(JSON.stringify(cvPreset));
+  return result.ok ? result.data : CV_FORM_DEFAULT_VALUES;
+}
 
 export function applySavedResults(jsonPayload: string): CvImportResult {
   try {

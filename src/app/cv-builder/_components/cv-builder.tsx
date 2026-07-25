@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import cvPreset from "@/app/assets/cv-preset.json";
 import CvBuilderForm from "@/app/cv-builder/_components/form";
 import {
   CV_PREVIEW_TEMPLATES,
@@ -11,7 +10,7 @@ import {
 } from "@/app/cv-builder/_components/preview/templates";
 import { ScrollControls } from "@/app/cv-builder/_components/scroll-controls";
 import { CvBuilderToolbar } from "@/app/cv-builder/_components/toolbar";
-import { applySavedResults } from "@/app/cv-builder/_utils/apply-saved-results";
+import { getCvPresetValues } from "@/app/cv-builder/_utils/apply-saved-results";
 import { exportCvPreviewPdf } from "@/app/cv-builder/_utils/export-pdf";
 import {
   CV_FORM_DEFAULT_VALUES,
@@ -29,24 +28,18 @@ export function CvBuilder({ cvId, initialData }: CvBuilderProps) {
 
   const form = useForm<CvFormValues>({
     resolver: zodResolver(cvFormSchema),
-    defaultValues: initialData ?? CV_FORM_DEFAULT_VALUES,
+    defaultValues: initialData ?? getCvPresetValues(),
   });
 
   const previewData = form.watch();
   const SelectedTemplate = CV_PREVIEW_TEMPLATES[templateId].Component;
 
   const applyPresetFromJson = useCallback(() => {
-    const result = applySavedResults(JSON.stringify(cvPreset));
+    form.reset(getCvPresetValues());
+  }, [form]);
 
-    if (!result.ok) {
-      console.error("Invalid CV preset schema:", result.message);
-      window.alert(
-        "Preset JSON is incompatible with current CV schema. Please update src/app/assets/cv-preset.json.",
-      );
-      return;
-    }
-
-    form.reset(result.data);
+  const clearForm = useCallback(() => {
+    form.reset(CV_FORM_DEFAULT_VALUES);
   }, [form]);
 
   return (
@@ -63,6 +56,7 @@ export function CvBuilder({ cvId, initialData }: CvBuilderProps) {
                 onTogglePreviewOnly={() => setIsPreviewOnly(true)}
                 onExportPdf={exportCvPreviewPdf}
                 onApplyPreset={applyPresetFromJson}
+                onClearForm={clearForm}
                 templateId={templateId}
                 onTemplateChange={setTemplateId}
                 cvId={cvId}
@@ -83,6 +77,7 @@ export function CvBuilder({ cvId, initialData }: CvBuilderProps) {
                 onTogglePreviewOnly={() => setIsPreviewOnly(false)}
                 onExportPdf={exportCvPreviewPdf}
                 onApplyPreset={applyPresetFromJson}
+                onClearForm={clearForm}
                 templateId={templateId}
                 onTemplateChange={setTemplateId}
               />

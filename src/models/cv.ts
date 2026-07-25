@@ -98,10 +98,10 @@ export const CV_FORM_DEFAULT_VALUES: CvFormValues = {
   languages: [EMPTY_CV_LANGUAGE],
   primarySkills: "",
   secondarySkills: "",
-  skillCategories: cvPreset.skillCategories,
+  skillCategories: "",
   domains: "",
   aboutMe: "",
   techPrinciples: "",
   projects: [EMPTY_CV_PROJECT],
-  education: cvPreset.education,
+  education: [EMPTY_CV_EDUCATION],
 };

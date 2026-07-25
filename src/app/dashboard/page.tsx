@@ -1,5 +1,5 @@
-import { FileText, LogOut, Plus } from "lucide-react";
-import Link from "next/link";
+import { LogOut, Plus } from "lucide-react";
+import { CvListItem } from "@/app/dashboard/_components/cv-list-item";
 import {
   createCvDocument,
   listUserCvs,
@@ -52,9 +52,7 @@ export default async function DashboardPage() {
       </header>
 
       <section className="space-y-3">
-        <h2 className="text-sm font-medium text-muted-foreground">
-          Saved CVs
-        </h2>
+        <h2 className="text-sm font-medium text-muted-foreground">Saved CVs</h2>
 
         {cvs.length === 0 ? (
           <Card>
@@ -77,20 +75,12 @@ export default async function DashboardPage() {
         ) : (
           <ul className="divide-y rounded-xl border bg-background">
             {cvs.map((cv) => (
-              <li key={cv.id}>
-                <Link
-                  href={`/cv-builder?id=${cv.id}`}
-                  className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-muted/60"
-                >
-                  <FileText className="size-4 shrink-0 text-muted-foreground" />
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate font-medium">{cv.title}</p>
-                    <p className="text-xs text-muted-foreground">
-                      Updated {formatDate(cv.updatedAt)}
-                    </p>
-                  </div>
-                </Link>
-              </li>
+              <CvListItem
+                key={cv.id}
+                id={cv.id}
+                title={cv.title}
+                updatedLabel={`Updated ${formatDate(cv.updatedAt)}`}
+              />
             ))}
           </ul>
         )}

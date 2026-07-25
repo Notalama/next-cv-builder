@@ -19,6 +19,20 @@ export class DashboardPage {
     return this.page.getByRole("link", { name: new RegExp(title) });
   }
 
+  cvListItem(title: string) {
+    return this.page.getByRole("listitem").filter({ hasText: title });
+  }
+
+  deleteCvButton(title: string) {
+    return this.cvListItem(title).getByRole("button", {
+      name: `Delete ${title}`,
+    });
+  }
+
+  async deleteCv(title: string) {
+    await this.deleteCvButton(title).click();
+  }
+
   async createNewCv() {
     await this.page.getByRole("button", { name: "New CV" }).click();
   }

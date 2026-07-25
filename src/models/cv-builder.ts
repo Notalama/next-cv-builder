@@ -19,6 +19,7 @@ export interface CvBuilderControlsProps {
   onTogglePreviewOnly: () => void;
   onExportPdf: () => void;
   onApplyPreset: () => void;
+  onClearForm: () => void;
   templateId: CvPreviewTemplateId;
   onTemplateChange: (templateId: CvPreviewTemplateId) => void;
   cvId?: string;

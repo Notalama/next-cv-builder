@@ -1,6 +1,6 @@
 "use server";
 
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, isNotNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -29,7 +29,9 @@ export async function listUserCvs(): Promise<CvDocumentSummary[]> {
       updatedAt: cvDocument.updatedAt,
     })
     .from(cvDocument)
-    .where(eq(cvDocument.userId, session.user.id))
+    .where(
+      and(eq(cvDocument.userId, session.user.id), isNotNull(cvDocument.data)),
+    )
     .orderBy(desc(cvDocument.updatedAt));
 }
 
@@ -48,21 +50,6 @@ export async function getCvDocument(id: string) {
     .limit(1);
 
   return document ?? null;
-}
-
-export async function createCvDocument() {
-  const session = await requireSession();
-  const db = getDb();
-  const id = crypto.randomUUID();
-
-  await db.insert(cvDocument).values({
-    id,
-    userId: session.user.id,
-    title: "Untitled CV",
-    data: null,
-  });
-
-  redirect(`/cv-builder?id=${id}`);
 }
 
 export async function saveCvDocument({

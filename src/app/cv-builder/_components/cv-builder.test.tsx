@@ -4,8 +4,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import cvPreset from "@/app/assets/cv-preset.json";
 import type { CvFormValues } from "@/models/cv";
 
-const { applySavedResultsMock } = vi.hoisted(() => ({
-  applySavedResultsMock: vi.fn(),
+const { getCvPresetValuesMock } = vi.hoisted(() => ({
+  getCvPresetValuesMock: vi.fn(),
 }));
 
 vi.mock("@/app/cv-builder/_components/form", () => ({
@@ -56,7 +56,7 @@ vi.mock("@/app/cv-builder/_components/preview/templates", () => ({
 }));
 
 vi.mock("@/app/cv-builder/_utils/apply-saved-results", () => ({
-  applySavedResults: applySavedResultsMock,
+  getCvPresetValues: getCvPresetValuesMock,
 }));
 
 vi.mock("@/app/cv-builder/_utils/export-pdf", () => ({
@@ -67,16 +67,15 @@ import { CvBuilder } from "./cv-builder";
 
 describe("CvBuilder", () => {
   beforeEach(() => {
-    applySavedResultsMock.mockReset();
-    vi.spyOn(window, "alert").mockImplementation(() => undefined);
-    vi.spyOn(console, "error").mockImplementation(() => undefined);
+    getCvPresetValuesMock.mockReset();
+    getCvPresetValuesMock.mockReturnValue(cvPreset as CvFormValues);
   });
 
-  it("renders form and preview with default values", () => {
+  it("renders form and preview with preset values for new CVs", () => {
     render(<CvBuilder />);
 
     expect(screen.getByRole("button", { name: "Preview only" })).toBeVisible();
-    expect(screen.getByTestId("cv-preview")).toHaveTextContent("empty");
+    expect(screen.getByTestId("cv-preview")).toHaveTextContent("Borys Koblents");
     expect(screen.queryByRole("button", { name: "Show form" })).toBeNull();
   });
 
@@ -113,36 +112,16 @@ describe("CvBuilder", () => {
 
   it("applies preset data to the preview", async () => {
     const user = userEvent.setup();
-    applySavedResultsMock.mockReturnValue({
-      ok: true,
-      data: {
-        ...(cvPreset as CvFormValues),
-        fullName: "Preset User",
-      },
+    getCvPresetValuesMock.mockReturnValue({
+      ...(cvPreset as CvFormValues),
+      fullName: "Preset User",
     });
 
     render(<CvBuilder />);
 
     await user.click(screen.getByRole("button", { name: "Apply preset" }));
 
-    expect(applySavedResultsMock).toHaveBeenCalled();
+    expect(getCvPresetValuesMock).toHaveBeenCalled();
     expect(screen.getByTestId("cv-preview")).toHaveTextContent("Preset User");
-  });
-
-  it("alerts when preset application fails", async () => {
-    const user = userEvent.setup();
-    applySavedResultsMock.mockReturnValue({
-      ok: false,
-      message: "Invalid object format",
-    });
-
-    render(<CvBuilder />);
-
-    await user.click(screen.getByRole("button", { name: "Apply preset" }));
-
-    expect(window.alert).toHaveBeenCalledWith(
-      expect.stringContaining("Preset JSON is incompatible"),
-    );
-    expect(screen.getByTestId("cv-preview")).toHaveTextContent("empty");
   });
 });

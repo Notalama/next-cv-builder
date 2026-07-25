@@ -1,11 +1,7 @@
 import { LogOut, Plus } from "lucide-react";
 import { CvListItem } from "@/app/dashboard/_components/cv-list-item";
-import {
-  createCvDocument,
-  listUserCvs,
-  signOut,
-} from "@/app/dashboard/actions";
-import { Button } from "@/components/ui/button";
+import { listUserCvs, signOut } from "@/app/dashboard/actions";
+import { Button, ButtonLink } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -36,12 +32,10 @@ export default async function DashboardPage() {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <form action={createCvDocument}>
-            <Button type="submit" className="gap-2">
-              <Plus className="size-4" />
-              New CV
-            </Button>
-          </form>
+          <ButtonLink href="/cv-builder" className="gap-2">
+            <Plus className="size-4" />
+            New CV
+          </ButtonLink>
           <form action={signOut}>
             <Button type="submit" variant="outline" className="gap-2">
               <LogOut className="size-4" />
@@ -64,12 +58,10 @@ export default async function DashboardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form action={createCvDocument}>
-                <Button type="submit" className="gap-2">
-                  <Plus className="size-4" />
-                  Create CV
-                </Button>
-              </form>
+              <ButtonLink href="/cv-builder" className="gap-2">
+                <Plus className="size-4" />
+                Create CV
+              </ButtonLink>
             </CardContent>
           </Card>
         ) : (

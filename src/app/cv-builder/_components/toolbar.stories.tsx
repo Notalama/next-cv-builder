@@ -12,6 +12,7 @@ const meta = {
     onTogglePreviewOnly: fn(),
     onExportPdf: fn(),
     onApplyPreset: fn(),
+    onClearForm: fn(),
     templateId: DEFAULT_CV_PREVIEW_TEMPLATE_ID,
     onTemplateChange: fn(),
   },

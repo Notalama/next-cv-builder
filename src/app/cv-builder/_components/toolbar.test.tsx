@@ -42,6 +42,7 @@ function renderToolbar(overrides: Partial<CvBuilderControlsProps> = {}) {
     onTogglePreviewOnly: vi.fn(),
     onExportPdf: vi.fn(),
     onApplyPreset: vi.fn(),
+    onClearForm: vi.fn(),
     templateId: "classic",
     onTemplateChange: vi.fn(),
     ...overrides,
@@ -92,6 +93,14 @@ describe("CvBuilderToolbar", () => {
     await user.click(screen.getByRole("button", { name: /apply preset/i }));
 
     expect(props.onApplyPreset).toHaveBeenCalledTimes(1);
+  });
+
+  it("calls onClearForm when Clear form is clicked", async () => {
+    const { user, props } = renderToolbar();
+
+    await user.click(screen.getByRole("button", { name: /clear form/i }));
+
+    expect(props.onClearForm).toHaveBeenCalledTimes(1);
   });
 
   it("shows Preview only and hides Export PDF when form is visible", () => {

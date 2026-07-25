@@ -25,6 +25,7 @@ export default function CvBuilderForm({
   onTogglePreviewOnly,
   onExportPdf,
   onApplyPreset,
+  onClearForm,
   templateId,
   onTemplateChange,
   cvId,
@@ -74,6 +75,7 @@ export default function CvBuilderForm({
           onTogglePreviewOnly={onTogglePreviewOnly}
           onExportPdf={onExportPdf}
           onApplyPreset={onApplyPreset}
+          onClearForm={onClearForm}
           templateId={templateId}
           onTemplateChange={onTemplateChange}
         />

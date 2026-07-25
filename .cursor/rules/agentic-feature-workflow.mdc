@@ -1,0 +1,29 @@
+---
+description: >-
+  Spec → BDD → human gate → implement workflow for new business features.
+  Use when the user asks to add, build, or design a product feature.
+alwaysApply: true
+---
+
+# Agentic feature workflow
+
+For **new business features** (auth, dashboard, CV builder, AI, billing, orgs), do **not** jump to app code.
+
+## Mandatory sequence
+
+1. **Spec** — Write `docs/specs/<feature-slug>.md` from the user's prompt (use the agentic-feature skill template).
+2. **E2E (BDD)** — From the spec only, add Gherkin under `e2e/features/<domain>/`, steps, and page objects. Run red.
+3. **Human gate** — STOP. Present spec + tests. Wait for explicit approval (`approved`, `LGTM`, `proceed`).
+4. **Implement** — Only after approval: App Router / server actions / Drizzle / UI until BDD is green.
+
+## Hard rules
+
+- Steps 1–3 before any `src/app/**` feature implementation (scaffolding for failing tests is OK).
+- Prefer playwright-bdd over ad-hoc Playwright specs for business behavior.
+- Read `node_modules/next/dist/docs/` before using Next.js APIs (this repo's Next may differ from training data).
+- Full procedure: `.agents/skills/agentic-feature/SKILL.md`.
+- BDD details: `.agents/skills/bdd-feature/SKILL.md` and `.cursor/rules/bdd.mdc`.
+
+## Out of scope (skip this workflow)
+
+- Pure refactors, typo/style fixes, dependency bumps, or unit-only changes with no user-facing behavior.

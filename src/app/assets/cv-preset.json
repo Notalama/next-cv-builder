@@ -19,7 +19,7 @@
   "secondarySkills": "RxJS, NGRX, Redux, Next.js, Konva.js, Three.js, Node.js, MongoDB, Firebase, AWS, Jenkins, React Native, Ionic, Tailwind CSS, MaterialUI, GraphQL, Figma",
   "skillCategories": "JavaScript libraries: React, Angular, Vue\nState Management: Redux, NGRX, Zustand, Pinia\nCSS: Tailwind CSS, CSS Modules, Styled Components, Sass, MUI\nData fetching: RESTful API, GraphQL, TanStack Query\nTesting & Quality: Jest, Vitest, Storybook, Jasmine, Playwright, BDD \nBackend & APIs: Next.js, Node.js, Express.js, MongoDB, noSQL\nBuild tools (optional): Webpack, Vite\nCloud & DevOps: AWS, Docker, Kubernetes, CI/CD Pipelines\nEngineering Practices: System Design, Agile (Scrum), Code Reviews",
   "domains": "E-commerce, FinTech, Automotive, Logistics",
-  "aboutMe": "Senior Front-End Engineer and with 10+ years of experience designing high-performance web applications.\nSpecialized in scaling enterprise ecosystems through micro-frontends, modular workspace monorepos, and reactive\nstate management. Proven track record of bridging the gap between frontend architecture and cloud infrastructure,\nutilizing Angular, React, TypeScript, and AWS to build robust deployment workflows and scalable systems.",
+  "aboutMe": "Senior Front-End Engineer and with 8+ years of experience designing high-performance web applications.\nSpecialized in scaling enterprise ecosystems through micro-frontends, modular workspace monorepos, and reactive\nstate management. Proven track record of bridging the gap between frontend architecture and cloud infrastructure,\nutilizing Angular, React, TypeScript, and AWS to build robust deployment workflows and scalable systems.",
   "techPrinciples": "Strict Type Safety & Code Completeness: Enforcing deep static analysis and clean design boundaries to minimize run-time crashes.\nModular Monorepos over Monoliths: Leveraging isolated encapsulation tracks for multi-team distribution speeds.\nPerformance-First Rendering: Obsession with Core Web Vitals, tree-shaking, smart caching, and payload budgeting.",
   "projects": [
     {
@@ -49,9 +49,9 @@
     {
       "companyName": "GlobalLogic",
       "period": "June 2022 – August 2023",
-      "position": "Senior Front-end Developer",
+      "position": "Senior Full-stack Developer",
       "domain": "Automotive",
-      "description": "Led the development of a secure buyer-seller marketplace, delivering dynamic product listings, secure Stripe checkout/payment integration, and an interactive user review ecosystem.\nUsing Konva.js and built a high-performance vector design tool featuring advanced canvas drawing utilities, precise SPlines shape manipulation, and multi-format export.",
+      "description": "Led the Next.js development of a secure buyer-seller marketplace, delivering dynamic product listings, secure Stripe payment integration, and an interactive user review ecosystem.\nUsing Konva.js and built a high-performance vector design tool featuring advanced canvas drawing utilities, precise SPlines shape manipulation, and multi-format export.",
       "technologies": "Angular 14, Konvajs, Github Actions, Azure DevOps"
     },
 

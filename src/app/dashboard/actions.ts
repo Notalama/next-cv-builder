@@ -1,6 +1,7 @@
 "use server";
 
 import { and, desc, eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getDb } from "@/drizzle/db";
@@ -9,6 +10,7 @@ import { getAuth } from "@/lib/auth/auth";
 import { requireSession } from "@/lib/auth/session";
 import type { CvFormValues } from "@/models/cv";
 import type { CvDocumentSummary } from "@/models/cv-document";
+import type { ActionResult } from "@/models/ui";
 
 function titleFromCvData(data: CvFormValues) {
   const name = data.fullName.trim();
@@ -106,6 +108,31 @@ export async function saveCvDocument({
   });
 
   return { id: newId };
+}
+
+export async function deleteCvDocument(id: string): Promise<ActionResult> {
+  try {
+    if (!id.trim()) {
+      return { error: true, message: "Failed to delete CV" };
+    }
+
+    const session = await requireSession();
+    const db = getDb();
+
+    const deleted = await db
+      .delete(cvDocument)
+      .where(and(eq(cvDocument.id, id), eq(cvDocument.userId, session.user.id)))
+      .returning({ id: cvDocument.id });
+
+    if (deleted.length === 0) {
+      return { error: true, message: "Failed to delete CV" };
+    }
+
+    revalidatePath("/dashboard");
+    return { error: false, message: "CV deleted" };
+  } catch {
+    return { error: true, message: "Failed to delete CV" };
+  }
 }
 
 export async function signOut() {

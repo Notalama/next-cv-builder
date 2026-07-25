@@ -26,14 +26,33 @@ Then("I am in the CV builder", async ({ page }) => {
   await expect(builder.heading()).toBeVisible();
 });
 
+When(
+  "I delete the CV titled {string}",
+  async ({ page }, title: string) => {
+    const dashboard = new DashboardPage(page);
+    await dashboard.deleteCv(title);
+  },
+);
+
+Then("I see a CV deleted confirmation", async ({ page }) => {
+  await expect(page.getByText("CV deleted")).toBeVisible();
+});
+
 Then("I see CV {string} in my list", async ({ page }, title: string) => {
   const dashboard = new DashboardPage(page);
   await dashboard.goto();
   await expect(dashboard.cvLink(title)).toBeVisible();
 });
 
+Then(
+  "I do not see CV {string} in my list",
+  async ({ page }, title: string) => {
+    const dashboard = new DashboardPage(page);
+    await expect(dashboard.cvLink(title)).toHaveCount(0);
+  },
+);
+
 Then("I see the empty CV list", async ({ page }) => {
   const dashboard = new DashboardPage(page);
-  await dashboard.goto();
   await expect(dashboard.emptyState()).toBeVisible();
 });

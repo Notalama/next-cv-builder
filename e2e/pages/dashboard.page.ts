@@ -34,10 +34,10 @@ export class DashboardPage {
   }
 
   async createNewCv() {
-    await this.page.getByRole("button", { name: "New CV" }).click();
+    await this.page.getByRole("link", { name: "New CV" }).click();
   }
 
   async createFirstCv() {
-    await this.page.getByRole("button", { name: "Create CV" }).click();
+    await this.page.getByRole("link", { name: "Create CV" }).click();
   }
 }

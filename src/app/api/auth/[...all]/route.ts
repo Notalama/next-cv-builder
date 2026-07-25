@@ -80,19 +80,17 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const clonedRequest = request.clone();
-
   if (!aj) {
     return getAuthHandlers().POST(request);
   }
-
-  const decision = await checkArcjet(clonedRequest);
+  const clonedRequest = request.clone();
+  const decision = await checkArcjet(request);
   const denialResponse = toDenialResponse(decision);
   if (denialResponse != null) {
     return denialResponse;
   }
 
-  return getAuthHandlers().POST(request);
+  return getAuthHandlers().POST(clonedRequest);
 }
 
 async function checkArcjet(request: Request) {

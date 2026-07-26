@@ -23,7 +23,9 @@ export function VacancySection() {
   const generate = () => {
     const trimmed = vacancyText.trim();
     if (trimmed.length < 10) {
-      toast.error("Enter a vacancy description first (at least 10 characters).");
+      toast.error(
+        "Enter a vacancy description first (at least 10 characters).",
+      );
       return;
     }
 

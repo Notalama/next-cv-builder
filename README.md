@@ -26,9 +26,11 @@ Then apply the schema:
 
 ```bash
 npm run db:migrate
-# or for quick local prototyping:
+# or for quick local prototyping without migration history:
 npm run db:push
 ```
+
+Pick one and stick with it. `db:push` writes the schema straight to the database without recording anything in `drizzle.__drizzle_migrations`, so a later `db:migrate` tries to replay migrations from scratch and fails with `relation "..." already exists`. To recover, recreate the database and run `npm run db:migrate`, or insert the already-applied migration hashes into `drizzle.__drizzle_migrations` manually.
 
 ## Deploy on Vercel (from GitHub)
 

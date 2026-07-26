@@ -1,10 +1,4 @@
-import {
-  boolean,
-  integer,
-  pgTable,
-  text,
-  timestamp,
-} from "drizzle-orm/pg-core";
+import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -23,7 +17,6 @@ export const user = pgTable("user", {
   banReason: text("ban_reason"),
   banExpires: timestamp("ban_expires"),
   stripeCustomerId: text("stripe_customer_id"),
-  favoriteNumber: integer("favorite_number").notNull(),
 });
 
 export const member = pgTable("member", {

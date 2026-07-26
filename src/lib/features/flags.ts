@@ -37,8 +37,7 @@ export function getAppConfig(): AppConfig {
       enable_email_confirmation: isEnvTrue("ENABLE_EMAIL_CONFIRMATION"),
       // NEXT_PUBLIC_ so the login client UI can read it.
       enable_passkey:
-        isEnvTrue("ENABLE_PASSKEY") ||
-        isEnvTrue("NEXT_PUBLIC_ENABLE_PASSKEY"),
+        isEnvTrue("ENABLE_PASSKEY") || isEnvTrue("NEXT_PUBLIC_ENABLE_PASSKEY"),
     },
   };
 }

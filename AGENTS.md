@@ -7,7 +7,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 <!-- BEGIN:agentic-feature-workflow -->
 # Feature development
 
-New business features follow **spec → playwright-bdd → human approval → implement**.
+New business features follow **spec → playwright-bdd (write only) → human approval → implement → manual BDD verification**.
 See `.cursor/rules/agentic-feature-workflow.mdc` and `.agents/skills/agentic-feature/SKILL.md`.
 Specs live in `docs/specs/`.
 <!-- END:agentic-feature-workflow -->

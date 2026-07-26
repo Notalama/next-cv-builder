@@ -12,7 +12,6 @@ export const signUpSchema = z.object({
   name: z.string().min(1),
   email: z.email().min(1),
   password: z.string().min(6),
-  favoriteNumber: z.number().int(),
 });
 
 export type SignUpFormValues = z.infer<typeof signUpSchema>;
@@ -41,11 +40,18 @@ export const backupCodeSchema = z.object({
 
 export type BackupCodeFormValues = z.infer<typeof backupCodeSchema>;
 
-export type AuthTab =
-  | "signin"
-  | "signup"
-  | "email-verification"
-  | "forgot-password";
+export const AUTH_TABS = [
+  "signin",
+  "signup",
+  "email-verification",
+  "forgot-password",
+] as const;
+
+export type AuthTab = (typeof AUTH_TABS)[number];
+
+export function parseAuthTab(value: string | string[] | undefined): AuthTab {
+  return AUTH_TABS.find((tab) => tab === value) ?? "signin";
+}
 
 export interface SignInTabProps {
   openEmailVerificationTab: (email: string) => void;

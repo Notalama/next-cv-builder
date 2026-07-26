@@ -40,9 +40,6 @@ function getSocialProviders() {
     providers.github = {
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      mapProfileToUser: (profile: { public_repos?: number }) => ({
-        favoriteNumber: Number(profile.public_repos) || 0,
-      }),
     };
   }
 
@@ -50,9 +47,6 @@ function getSocialProviders() {
     providers.discord = {
       clientId: process.env.DISCORD_CLIENT_ID,
       clientSecret: process.env.DISCORD_CLIENT_SECRET,
-      mapProfileToUser: () => ({
-        favoriteNumber: 0,
-      }),
     };
   }
 
@@ -90,12 +84,6 @@ function createAuthInstance() {
         enabled: true,
         sendDeleteAccountVerification: async ({ user, url }) => {
           await sendDeleteAccountVerificationEmail({ user, url });
-        },
-      },
-      additionalFields: {
-        favoriteNumber: {
-          type: "number",
-          required: true,
         },
       },
     },

@@ -1,10 +1,10 @@
-import type { Preview } from '@storybook/nextjs-vite';
-import { initialize, mswLoader } from 'msw-storybook-addon';
+import type { Preview } from "@storybook/nextjs-vite";
+import { initialize, mswLoader } from "msw-storybook-addon";
 
-import '../src/app/globals.css';
-import { mswHandlers } from './msw-handlers';
+import "../src/app/globals.css";
+import { mswHandlers } from "./msw-handlers";
 
-initialize({ onUnhandledRequest: 'bypass' });
+initialize({ onUnhandledRequest: "bypass" });
 
 const preview: Preview = {
   decorators: [
@@ -23,7 +23,7 @@ const preview: Preview = {
       },
     },
     a11y: {
-      test: 'todo',
+      test: "todo",
     },
     msw: {
       handlers: mswHandlers,

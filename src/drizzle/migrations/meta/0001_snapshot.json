@@ -1,6 +1,6 @@
 {
-  "id": "482a782f-20e5-4550-a135-395f753e4f2b",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "c93300de-c28a-492a-980e-58c1deba082b",
+  "prevId": "482a782f-20e5-4550-a135-395f753e4f2b",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -570,12 +570,6 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
-        },
-        "favorite_number": {
-          "name": "favorite_number",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
         }
       },
       "indexes": {},

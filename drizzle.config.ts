@@ -1,6 +1,6 @@
+import path from "node:path";
 import * as dotenv from "dotenv";
 import { defineConfig } from "drizzle-kit";
-import path from "node:path";
 
 const isTest = process.env.NODE_ENV === "test";
 const envFile = isTest ? ".env.test" : ".env";

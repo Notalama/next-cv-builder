@@ -1,5 +1,4 @@
 import { z } from "zod";
-import cvPreset from "@/app/assets/cv-preset.json";
 
 export const cvLanguageSchema = z.object({
   name: z.string().min(1, "Language name required"),

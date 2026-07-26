@@ -40,8 +40,7 @@ function buildUserPrompt(input: ImproveTextRequest): string {
 }
 
 function mockImproveText(input: ImproveTextRequest): ImproveTextResult {
-  const context =
-    input.vacancyText != null ? " with vacancy context" : "";
+  const context = input.vacancyText != null ? " with vacancy context" : "";
   return {
     improvedText: `[Improved for ${input.role}${context}] ${input.text.trim()}`,
     mocked: true,

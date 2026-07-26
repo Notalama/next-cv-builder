@@ -18,5 +18,7 @@ Then("I see text {string}", async ({ page }, text: string) => {
 });
 
 Then("the URL contains {string}", async ({ page }, part: string) => {
-  await expect(page).toHaveURL(new RegExp(part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  await expect(page).toHaveURL(
+    new RegExp(part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")),
+  );
 });

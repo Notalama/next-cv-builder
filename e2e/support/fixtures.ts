@@ -15,6 +15,7 @@ type Fixtures = {
 };
 
 export const test = base.extend<Fixtures>({
+  // biome-ignore lint/correctness/noEmptyPattern: Playwright derives fixture dependencies from this destructuring pattern and rejects any other first argument; this fixture has none.
   testUser: async ({}, use) => {
     const created = await createTestUser({ role: "user" });
     await use({ ...created.user, cookies: created.cookies });

@@ -75,7 +75,9 @@ describe("CvBuilder", () => {
     render(<CvBuilder />);
 
     expect(screen.getByRole("button", { name: "Preview only" })).toBeVisible();
-    expect(screen.getByTestId("cv-preview")).toHaveTextContent("Borys Koblents");
+    expect(screen.getByTestId("cv-preview")).toHaveTextContent(
+      "Borys Koblents",
+    );
     expect(screen.queryByRole("button", { name: "Show form" })).toBeNull();
   });
 
@@ -88,7 +90,10 @@ describe("CvBuilder", () => {
   it("hydrates preview from initialData", () => {
     render(
       <CvBuilder
-        initialData={{ ...(cvPreset as CvFormValues), fullName: "Ada Lovelace" }}
+        initialData={{
+          ...(cvPreset as CvFormValues),
+          fullName: "Ada Lovelace",
+        }}
       />,
     );
 

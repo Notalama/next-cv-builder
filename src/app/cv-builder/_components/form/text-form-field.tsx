@@ -1,8 +1,8 @@
 "use client";
 
 import { useFormContext } from "react-hook-form";
-import { ImproveTextButton } from "@/app/cv-builder/_components/form/improve-text-button";
 import { useFocusedField } from "@/app/cv-builder/_components/form/focused-field-context";
+import { ImproveTextButton } from "@/app/cv-builder/_components/form/improve-text-button";
 import {
   FormControl,
   FormField,

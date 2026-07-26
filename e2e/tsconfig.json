@@ -8,10 +8,6 @@
       "@/*": ["../src/*"]
     }
   },
-  "include": [
-    "./**/*.ts",
-    "../playwright.config.ts",
-    "../src/drizzle/**/*.ts"
-  ],
+  "include": ["./**/*.ts", "../playwright.config.ts", "../src/drizzle/**/*.ts"],
   "exclude": ["../node_modules", "../.features-gen"]
 }

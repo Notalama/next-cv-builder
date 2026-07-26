@@ -63,17 +63,16 @@ describe("CvBuilderToolbar", () => {
   it("links to the speed reader page", () => {
     renderToolbar();
 
-    expect(
-      screen.getByRole("link", { name: /speed reader/i }),
-    ).toHaveAttribute("href", "/cv-builder/speed-reader");
+    expect(screen.getByRole("link", { name: /speed reader/i })).toHaveAttribute(
+      "href",
+      "/cv-builder/speed-reader",
+    );
   });
 
   it("shows the selected template label", () => {
     renderToolbar({ templateId: "minimal" });
 
-    expect(
-      screen.getByRole("button", { name: /minimal/i }),
-    ).toBeVisible();
+    expect(screen.getByRole("button", { name: /minimal/i })).toBeVisible();
   });
 
   it("calls onTemplateChange when another template is selected", async () => {
@@ -82,7 +81,9 @@ describe("CvBuilderToolbar", () => {
     await user.click(screen.getByRole("button", { name: /classic sidebar/i }));
 
     const menu = await screen.findByRole("menu");
-    await user.click(within(menu).getByRole("menuitemradio", { name: /minimal/i }));
+    await user.click(
+      within(menu).getByRole("menuitemradio", { name: /minimal/i }),
+    );
 
     expect(props.onTemplateChange).toHaveBeenCalledWith("minimal");
   });
@@ -106,21 +107,15 @@ describe("CvBuilderToolbar", () => {
   it("shows Preview only and hides Export PDF when form is visible", () => {
     renderToolbar({ isPreviewOnly: false });
 
-    expect(
-      screen.getByRole("button", { name: /preview only/i }),
-    ).toBeVisible();
-    expect(
-      screen.queryByRole("button", { name: /export pdf/i }),
-    ).toBeNull();
+    expect(screen.getByRole("button", { name: /preview only/i })).toBeVisible();
+    expect(screen.queryByRole("button", { name: /export pdf/i })).toBeNull();
   });
 
   it("shows Show form and Export PDF in preview-only mode", () => {
     renderToolbar({ isPreviewOnly: true });
 
     expect(screen.getByRole("button", { name: /show form/i })).toBeVisible();
-    expect(
-      screen.getByRole("button", { name: /export pdf/i }),
-    ).toBeVisible();
+    expect(screen.getByRole("button", { name: /export pdf/i })).toBeVisible();
   });
 
   it("calls onTogglePreviewOnly when Preview only is clicked", async () => {

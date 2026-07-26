@@ -3,14 +3,12 @@ export const SEED_USERS = {
     name: "Member User",
     email: "member@example.com",
     password: "Password123!",
-    favoriteNumber: 7,
     role: "user" as const,
   },
   admin: {
     name: "Admin User",
     email: "admin@example.com",
     password: "Password123!",
-    favoriteNumber: 42,
     role: "admin" as const,
   },
 } as const;

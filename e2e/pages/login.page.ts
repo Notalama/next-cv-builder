@@ -22,19 +22,13 @@ export class LoginPage {
     await this.page.getByRole("button", { name: "Sign In" }).click();
   }
 
-  async signUp(input: {
-    name: string;
-    email: string;
-    password: string;
-    favoriteNumber: number;
-  }) {
+  async signUp(input: { name: string; email: string; password: string }) {
     await this.openSignUpTab();
     await this.page.getByLabel("Name").fill(input.name);
     await this.page.getByLabel("Email").fill(input.email);
-    await this.page.getByLabel("Password", { exact: true }).fill(input.password);
     await this.page
-      .getByLabel("Favorite Number")
-      .fill(String(input.favoriteNumber));
+      .getByLabel("Password", { exact: true })
+      .fill(input.password);
     await this.page.getByRole("button", { name: "Sign Up" }).click();
   }
 }

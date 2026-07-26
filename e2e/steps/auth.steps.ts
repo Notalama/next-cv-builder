@@ -57,13 +57,12 @@ When("I click on sign-up tab", async ({ page }) => {
 });
 
 When(
-  "I fill the sign-up form as name {string}, password {string} and favorite number {string}",
-  async ({ page }, name: string, password: string, favoriteNumber: string) => {
-    const email = uniqueEmail("signup"); // e.g. signup+1737...@example.com
+  "I fill the sign-up form as name {string} and password {string}",
+  async ({ page }, name: string, password: string) => {
+    const email = uniqueEmail("signup");
     await page.getByLabel("Name").fill(name);
     await page.getByLabel("Email").fill(email);
     await page.getByLabel("Password").fill(password);
-    await page.getByLabel("Favorite Number").fill(favoriteNumber);
   },
 );
 

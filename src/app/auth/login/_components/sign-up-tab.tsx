@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { LoadingSwap } from "@/components/ui/loading-swap";
-import { NumberInput } from "@/components/ui/number-input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { authClient } from "@/lib/auth/auth-client";
 import {
@@ -100,20 +99,6 @@ export function SignUpTab({ openEmailVerificationTab }: SignUpTabProps) {
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <PasswordInput {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="favoriteNumber"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Favorite Number</FormLabel>
-              <FormControl>
-                <NumberInput {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

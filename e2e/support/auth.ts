@@ -8,7 +8,6 @@ export type TestUserInput = {
   name: string;
   email: string;
   password: string;
-  favoriteNumber: number;
   role?: "user" | "admin";
 };
 
@@ -85,7 +84,9 @@ function splitSetCookieHeader(header: string): string[] {
   return header.split(/,(?=\s*[^;=]+=[^;]+)/);
 }
 
-export async function signUpViaApi(input: TestUserInput): Promise<AuthCookie[]> {
+export async function signUpViaApi(
+  input: TestUserInput,
+): Promise<AuthCookie[]> {
   const response = await fetchWithRetry(
     `${getBaseUrl()}/api/auth/sign-up/email`,
     {
@@ -98,7 +99,6 @@ export async function signUpViaApi(input: TestUserInput): Promise<AuthCookie[]> 
         name: input.name,
         email: input.email,
         password: input.password,
-        favoriteNumber: input.favoriteNumber,
       }),
     },
   );
@@ -195,7 +195,6 @@ export function buildUserInput(
     name: overrides.name ?? "Test User",
     email: overrides.email ?? uniqueEmail(),
     password: overrides.password ?? "Password123!",
-    favoriteNumber: overrides.favoriteNumber ?? 7,
     role: overrides.role,
   };
 }

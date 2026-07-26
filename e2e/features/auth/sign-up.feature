@@ -6,6 +6,6 @@ Feature: Email sign-up
     Given I am not signed in
     And I visit the login page
     And I click on sign-up tab
-    When I fill the sign-up form as name "Test Name", password "Password123!" and favorite number "1"
+    When I fill the sign-up form as name "Test Name" and password "Password123!"
     And I click sign-up button
     Then I am on the dashboard

@@ -1,6 +1,7 @@
 import { LogOut, Plus } from "lucide-react";
 import { CvListItem } from "@/app/dashboard/_components/cv-list-item";
 import { listUserCvs, signOut } from "@/app/dashboard/actions";
+import { BrandLink } from "@/components/brand-link";
 import { Button, ButtonLink } from "@/components/ui/button";
 import {
   Card,
@@ -26,6 +27,7 @@ export default async function DashboardPage() {
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 py-10">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="space-y-1">
+          <BrandLink className="mb-3 text-muted-foreground" />
           <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
           <p className="text-sm text-muted-foreground">
             Welcome back, {session.user.name || session.user.email}

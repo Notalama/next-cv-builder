@@ -14,12 +14,6 @@ export function proxy(request: NextRequest) {
   const sessionCookie = getSessionCookie(request);
   const hasSession = sessionCookie != null;
 
-  if (pathname === "/") {
-    return NextResponse.redirect(
-      new URL(hasSession ? "/dashboard" : "/auth/login", request.url),
-    );
-  }
-
   if (!hasSession && isProtectedPath(pathname)) {
     const loginUrl = new URL("/auth/login", request.url);
     loginUrl.searchParams.set("next", pathname);

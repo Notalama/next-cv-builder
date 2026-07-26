@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
+import { BrandLink } from "@/components/brand-link";
 import {
   Card,
   CardContent,
@@ -12,17 +13,22 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { authClient } from "@/lib/auth/auth-client";
-import type { AuthTab } from "@/models/auth";
+import { type AuthTab, parseAuthTab } from "@/models/auth";
 import { EmailVerification } from "./_components/email-verification";
 import { ForgotPassword } from "./_components/forgot-password";
 import { SignInTab } from "./_components/sign-in-tab";
 import { SignUpTab } from "./_components/sign-up-tab";
 import { SocialAuthButtons } from "./_components/social-auth-buttons";
 
-export default function LoginPage() {
+export default function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tab?: string | string[] }>;
+}) {
   const router = useRouter();
+  const { tab } = use(searchParams);
   const [email, setEmail] = useState("");
-  const [selectedTab, setSelectedTab] = useState<AuthTab>("signin");
+  const [selectedTab, setSelectedTab] = useState<AuthTab>(parseAuthTab(tab));
 
   useEffect(() => {
     authClient.getSession().then((session) => {
@@ -36,7 +42,9 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-dvh w-full items-center justify-center px-4 py-8">
+    <div className="relative flex min-h-dvh w-full items-center justify-center px-4 py-8">
+      <BrandLink className="absolute top-6 left-6 text-muted-foreground" />
+
       <Tabs
         value={selectedTab}
         onValueChange={(tab) => setSelectedTab(tab as AuthTab)}

@@ -3,7 +3,7 @@ name: bdd-feature
 description: >-
   Add a business feature using Gherkin-first BDD with playwright-bdd.
   Use when implementing new product behavior, acceptance criteria, .feature
-  files, step definitions, or red-green BDD workflows.
+  files, step definitions, or BDD workflows with manual user-run verification.
 ---
 
 # BDD feature skill
@@ -19,9 +19,10 @@ Use this skill alone when the user only wants E2E/BDD changes and already has an
 1. **Requirements** — Restate acceptance criteria as concrete examples (or read `docs/specs/<slug>.md`).
 2. **Feature file** — Create `e2e/features/<domain>/<name>.feature` with tags (`@smoke`, `@auth`, `@dashboard`, `@cv-builder`, `@ai`, `@ui`).
 3. **Steps** — Search `e2e/steps/**/*.ts` for existing phrases. Extend only what is missing.
-4. **Red** — Run `npx bddgen && npx playwright test --grep @tag` and show the failure.
-5. **Green** — Only if human gate already passed (or user explicitly skipped the agentic workflow): implement app code until green.
-6. **Cleanup** — Prefer domain assertions and API auth helpers; avoid brittle selectors.
+4. **Human gate** — Present spec + test files; wait for user approval. Do **not** run the suite.
+5. **Implement** — Only after approval: app code until the feature matches the spec.
+6. **Manual verification** — Ask the user to run `npx bddgen && npx playwright test --grep @tag` and paste the result. Fix based on their output.
+7. **Cleanup** — Prefer domain assertions and API auth helpers; avoid brittle selectors.
 
 ## Project layout
 

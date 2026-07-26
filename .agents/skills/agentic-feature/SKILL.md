@@ -1,9 +1,9 @@
 ---
 name: agentic-feature
 description: >-
-  Run the 4-phase agentic feature workflow (spec → playwright-bdd E2E →
-  human approval gate → typed Next.js implementation). Use when the user
-  asks to add, build, design, or ship a business feature, capability, or
+  Run the 5-phase agentic feature workflow (spec → playwright-bdd E2E written →
+  human approval gate → typed Next.js implementation → manual BDD verification).
+  Use when the user asks to add, build, design, or ship a business feature, capability, or
   user-facing flow in this CV Builder repo.
 ---
 
@@ -35,9 +35,10 @@ Copy and update as you go:
 ```
 Feature: <name>
 - [ ] Phase 1: Spec written at docs/specs/<slug>.md
-- [ ] Phase 2: E2E feature + steps + red run
-- [ ] Phase 3: Human approval received
-- [ ] Phase 4: Implementation green + cleanup
+- [ ] Phase 2: E2E feature + steps written (not run)
+- [ ] Phase 3: Human approval of spec + BDD received
+- [ ] Phase 4: Implementation complete
+- [ ] Phase 5: User ran BDD manually and reported results
 ```
 
 ---
@@ -64,7 +65,7 @@ Feature: <name>
 ## Phase 2 — E2E test creation (spec only)
 
 **Input:** the Phase 1 spec file only (not new product inventiveness).  
-**Output:** failing BDD suite.
+**Output:** BDD suite written on disk (not executed).
 
 ### Layout
 
@@ -84,14 +85,7 @@ Feature: <name>
 5. Tags: `@smoke`, `@auth`, `@dashboard`, `@cv-builder`, `@ai`, `@ui` as appropriate.
 6. Mock AI with `AI_IMPROVE_MOCK=true` (already set in Playwright webServer env).
 7. Do not edit `.features-gen/`.
-8. Run red:
-
-```bash
-npm run build
-npm run test:bdd -- --grep @<tag-or-feature>
-```
-
-Show the failure proves missing product behavior (not broken selectors if avoidable).
+8. Do **not** run `npm run test:bdd`, `bddgen`, or Playwright in this phase. Optionally run `npx bddgen` only to verify step generation compiles — never execute the suite.
 
 Also follow `.agents/skills/bdd-feature/SKILL.md`.
 
@@ -105,7 +99,7 @@ Present a short review package:
 
 1. Link/path to `docs/specs/<slug>.md`
 2. Paths to new/changed `.feature`, steps, page objects
-3. Red-run summary (command + key failure)
+3. Summary of scenarios covered (no test run output — tests were not executed)
 4. Open questions / assumptions
 
 Ask:
@@ -116,15 +110,15 @@ Ask:
 
 - Do **not** start Phase 4 until the user explicitly approves.
 - "looks good", "ok", "go", "approved", "LGTM", "proceed", "ship it" → proceed.
-- Change requests → revise spec and/or tests, re-run red, re-open the gate.
+- Change requests → revise spec and/or tests, re-open the gate (still no test runs).
 - Never treat silence or an unrelated message as approval.
 
 ---
 
 ## Phase 4 — Feature implementation
 
-**Input:** approved spec + red E2E.  
-**Output:** minimal typed code that turns tests green and matches the spec.
+**Input:** approved spec + approved BDD suite.  
+**Output:** minimal typed code that matches the spec and is ready for manual BDD verification.
 
 ### Implementation order
 
@@ -134,8 +128,9 @@ Ask:
 4. Server Components for data; Client Components (`"use client"`) only for interactivity.
 5. UI with existing shadcn primitives; kebab-case filenames; named exports for helpers.
 6. Wire routes under `src/app/<route>/`.
-7. Re-run BDD until green; add Vitest only for pure logic/edge units.
+7. Add Vitest only for pure logic/edge units.
 8. `biome check` on touched files; no drive-by refactors.
+9. Do **not** run BDD in this phase — proceed to Phase 5.
 
 ### Conventions
 
@@ -145,9 +140,33 @@ Ask:
 - Keep AI calls behind `src/lib/ai/*` with mock path for tests.
 - Exclude e2e from app `tsconfig` (already configured).
 
+---
+
+## Phase 5 — Manual BDD verification (HARD STOP)
+
+After Phase 4, **stop** and ask the user to run the suite locally.
+
+Provide the exact command, for example:
+
+```bash
+npm run build
+npm run test:bdd -- --grep @<tag-or-feature>
+```
+
+Ask:
+
+> Please run the BDD suite above and paste the result (pass/fail output). I will fix any failures or close out once green.
+
+### Gate rules
+
+- Do **not** run `npm run test:bdd` yourself unless the user explicitly asks you to.
+- Wait for the user's pasted output before declaring the feature done or starting fixes.
+- If tests fail → fix implementation, then ask the user to re-run and report again.
+- If tests pass → mark spec `implemented`, summarize, and stop.
+
 ### Done when
 
-- [ ] `npm run test:bdd -- --grep @<tag>` passes
+- [ ] User reported BDD green for the feature tag
 - [ ] Spec acceptance criteria covered
 - [ ] No new secrets; env documented in `.env.example` / `.env.test.example` if needed
 

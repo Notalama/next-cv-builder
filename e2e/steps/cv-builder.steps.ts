@@ -147,3 +147,56 @@ Then(
     await expect(field).toHaveValue(value);
   },
 );
+
+When("I clear the form", async ({ page }) => {
+  const builder = new CvBuilderPage(page);
+  await builder.clearForm();
+});
+
+When(
+  "I set the {string} field to {string}",
+  async ({ page }, fieldLabel: string, value: string) => {
+    const builder = new CvBuilderPage(page);
+    await builder.setField(fieldLabel, value);
+  },
+);
+
+When("I clear the {string} field", async ({ page }, fieldLabel: string) => {
+  const builder = new CvBuilderPage(page);
+  await builder.clearField(fieldLabel);
+});
+
+Then("I see the {string} field", async ({ page }, fieldLabel: string) => {
+  const builder = new CvBuilderPage(page);
+  await expect(builder.fieldByLabel(fieldLabel)).toBeVisible();
+});
+
+Then(
+  "I do not see the {string} field",
+  async ({ page }, fieldLabel: string) => {
+    const builder = new CvBuilderPage(page);
+    await expect(builder.fieldByLabel(fieldLabel)).toHaveCount(0);
+  },
+);
+
+Then("I see a validation error", async ({ page }) => {
+  await expect(
+    page.getByText("Please fix validation errors before saving."),
+  ).toBeVisible();
+});
+
+Then(
+  "the selected preview template is {string}",
+  async ({ page }, label: string) => {
+    const builder = new CvBuilderPage(page);
+    await expect(builder.templateSwitcher()).toHaveText(new RegExp(label));
+  },
+);
+
+Then(
+  "I see the {string} section in the preview",
+  async ({ page }, title: string) => {
+    const builder = new CvBuilderPage(page);
+    await expect(builder.previewSection(title).first()).toBeVisible();
+  },
+);

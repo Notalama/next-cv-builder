@@ -1,6 +1,7 @@
 "use client";
 
 import { useFormContext } from "react-hook-form";
+import { useTemplateFields } from "@/app/cv-builder/_components/form/template-fields-context";
 import {
   FormControl,
   FormField,
@@ -28,6 +29,11 @@ function readFileAsDataUrl(
 
 export function PhotoFormField() {
   const { control } = useFormContext<CvFormValues>();
+  const { isConsumed } = useTemplateFields();
+
+  if (!isConsumed("photo")) {
+    return null;
+  }
 
   return (
     <FormField

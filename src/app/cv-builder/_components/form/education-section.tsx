@@ -3,15 +3,21 @@
 import { GraduationCap, Plus } from "lucide-react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { EducationCard } from "@/app/cv-builder/_components/form/education-card";
+import { useTemplateFields } from "@/app/cv-builder/_components/form/template-fields-context";
 import { Button } from "@/components/ui/button";
 import { type CvFormValues, EMPTY_CV_EDUCATION } from "@/models/cv";
 
 export function EducationSection() {
+  const { isConsumed } = useTemplateFields();
   const { control } = useFormContext<CvFormValues>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "education",
   });
+
+  if (!isConsumed("education")) {
+    return null;
+  }
 
   return (
     <div className="space-y-4">

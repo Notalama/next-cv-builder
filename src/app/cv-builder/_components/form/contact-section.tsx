@@ -1,6 +1,9 @@
+"use client";
+
 import { User } from "lucide-react";
 import { PhotoFormField } from "@/app/cv-builder/_components/form/photo-form-field";
 import { FormSectionHeader } from "@/app/cv-builder/_components/form/section-header";
+import { useTemplateFields } from "@/app/cv-builder/_components/form/template-fields-context";
 import { TextFormField } from "@/app/cv-builder/_components/form/text-form-field";
 import { Card, CardContent } from "@/components/ui/card";
 import type { CvTextFieldConfig } from "@/models/cv-builder";
@@ -38,7 +41,18 @@ const CONTACT_FORM_FIELDS: readonly CvTextFieldConfig[] = [
   },
 ];
 
+const CONTACT_FIELD_NAMES = [
+  ...CONTACT_FORM_FIELDS.map((field) => field.name),
+  "photo",
+] as const;
+
 export function ContactSection() {
+  const { isConsumed } = useTemplateFields();
+
+  if (!CONTACT_FIELD_NAMES.some((name) => isConsumed(name))) {
+    return null;
+  }
+
   return (
     <Card className="border border-muted bg-card/50 shadow-sm">
       <FormSectionHeader

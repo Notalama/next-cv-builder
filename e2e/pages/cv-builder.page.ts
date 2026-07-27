@@ -34,8 +34,18 @@ export class CvBuilderPage {
     await this.page.getByRole("button", { name: "Apply preset" }).click();
   }
 
+  async clearForm() {
+    await this.page.getByRole("button", { name: "Clear form" }).click();
+  }
+
   async save() {
     await this.saveButton().click();
+  }
+
+  templateSwitcher() {
+    return this.page
+      .getByRole("button", { name: /Classic Sidebar|Minimal/ })
+      .first();
   }
 
   async selectTemplate(label: string) {
@@ -83,6 +93,24 @@ export class CvBuilderPage {
 
   fieldByLabel(fieldLabel: string) {
     return this.page.getByLabel(fieldLabel, { exact: true }).first();
+  }
+
+  preview() {
+    return this.page.locator(".cv-preview-root");
+  }
+
+  previewSection(title: string) {
+    return this.preview().getByRole("heading", { name: title });
+  }
+
+  async setField(fieldLabel: string, value: string) {
+    const field = this.fieldByLabel(fieldLabel);
+    await field.scrollIntoViewIfNeeded();
+    await field.fill(value);
+  }
+
+  async clearField(fieldLabel: string) {
+    await this.setField(fieldLabel, "");
   }
 
   async improveTextFor(fieldLabel: string) {

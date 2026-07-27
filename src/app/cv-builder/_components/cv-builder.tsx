@@ -1,91 +1,46 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useRef, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import CvBuilderForm from "@/app/cv-builder/_components/form";
+import { useCallback, useState } from "react";
 import {
-  CV_PREVIEW_TEMPLATES,
-  DEFAULT_CV_PREVIEW_TEMPLATE_ID,
-} from "@/app/cv-builder/_components/preview/templates";
-import { ScrollControls } from "@/app/cv-builder/_components/scroll-controls";
-import { CvBuilderToolbar } from "@/app/cv-builder/_components/toolbar";
+  CvBuilderSession,
+  mergeFormValues,
+} from "@/app/cv-builder/_components/cv-builder-session";
+import { DEFAULT_CV_PREVIEW_TEMPLATE_ID } from "@/app/cv-builder/_components/preview/templates";
 import { getCvPresetValues } from "@/app/cv-builder/_utils/apply-saved-results";
-import { exportCvPreviewPdf } from "@/app/cv-builder/_utils/export-pdf";
-import {
-  CV_FORM_DEFAULT_VALUES,
-  type CvFormValues,
-  cvFormSchema,
-} from "@/models/cv";
+import type { CvFormValues } from "@/models/cv";
 import type { CvBuilderProps, CvPreviewTemplateId } from "@/models/cv-builder";
+import { resolveTemplateId } from "@/models/cv-template-fields";
 
-export function CvBuilder({ cvId, initialData }: CvBuilderProps) {
+export function CvBuilder({
+  cvId,
+  initialData,
+  initialTemplateId,
+}: CvBuilderProps) {
   const [isPreviewOnly, setIsPreviewOnly] = useState(false);
-  const [templateId, setTemplateId] = useState<CvPreviewTemplateId>(
-    DEFAULT_CV_PREVIEW_TEMPLATE_ID,
+  const [templateId, setTemplateId] = useState<CvPreviewTemplateId>(() =>
+    resolveTemplateId(initialTemplateId ?? DEFAULT_CV_PREVIEW_TEMPLATE_ID),
   );
-  const formScrollRef = useRef<HTMLDivElement>(null);
+  const [sessionValues, setSessionValues] = useState<CvFormValues>(() =>
+    mergeFormValues(initialData ?? getCvPresetValues()),
+  );
 
-  const form = useForm<CvFormValues>({
-    resolver: zodResolver(cvFormSchema),
-    defaultValues: initialData ?? getCvPresetValues(),
-  });
-
-  const previewData = form.watch();
-  const SelectedTemplate = CV_PREVIEW_TEMPLATES[templateId].Component;
-
-  const applyPresetFromJson = useCallback(() => {
-    form.reset(getCvPresetValues());
-  }, [form]);
-
-  const clearForm = useCallback(() => {
-    form.reset(CV_FORM_DEFAULT_VALUES);
-  }, [form]);
+  const handleTemplateChange = useCallback(
+    (nextTemplateId: CvPreviewTemplateId, values: CvFormValues) => {
+      setSessionValues(mergeFormValues(values));
+      setTemplateId(nextTemplateId);
+    },
+    [],
+  );
 
   return (
-    <div className="cv-print-layout flex h-full w-full items-stretch justify-center gap-4 overflow-hidden p-4 print:block print:h-auto print:max-h-none print:overflow-visible print:p-0">
-      <FormProvider {...form}>
-        {!isPreviewOnly && (
-          <div className="relative h-full min-h-0 min-w-0 flex-1">
-            <div
-              ref={formScrollRef}
-              className="cv-hide-on-print scrollbar-hidden h-full min-h-0 overflow-y-auto overscroll-y-contain"
-            >
-              <CvBuilderForm
-                isPreviewOnly={isPreviewOnly}
-                onTogglePreviewOnly={() => setIsPreviewOnly(true)}
-                onExportPdf={exportCvPreviewPdf}
-                onApplyPreset={applyPresetFromJson}
-                onClearForm={clearForm}
-                templateId={templateId}
-                onTemplateChange={setTemplateId}
-                cvId={cvId}
-              />
-            </div>
-            <ScrollControls scrollContainerRef={formScrollRef} />
-          </div>
-        )}
-        <div
-          className={`cv-preview-scroll scrollbar-hidden h-full min-h-0 overflow-y-auto overscroll-y-contain ${
-            isPreviewOnly ? "w-full max-w-5xl flex-1" : "min-w-0 flex-1"
-          }`}
-        >
-          {isPreviewOnly && (
-            <div className="cv-hide-on-print mb-4 flex justify-end">
-              <CvBuilderToolbar
-                isPreviewOnly={isPreviewOnly}
-                onTogglePreviewOnly={() => setIsPreviewOnly(false)}
-                onExportPdf={exportCvPreviewPdf}
-                onApplyPreset={applyPresetFromJson}
-                onClearForm={clearForm}
-                templateId={templateId}
-                onTemplateChange={setTemplateId}
-              />
-            </div>
-          )}
-          <SelectedTemplate data={previewData} />
-        </div>
-      </FormProvider>
-    </div>
+    <CvBuilderSession
+      key={templateId}
+      cvId={cvId}
+      templateId={templateId}
+      defaultValues={sessionValues}
+      isPreviewOnly={isPreviewOnly}
+      onTogglePreviewOnly={() => setIsPreviewOnly((value) => !value)}
+      onTemplateChange={handleTemplateChange}
+    />
   );
 }

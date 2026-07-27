@@ -12,6 +12,7 @@ export const cvDocument = pgTable(
       .references(() => user.id, { onDelete: "cascade" }),
     title: text("title").notNull(),
     data: jsonb("data").$type<CvFormValues | null>(),
+    templateId: text("template_id"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
       .defaultNow()

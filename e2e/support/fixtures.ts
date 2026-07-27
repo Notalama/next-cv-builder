@@ -10,8 +10,8 @@ import { createTestUser } from "./factories/user.factory";
 
 type Fixtures = {
   testUser: TestUserInput & { cookies: AuthCookie[] };
-  asMember: void;
-  asAdmin: void;
+  asMember: undefined;
+  asAdmin: undefined;
 };
 
 export const test = base.extend<Fixtures>({
@@ -27,7 +27,7 @@ export const test = base.extend<Fixtures>({
       role: "user",
     });
     await context.addCookies(created.cookies);
-    await use();
+    await use(undefined);
   },
 
   asAdmin: async ({ context }, use) => {
@@ -36,7 +36,7 @@ export const test = base.extend<Fixtures>({
       role: "admin",
     });
     await context.addCookies(created.cookies);
-    await use();
+    await use(undefined);
   },
 });
 

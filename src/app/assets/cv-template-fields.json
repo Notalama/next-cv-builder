@@ -1,0 +1,34 @@
+{
+  "classic": [
+    "fullName",
+    "role",
+    "photo",
+    "email",
+    "phone",
+    "location",
+    "links",
+    "languages",
+    "primarySkills",
+    "secondarySkills",
+    "domains",
+    "aboutMe",
+    "techPrinciples",
+    "projects",
+    "education"
+  ],
+  "minimal": [
+    "fullName",
+    "role",
+    "email",
+    "phone",
+    "location",
+    "links",
+    "languages",
+    "primarySkills",
+    "secondarySkills",
+    "skillCategories",
+    "aboutMe",
+    "projects",
+    "education"
+  ]
+}

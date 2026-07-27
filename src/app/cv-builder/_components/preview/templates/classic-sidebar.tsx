@@ -1,8 +1,49 @@
 import { AboutSummary } from "@/app/cv-builder/_components/preview/about-summary";
 import { ProjectRecords } from "@/app/cv-builder/_components/preview/project-records";
+import { PreviewSectionHeading } from "@/app/cv-builder/_components/preview/section-heading";
 import { PreviewSidebar } from "@/app/cv-builder/_components/preview/sidebar";
 import { TechPrinciples } from "@/app/cv-builder/_components/preview/tech-principles";
+import type { CvEducation } from "@/models/cv";
 import type { CvPreviewTemplateProps } from "@/models/cv-builder";
+
+function EducationRecords({ education }: { education: CvEducation[] }) {
+  const entries = education.filter(
+    (entry) =>
+      entry.institution.trim() || entry.period.trim() || entry.degree.trim(),
+  );
+
+  if (entries.length === 0) {
+    return null;
+  }
+
+  return (
+    <div>
+      <PreviewSectionHeading
+        title="Education"
+        variant="main"
+        className="mb-4"
+      />
+      <div className="space-y-4">
+        {entries.map((entry, index) => (
+          <div
+            className="break-inside-avoid"
+            key={`${entry.institution}-${entry.period}-${index}`}
+          >
+            <div className="flex justify-between items-start flex-wrap gap-1 mb-1">
+              <h3 className="text-sm font-bold text-slate-900">
+                {entry.institution}
+              </h3>
+              <span className="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded print:p-0 print:bg-transparent">
+                {entry.period}
+              </span>
+            </div>
+            <p className="text-sm text-slate-700">{entry.degree}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export function ClassicSidebarTemplate({ data }: CvPreviewTemplateProps) {
   return (
@@ -18,6 +59,7 @@ export function ClassicSidebarTemplate({ data }: CvPreviewTemplateProps) {
           />
           <TechPrinciples techPrinciples={data.techPrinciples} />
           <ProjectRecords projects={data.projects} />
+          <EducationRecords education={data.education} />
         </div>
       </div>
     </div>

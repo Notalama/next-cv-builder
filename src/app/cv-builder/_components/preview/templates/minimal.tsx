@@ -112,7 +112,6 @@ function WorkExperienceEntry({
   project,
   keywords,
   companyName,
-  location,
 }: {
   project: CvProject;
   keywords: string[];

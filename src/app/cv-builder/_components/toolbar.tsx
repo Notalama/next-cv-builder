@@ -33,7 +33,7 @@ export function CvBuilderToolbar({
   const selectedTemplate = CV_PREVIEW_TEMPLATES[templateId];
 
   return (
-    <div className="flex shrink-0 flex-wrap gap-2 px-8">
+    <div className="flex shrink-0 flex-wrap gap-2 ps-8">
       <ButtonLink
         href="/cv-builder/speed-reader"
         variant="outline"

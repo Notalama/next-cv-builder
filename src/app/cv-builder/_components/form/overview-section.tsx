@@ -2,10 +2,19 @@
 
 import { Globe } from "lucide-react";
 import { FormSectionHeader } from "@/app/cv-builder/_components/form/section-header";
+import { useTemplateFields } from "@/app/cv-builder/_components/form/template-fields-context";
 import { TextFormField } from "@/app/cv-builder/_components/form/text-form-field";
 import { Card, CardContent } from "@/components/ui/card";
 
+const OVERVIEW_FIELDS = ["aboutMe", "techPrinciples"] as const;
+
 export function OverviewSection() {
+  const { isConsumed } = useTemplateFields();
+
+  if (!OVERVIEW_FIELDS.some((name) => isConsumed(name))) {
+    return null;
+  }
+
   return (
     <Card className="border border-muted bg-card/50 shadow-sm">
       <FormSectionHeader

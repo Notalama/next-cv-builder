@@ -11,6 +11,7 @@ import { ImportSavedDataCard } from "@/app/cv-builder/_components/form/import-sa
 import { OverviewSection } from "@/app/cv-builder/_components/form/overview-section";
 import { ProjectsSection } from "@/app/cv-builder/_components/form/projects-section";
 import { SkillsSection } from "@/app/cv-builder/_components/form/skills-section";
+import { TemplateFieldsProvider } from "@/app/cv-builder/_components/form/template-fields-context";
 import { VacancyProvider } from "@/app/cv-builder/_components/form/vacancy-context";
 import { VacancySection } from "@/app/cv-builder/_components/form/vacancy-section";
 import { CvBuilderToolbar } from "@/app/cv-builder/_components/toolbar";
@@ -31,15 +32,19 @@ export default function CvBuilderForm({
   cvId,
 }: CvBuilderControlsProps) {
   const router = useRouter();
-  const { handleSubmit } = useFormContext<CvFormValues>();
+  const { getValues, handleSubmit } = useFormContext<CvFormValues>();
   const [isPending, startTransition] = useTransition();
   const [isSaving, setIsSaving] = useState(false);
 
-  const onSubmit = (data: CvFormValues) => {
+  const onSubmit = () => {
     setIsSaving(true);
     startTransition(async () => {
       try {
-        const result = await saveCvDocument({ id: cvId, data });
+        const result = await saveCvDocument({
+          id: cvId,
+          data: getValues(),
+          templateId,
+        });
         toast.success("CV saved");
         if (result.id !== cvId) {
           router.replace(`/cv-builder?id=${result.id}`);
@@ -80,34 +85,36 @@ export default function CvBuilderForm({
           onTemplateChange={onTemplateChange}
         />
       </div>
-      <FocusedFieldProvider>
-        <VacancyProvider>
-          <form
-            onSubmit={handleSubmit(onSubmit, onInvalid)}
-            className="space-y-8"
-          >
-            <VacancySection />
-            <ContactSection />
-            <OverviewSection />
-            <SkillsSection />
-            <EducationSection />
-            <ProjectsSection />
-            <ImportSavedDataCard />
-            <div className="pt-4 flex justify-end">
-              <Button
-                type="submit"
-                size="lg"
-                disabled={isSaving || isPending}
-                className="w-full sm:w-auto font-medium px-8 shadow-md"
-              >
-                <LoadingSwap isLoading={isSaving || isPending}>
-                  Save CV
-                </LoadingSwap>
-              </Button>
-            </div>
-          </form>
-        </VacancyProvider>
-      </FocusedFieldProvider>
+      <TemplateFieldsProvider templateId={templateId}>
+        <FocusedFieldProvider>
+          <VacancyProvider>
+            <form
+              onSubmit={handleSubmit(onSubmit, onInvalid)}
+              className="space-y-8"
+            >
+              <VacancySection />
+              <ContactSection />
+              <OverviewSection />
+              <SkillsSection />
+              <EducationSection />
+              <ProjectsSection />
+              <ImportSavedDataCard />
+              <div className="pt-4 flex justify-end">
+                <Button
+                  type="submit"
+                  size="lg"
+                  disabled={isSaving || isPending}
+                  className="w-full sm:w-auto font-medium px-8 shadow-md"
+                >
+                  <LoadingSwap isLoading={isSaving || isPending}>
+                    Save CV
+                  </LoadingSwap>
+                </Button>
+              </div>
+            </form>
+          </VacancyProvider>
+        </FocusedFieldProvider>
+      </TemplateFieldsProvider>
     </div>
   );
 }

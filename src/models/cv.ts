@@ -23,7 +23,7 @@ export const cvProjectSchema = z.object({
   technologies: z
     .string()
     .min(2, "Enter at least one key technology (comma separated)"),
-  domain: z.string().min(2, "Domain is required"),
+  domain: z.string().optional(),
 });
 
 export const cvFormSchema = z.object({

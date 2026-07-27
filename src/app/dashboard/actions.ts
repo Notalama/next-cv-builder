@@ -9,7 +9,9 @@ import { cvDocument } from "@/drizzle/schema";
 import { getAuth } from "@/lib/auth/auth";
 import { requireSession } from "@/lib/auth/session";
 import type { CvFormValues } from "@/models/cv";
+import type { CvPreviewTemplateId } from "@/models/cv-builder";
 import type { CvDocumentSummary } from "@/models/cv-document";
+import { resolveTemplateId } from "@/models/cv-template-fields";
 import type { ActionResult } from "@/models/ui";
 
 function titleFromCvData(data: CvFormValues) {
@@ -44,24 +46,35 @@ export async function getCvDocument(id: string) {
       id: cvDocument.id,
       title: cvDocument.title,
       data: cvDocument.data,
+      templateId: cvDocument.templateId,
     })
     .from(cvDocument)
     .where(and(eq(cvDocument.id, id), eq(cvDocument.userId, session.user.id)))
     .limit(1);
 
-  return document ?? null;
+  if (document == null) {
+    return null;
+  }
+
+  return {
+    ...document,
+    templateId: resolveTemplateId(document.templateId),
+  };
 }
 
 export async function saveCvDocument({
   id,
   data,
+  templateId,
 }: {
   id?: string;
   data: CvFormValues;
+  templateId: CvPreviewTemplateId;
 }): Promise<{ id: string }> {
   const session = await requireSession();
   const db = getDb();
   const title = titleFromCvData(data);
+  const resolvedTemplateId = resolveTemplateId(templateId);
 
   if (id) {
     const [existing] = await db
@@ -79,6 +92,7 @@ export async function saveCvDocument({
       .set({
         title,
         data,
+        templateId: resolvedTemplateId,
         updatedAt: new Date(),
       })
       .where(eq(cvDocument.id, id));
@@ -92,6 +106,7 @@ export async function saveCvDocument({
     userId: session.user.id,
     title,
     data,
+    templateId: resolvedTemplateId,
   });
 
   return { id: newId };

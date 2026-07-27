@@ -118,4 +118,5 @@ export interface PreviewSectionHeadingProps {
 export interface CvBuilderProps {
   cvId?: string;
   initialData?: CvFormValues | null;
+  initialTemplateId?: CvPreviewTemplateId;
 }

@@ -3,6 +3,7 @@
 import { useFormContext } from "react-hook-form";
 import { useFocusedField } from "@/app/cv-builder/_components/form/focused-field-context";
 import { ImproveTextButton } from "@/app/cv-builder/_components/form/improve-text-button";
+import { useTemplateFields } from "@/app/cv-builder/_components/form/template-fields-context";
 import {
   FormControl,
   FormField,
@@ -27,6 +28,11 @@ export function TextFormField({
 }: TextFormFieldProps) {
   const { control } = useFormContext<CvFormValues>();
   const { setFocusedField } = useFocusedField();
+  const { isConsumed } = useTemplateFields();
+
+  if (!isConsumed(name)) {
+    return null;
+  }
 
   return (
     <FormField

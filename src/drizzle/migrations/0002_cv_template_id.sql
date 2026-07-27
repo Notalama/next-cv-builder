@@ -1,0 +1,1 @@
+ALTER TABLE "cv_document" ADD COLUMN "template_id" text;

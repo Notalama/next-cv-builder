@@ -15,6 +15,13 @@
       "when": 1785056509296,
       "tag": "0001_moaning_the_order",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1785538800000,
+      "tag": "0002_cv_template_id",
+      "breakpoints": true
     }
   ]
 }

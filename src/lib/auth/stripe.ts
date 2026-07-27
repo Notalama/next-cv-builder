@@ -1,16 +1,19 @@
 import type { StripePlan } from "@better-auth/stripe";
 
+const stripeBasicPriceId = process.env.STRIPE_BASIC_PRICE_ID ?? "";
+const stripeProPriceId = process.env.STRIPE_PRO_PRICE_ID ?? "";
+
 export const STRIPE_PLANS = [
   {
     name: "basic",
-    priceId: process.env.STRIPE_BASIC_PRICE_ID!,
+    priceId: stripeBasicPriceId,
     limits: {
       projects: 10,
     },
   },
   {
     name: "pro",
-    priceId: process.env.STRIPE_PRO_PRICE_ID!,
+    priceId: stripeProPriceId,
     limits: {
       projects: 50,
     },

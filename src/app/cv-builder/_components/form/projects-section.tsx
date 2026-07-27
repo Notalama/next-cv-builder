@@ -3,15 +3,21 @@
 import { Briefcase, Plus } from "lucide-react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { ProjectCard } from "@/app/cv-builder/_components/form/project-card";
+import { useTemplateFields } from "@/app/cv-builder/_components/form/template-fields-context";
 import { Button } from "@/components/ui/button";
 import { type CvFormValues, EMPTY_CV_PROJECT } from "@/models/cv";
 
 export function ProjectsSection() {
+  const { isConsumed } = useTemplateFields();
   const { control } = useFormContext<CvFormValues>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "projects",
   });
+
+  if (!isConsumed("projects")) {
+    return null;
+  }
 
   return (
     <div className="space-y-4">

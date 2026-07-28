@@ -200,3 +200,53 @@ Then(
     await expect(builder.previewSection(title).first()).toBeVisible();
   },
 );
+
+When(
+  "I fill the company name with {string}",
+  async ({ page }, name: string) => {
+    const builder = new CvBuilderPage(page);
+    await builder.fillCompanyName(name);
+  },
+);
+
+When("I generate a cover letter", async ({ page }) => {
+  const builder = new CvBuilderPage(page);
+  await builder.generateCoverLetter();
+});
+
+When("I try to generate a cover letter", async ({ page }) => {
+  const builder = new CvBuilderPage(page);
+  await builder.tryGenerateCoverLetter();
+});
+
+Then("I see a generated cover letter result", async ({ page }) => {
+  const builder = new CvBuilderPage(page);
+  await expect(builder.generatedCoverLetterResult()).toBeVisible();
+  await expect(builder.generatedCoverLetterResult()).not.toHaveValue("");
+});
+
+Then(
+  "the generated cover letter word count is between 50 and 100",
+  async ({ page }) => {
+    const builder = new CvBuilderPage(page);
+    const text = await builder.generatedCoverLetterResult().inputValue();
+    const wordCount = text
+      .trim()
+      .split(/\s+/)
+      .filter((token) => token.length > 0).length;
+    expect(wordCount).toBeGreaterThanOrEqual(50);
+    expect(wordCount).toBeLessThanOrEqual(100);
+  },
+);
+
+Then("I see a vacancy description required error", async ({ page }) => {
+  await expect(
+    page.getByText(/Enter a vacancy description first/i),
+  ).toBeVisible();
+});
+
+Then("I see a CV content required error", async ({ page }) => {
+  await expect(
+    page.getByText(/Fill the CV first/i),
+  ).toBeVisible();
+});

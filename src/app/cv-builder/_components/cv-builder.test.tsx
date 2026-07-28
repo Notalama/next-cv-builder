@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import cvPreset from "@/app/assets/cv-preset.json";
 import type { CvFormValues } from "@/models/cv";
+import "@/test/rtl-cleanup";
 
 const { getCvPresetValuesMock } = vi.hoisted(() => ({
   getCvPresetValuesMock: vi.fn(),

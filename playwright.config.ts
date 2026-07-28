@@ -76,12 +76,12 @@ export default defineConfig({
     },
   ],
   webServer: {
+    // `next start` serves `.next` — rebuild so UI changes are not missed by BDD.
     // `next start` can run alongside an existing `next dev` on another port.
-    // Build once locally if .next is stale: npm run build
-    command: `npm run start -- --port ${webServerPort}`,
+    command: `npm run build && npm run start -- --port ${webServerPort}`,
     url: baseURL,
     reuseExistingServer: false,
-    timeout: 180_000,
+    timeout: 300_000,
     env: webServerEnv(),
   },
 });

@@ -142,4 +142,33 @@ export class CvBuilderPage {
       .getByText(/CV generated for vacancy/)
       .waitFor({ state: "visible" });
   }
+
+  companyNameField() {
+    return this.page.getByLabel("Company name", { exact: true });
+  }
+
+  generateCoverLetterButton() {
+    return this.page.getByRole("button", { name: "Generate cover letter" });
+  }
+
+  generatedCoverLetterResult() {
+    return this.page.getByLabel("Generated cover letter", { exact: true });
+  }
+
+  async fillCompanyName(name: string) {
+    const field = this.companyNameField();
+    await field.scrollIntoViewIfNeeded();
+    await field.fill(name);
+  }
+
+  async generateCoverLetter() {
+    await this.generateCoverLetterButton().click();
+    await this.page
+      .getByText(/Cover letter generated/)
+      .waitFor({ state: "visible" });
+  }
+
+  async tryGenerateCoverLetter() {
+    await this.generateCoverLetterButton().click();
+  }
 }

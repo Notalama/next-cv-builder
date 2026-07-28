@@ -50,7 +50,6 @@ describe("generateCoverLetter mock path", () => {
 
       const result = await generateCoverLetter({
         input: {
-          cvId: "cv-1",
           companyName: "Acme Corp",
           jobRole: "Staff Engineer",
           language: "en",

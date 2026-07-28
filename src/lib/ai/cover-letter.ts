@@ -4,11 +4,11 @@ import { z } from "zod";
 import {
   COVER_LETTER_MAX_WORDS,
   COVER_LETTER_MIN_WORDS,
+  type CoverLetterPromptInput,
   type CoverLetterResult,
   countWords,
+  coverLetterPromptInputSchema,
   coverLetterResultSchema,
-  type GenerateCoverLetterInput,
-  generateCoverLetterInputSchema,
 } from "@/models/cover-letter";
 import type { CvFormValues } from "@/models/cv";
 
@@ -19,7 +19,7 @@ const generatedLetterSchema = z.object({
 });
 
 export type GenerateCoverLetterParams = {
-  input: GenerateCoverLetterInput;
+  input: CoverLetterPromptInput;
   cv: CvFormValues;
 };
 
@@ -56,7 +56,7 @@ function slimCvForPrompt(cv: CvFormValues) {
 }
 
 function buildUserPrompt(
-  input: GenerateCoverLetterInput,
+  input: CoverLetterPromptInput,
   cv: CvFormValues,
   adjustment?: string,
 ): string {
@@ -80,7 +80,7 @@ function buildUserPrompt(
 }
 
 function mockCoverLetter(
-  input: GenerateCoverLetterInput,
+  input: CoverLetterPromptInput,
   cv: CvFormValues,
 ): GenerateCoverLetterOutcome {
   const achievement =
@@ -128,7 +128,7 @@ function shouldUseMock(): boolean {
 }
 
 async function generateOnce(
-  input: GenerateCoverLetterInput,
+  input: CoverLetterPromptInput,
   cv: CvFormValues,
   adjustment?: string,
 ): Promise<string> {
@@ -159,7 +159,7 @@ function assertWordCount(coverLetter: string): CoverLetterResult {
 export async function generateCoverLetter(
   raw: GenerateCoverLetterParams,
 ): Promise<GenerateCoverLetterOutcome> {
-  const input = generateCoverLetterInputSchema.parse(raw.input);
+  const input = coverLetterPromptInputSchema.parse(raw.input);
   const { cv } = raw;
 
   if (shouldUseMock()) {

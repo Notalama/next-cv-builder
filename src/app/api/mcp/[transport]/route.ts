@@ -50,7 +50,12 @@ const mcpHandler = createMcpHandler(
 
         try {
           const result = await generateCoverLetter({
-            input,
+            input: {
+              companyName: input.companyName,
+              jobRole: input.jobRole,
+              jobDescription: input.jobDescription,
+              language: input.language,
+            },
             cv: document.data,
           });
 

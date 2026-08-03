@@ -5,6 +5,7 @@ import {
   CvBuilderSession,
   mergeFormValues,
 } from "@/app/cv-builder/_components/cv-builder-session";
+import { VacancyProvider } from "@/app/cv-builder/_components/form/vacancy-context";
 import { DEFAULT_CV_PREVIEW_TEMPLATE_ID } from "@/app/cv-builder/_components/preview/templates";
 import { getCvPresetValues } from "@/app/cv-builder/_utils/apply-saved-results";
 import type { CvFormValues } from "@/models/cv";
@@ -33,14 +34,16 @@ export function CvBuilder({
   );
 
   return (
-    <CvBuilderSession
-      key={templateId}
-      cvId={cvId}
-      templateId={templateId}
-      defaultValues={sessionValues}
-      isPreviewOnly={isPreviewOnly}
-      onTogglePreviewOnly={() => setIsPreviewOnly((value) => !value)}
-      onTemplateChange={handleTemplateChange}
-    />
+    <VacancyProvider>
+      <CvBuilderSession
+        key={templateId}
+        cvId={cvId}
+        templateId={templateId}
+        defaultValues={sessionValues}
+        isPreviewOnly={isPreviewOnly}
+        onTogglePreviewOnly={() => setIsPreviewOnly((value) => !value)}
+        onTemplateChange={handleTemplateChange}
+      />
+    </VacancyProvider>
   );
 }

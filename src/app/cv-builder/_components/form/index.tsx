@@ -12,7 +12,6 @@ import { OverviewSection } from "@/app/cv-builder/_components/form/overview-sect
 import { ProjectsSection } from "@/app/cv-builder/_components/form/projects-section";
 import { SkillsSection } from "@/app/cv-builder/_components/form/skills-section";
 import { TemplateFieldsProvider } from "@/app/cv-builder/_components/form/template-fields-context";
-import { VacancyProvider } from "@/app/cv-builder/_components/form/vacancy-context";
 import { VacancySection } from "@/app/cv-builder/_components/form/vacancy-section";
 import { CvBuilderToolbar } from "@/app/cv-builder/_components/toolbar";
 import { saveCvDocument } from "@/app/dashboard/actions";
@@ -87,32 +86,30 @@ export default function CvBuilderForm({
       </div>
       <TemplateFieldsProvider templateId={templateId}>
         <FocusedFieldProvider>
-          <VacancyProvider>
-            <form
-              onSubmit={handleSubmit(onSubmit, onInvalid)}
-              className="space-y-8"
-            >
-              <VacancySection />
-              <ContactSection />
-              <OverviewSection />
-              <SkillsSection />
-              <EducationSection />
-              <ProjectsSection />
-              <ImportSavedDataCard />
-              <div className="pt-4 flex justify-end">
-                <Button
-                  type="submit"
-                  size="lg"
-                  disabled={isSaving || isPending}
-                  className="w-full sm:w-auto font-medium px-8 shadow-md"
-                >
-                  <LoadingSwap isLoading={isSaving || isPending}>
-                    Save CV
-                  </LoadingSwap>
-                </Button>
-              </div>
-            </form>
-          </VacancyProvider>
+          <form
+            onSubmit={handleSubmit(onSubmit, onInvalid)}
+            className="space-y-8"
+          >
+            <VacancySection />
+            <ContactSection />
+            <OverviewSection />
+            <SkillsSection />
+            <EducationSection />
+            <ProjectsSection />
+            <ImportSavedDataCard />
+            <div className="pt-4 flex justify-end">
+              <Button
+                type="submit"
+                size="lg"
+                disabled={isSaving || isPending}
+                className="w-full sm:w-auto font-medium px-8 shadow-md"
+              >
+                <LoadingSwap isLoading={isSaving || isPending}>
+                  Save CV
+                </LoadingSwap>
+              </Button>
+            </div>
+          </form>
         </FocusedFieldProvider>
       </TemplateFieldsProvider>
     </div>

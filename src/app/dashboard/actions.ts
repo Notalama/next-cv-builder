@@ -11,6 +11,7 @@ import { requireSession } from "@/lib/auth/session";
 import type { CvFormValues } from "@/models/cv";
 import type { CvPreviewTemplateId } from "@/models/cv-builder";
 import type { CvDocumentSummary } from "@/models/cv-document";
+import { renameCvSchema } from "@/models/cv-document";
 import { resolveTemplateId } from "@/models/cv-template-fields";
 import type { ActionResult } from "@/models/ui";
 
@@ -90,7 +91,6 @@ export async function saveCvDocument({
     await db
       .update(cvDocument)
       .set({
-        title,
         data,
         templateId: resolvedTemplateId,
         updatedAt: new Date(),
@@ -110,6 +110,44 @@ export async function saveCvDocument({
   });
 
   return { id: newId };
+}
+
+export async function renameCvDocument(
+  id: string,
+  title: string,
+): Promise<ActionResult> {
+  try {
+    const parsed = renameCvSchema.safeParse({ id, title });
+    if (!parsed.success) {
+      return { error: true, message: "Failed to rename CV" };
+    }
+
+    const session = await requireSession();
+    const db = getDb();
+
+    const updated = await db
+      .update(cvDocument)
+      .set({
+        title: parsed.data.title,
+        updatedAt: new Date(),
+      })
+      .where(
+        and(
+          eq(cvDocument.id, parsed.data.id),
+          eq(cvDocument.userId, session.user.id),
+        ),
+      )
+      .returning({ id: cvDocument.id });
+
+    if (updated.length === 0) {
+      return { error: true, message: "Failed to rename CV" };
+    }
+
+    revalidatePath("/dashboard");
+    return { error: false, message: "CV renamed" };
+  } catch {
+    return { error: true, message: "Failed to rename CV" };
+  }
 }
 
 export async function deleteCvDocument(id: string): Promise<ActionResult> {

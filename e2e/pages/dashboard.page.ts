@@ -29,8 +29,41 @@ export class DashboardPage {
     });
   }
 
+  renameCvButton(title: string) {
+    return this.cvListItem(title).getByRole("button", {
+      name: `Rename ${title}`,
+    });
+  }
+
+  renameDialog() {
+    return this.page.getByRole("dialog", { name: "Rename CV" });
+  }
+
+  renameField() {
+    return this.renameDialog().getByLabel("CV name", { exact: true });
+  }
+
   async deleteCv(title: string) {
     await this.deleteCvButton(title).click();
+  }
+
+  async openRename(title: string) {
+    await this.renameCvButton(title).click();
+    await this.renameDialog().waitFor({ state: "visible" });
+  }
+
+  async renameCv(title: string, newTitle: string) {
+    await this.openRename(title);
+    await this.renameField().fill(newTitle);
+    await this.renameDialog().getByRole("button", { name: "Save" }).click();
+  }
+
+  async setRenameField(value: string) {
+    await this.renameField().fill(value);
+  }
+
+  async cancelRename() {
+    await this.renameDialog().getByRole("button", { name: "Cancel" }).click();
   }
 
   async createNewCv() {

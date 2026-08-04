@@ -11,8 +11,7 @@ import { requireSession } from "@/lib/auth/session";
 import type { CvFormValues } from "@/models/cv";
 import type { CvPreviewTemplateId } from "@/models/cv-builder";
 import type { CvDocumentSummary } from "@/models/cv-document";
-import { titleWithCopySuffix } from "@/models/cv-document";
-import { renameCvSchema } from "@/models/cv-document";
+import { renameCvSchema, titleWithCopySuffix } from "@/models/cv-document";
 import { resolveTemplateId } from "@/models/cv-template-fields";
 import type { ActionResult } from "@/models/ui";
 
@@ -159,6 +158,10 @@ export async function duplicateCvDocument(id: string): Promise<ActionResult> {
     if (!id.trim()) {
       return { error: true, message: "Failed to copy CV" };
     }
+
+    const session = await requireSession();
+    const db = getDb();
+
     const [document] = await db
       .select({
         title: cvDocument.title,

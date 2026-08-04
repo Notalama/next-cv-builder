@@ -64,6 +64,8 @@ export class DashboardPage {
 
   async copyCv(title: string) {
     await this.copyCvButton(title).click();
+  }
+
   async openRename(title: string) {
     await this.renameCvButton(title).click();
     await this.renameDialog().waitFor({ state: "visible" });

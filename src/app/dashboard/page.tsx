@@ -1,4 +1,4 @@
-import { LogOut, Plus } from "lucide-react";
+import { Grid2x2, LogOut, Plus } from "lucide-react";
 import { CvListItem } from "@/app/dashboard/_components/cv-list-item";
 import { listUserCvs, signOut } from "@/app/dashboard/actions";
 import { BrandLink } from "@/components/brand-link";
@@ -34,6 +34,14 @@ export default async function DashboardPage() {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <ButtonLink
+            href="/sprite-generator"
+            variant="outline"
+            className="gap-2"
+          >
+            <Grid2x2 className="size-4" />
+            Sprite Sheet Generator
+          </ButtonLink>
           <ButtonLink href="/cv-builder" className="gap-2">
             <Plus className="size-4" />
             New CV

@@ -1,7 +1,7 @@
 import { getSessionCookie } from "better-auth/cookies";
 import { type NextRequest, NextResponse } from "next/server";
 
-const PROTECTED_PATHS = ["/dashboard", "/cv-builder"];
+const PROTECTED_PATHS = ["/dashboard", "/cv-builder", "/sprite-generator"];
 
 function isProtectedPath(pathname: string) {
   return PROTECTED_PATHS.some(

@@ -1,10 +1,10 @@
 "use client";
 
-import { FileText, Pencil, Trash2 } from "lucide-react";
+import { Copy, FileText, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { deleteCvDocument, duplicateCvDocument, renameCvDocument } from "@/app/dashboard/actions";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { deleteCvDocument, renameCvDocument } from "@/app/dashboard/actions";
 import { ActionButton } from "@/components/ui/action-button";
 import { Button } from "@/components/ui/button";
 import {
@@ -76,6 +76,16 @@ export function CvListItem({ id, title, updatedLabel }: CvListItemProps) {
       >
         <Pencil className="size-4" />
       </Button>
+      <ActionButton
+        type="button"
+        variant="ghost"
+        size="icon-sm"
+        className="shrink-0 text-muted-foreground"
+        aria-label={`Copy ${title}`}
+        action={() => duplicateCvDocument(id)}
+      >
+        <Copy className="size-4" />
+      </ActionButton>
       <ActionButton
         type="button"
         variant="ghost"

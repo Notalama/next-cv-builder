@@ -14,7 +14,7 @@ import { SkillsSection } from "@/app/cv-builder/_components/form/skills-section"
 import { TemplateFieldsProvider } from "@/app/cv-builder/_components/form/template-fields-context";
 import { VacancySection } from "@/app/cv-builder/_components/form/vacancy-section";
 import { CvBuilderToolbar } from "@/app/cv-builder/_components/toolbar";
-import { saveCvDocument } from "@/app/dashboard/actions";
+import { saveCvAsNew, saveCvDocument } from "@/app/dashboard/actions";
 import { Button } from "@/components/ui/button";
 import { LoadingSwap } from "@/components/ui/loading-swap";
 import type { CvFormValues } from "@/models/cv";
@@ -34,6 +34,10 @@ export default function CvBuilderForm({
   const { getValues, handleSubmit } = useFormContext<CvFormValues>();
   const [isPending, startTransition] = useTransition();
   const [isSaving, setIsSaving] = useState(false);
+  const [isSavingAsNew, setIsSavingAsNew] = useState(false);
+
+  const busy = isSaving || isSavingAsNew || isPending;
+  const canSaveAsNew = cvId != null && cvId.length > 0;
 
   const onSubmit = () => {
     setIsSaving(true);
@@ -54,6 +58,26 @@ export default function CvBuilderForm({
         );
       } finally {
         setIsSaving(false);
+      }
+    });
+  };
+
+  const onSaveAsNew = () => {
+    setIsSavingAsNew(true);
+    startTransition(async () => {
+      try {
+        const result = await saveCvAsNew({
+          data: getValues(),
+          templateId,
+        });
+        toast.success("CV saved as new");
+        router.replace(`/cv-builder?id=${result.id}`);
+      } catch (error) {
+        toast.error(
+          error instanceof Error ? error.message : "Failed to save CV as new",
+        );
+      } finally {
+        setIsSavingAsNew(false);
       }
     });
   };
@@ -97,18 +121,31 @@ export default function CvBuilderForm({
             <EducationSection />
             <ProjectsSection />
             <ImportSavedDataCard />
-            <div className="pt-4 flex justify-end">
-              <Button
-                type="submit"
-                size="lg"
-                disabled={isSaving || isPending}
-                className="w-full sm:w-auto font-medium px-8 shadow-md"
-              >
-                <LoadingSwap isLoading={isSaving || isPending}>
-                  Save CV
-                </LoadingSwap>
-              </Button>
-            </div>
+            <div className="flex flex-col-reverse gap-2 pt-4 sm:flex-row sm:justify-end">
+                {canSaveAsNew ? (
+                  <Button
+                    type="button"
+                    size="lg"
+                    variant="outline"
+                    disabled={busy}
+                    className="w-full sm:w-auto font-medium px-8"
+                    aria-label="Save as new"
+                    onClick={handleSubmit(onSaveAsNew, onInvalid)}
+                  >
+                    <LoadingSwap isLoading={isSavingAsNew}>
+                      Save as new
+                    </LoadingSwap>
+                  </Button>
+                ) : null}
+                <Button
+                  type="submit"
+                  size="lg"
+                  disabled={busy}
+                  className="w-full sm:w-auto font-medium px-8 shadow-md"
+                >
+                  <LoadingSwap isLoading={isSaving}>Save CV</LoadingSwap>
+                </Button>
+              </div>
           </form>
         </FocusedFieldProvider>
       </TemplateFieldsProvider>

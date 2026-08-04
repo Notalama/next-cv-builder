@@ -1,5 +1,9 @@
 import type { Page } from "@playwright/test";
 
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 export class DashboardPage {
   constructor(private readonly page: Page) {}
 
@@ -16,16 +20,27 @@ export class DashboardPage {
   }
 
   cvLink(title: string) {
-    return this.page.getByRole("link", { name: new RegExp(title) });
+    // Link name is `${title} Updated …` — anchor to avoid matching `${title} (copy)`.
+    return this.page.getByRole("link", {
+      name: new RegExp(`^${escapeRegExp(title)} Updated`),
+    });
   }
 
   cvListItem(title: string) {
-    return this.page.getByRole("listitem").filter({ hasText: title });
+    return this.page.getByRole("listitem").filter({
+      has: this.page.getByText(title, { exact: true }),
+    });
   }
 
   deleteCvButton(title: string) {
     return this.cvListItem(title).getByRole("button", {
       name: `Delete ${title}`,
+    });
+  }
+
+  copyCvButton(title: string) {
+    return this.cvListItem(title).getByRole("button", {
+      name: `Copy ${title}`,
     });
   }
 
@@ -45,6 +60,10 @@ export class DashboardPage {
 
   async deleteCv(title: string) {
     await this.deleteCvButton(title).click();
+  }
+
+  async copyCv(title: string) {
+    await this.copyCvButton(title).click();
   }
 
   async openRename(title: string) {

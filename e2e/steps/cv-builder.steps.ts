@@ -12,6 +12,19 @@ When("I save the CV", async ({ page }) => {
   await builder.save();
 });
 
+When("I save the CV as new", async ({ page }) => {
+  const builder = new CvBuilderPage(page);
+  await builder.saveAsNew();
+});
+
+Then("I see a CV saved as new confirmation", async ({ page }) => {
+  await expect(page.getByText("CV saved as new")).toBeVisible();
+});
+
+Then("the URL has a CV id", async ({ page }) => {
+  await expect(page).toHaveURL(/\/cv-builder\?id=/);
+});
+
 When("I set the full name to {string}", async ({ page }, name: string) => {
   const builder = new CvBuilderPage(page);
   await builder.fillFullName(name);

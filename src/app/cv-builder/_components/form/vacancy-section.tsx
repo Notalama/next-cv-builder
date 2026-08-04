@@ -20,11 +20,17 @@ import { isCvContentSufficient } from "@/models/cover-letter";
 import type { CvFormValues } from "@/models/cv";
 
 export function VacancySection() {
-  const { vacancyText, setVacancyText } = useVacancy();
+  const {
+    vacancyText,
+    setVacancyText,
+    companyName,
+    setCompanyName,
+    coverLetter,
+    setCoverLetter,
+    wordCount,
+    setWordCount,
+  } = useVacancy();
   const { reset, getValues } = useFormContext<CvFormValues>();
-  const [companyName, setCompanyName] = useState("");
-  const [coverLetter, setCoverLetter] = useState("");
-  const [wordCount, setWordCount] = useState<number | null>(null);
   const [isPending, startTransition] = useTransition();
   const [isGeneratingCv, setIsGeneratingCv] = useState(false);
   const [isGeneratingLetter, setIsGeneratingLetter] = useState(false);

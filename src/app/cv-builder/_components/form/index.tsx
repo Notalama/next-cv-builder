@@ -12,7 +12,6 @@ import { OverviewSection } from "@/app/cv-builder/_components/form/overview-sect
 import { ProjectsSection } from "@/app/cv-builder/_components/form/projects-section";
 import { SkillsSection } from "@/app/cv-builder/_components/form/skills-section";
 import { TemplateFieldsProvider } from "@/app/cv-builder/_components/form/template-fields-context";
-import { VacancyProvider } from "@/app/cv-builder/_components/form/vacancy-context";
 import { VacancySection } from "@/app/cv-builder/_components/form/vacancy-section";
 import { CvBuilderToolbar } from "@/app/cv-builder/_components/toolbar";
 import { saveCvAsNew, saveCvDocument } from "@/app/dashboard/actions";
@@ -111,19 +110,18 @@ export default function CvBuilderForm({
       </div>
       <TemplateFieldsProvider templateId={templateId}>
         <FocusedFieldProvider>
-          <VacancyProvider>
-            <form
-              onSubmit={handleSubmit(onSubmit, onInvalid)}
-              className="space-y-8"
-            >
-              <VacancySection />
-              <ContactSection />
-              <OverviewSection />
-              <SkillsSection />
-              <EducationSection />
-              <ProjectsSection />
-              <ImportSavedDataCard />
-              <div className="flex flex-col-reverse gap-2 pt-4 sm:flex-row sm:justify-end">
+          <form
+            onSubmit={handleSubmit(onSubmit, onInvalid)}
+            className="space-y-8"
+          >
+            <VacancySection />
+            <ContactSection />
+            <OverviewSection />
+            <SkillsSection />
+            <EducationSection />
+            <ProjectsSection />
+            <ImportSavedDataCard />
+            <div className="flex flex-col-reverse gap-2 pt-4 sm:flex-row sm:justify-end">
                 {canSaveAsNew ? (
                   <Button
                     type="button"
@@ -148,8 +146,7 @@ export default function CvBuilderForm({
                   <LoadingSwap isLoading={isSaving}>Save CV</LoadingSwap>
                 </Button>
               </div>
-            </form>
-          </VacancyProvider>
+          </form>
         </FocusedFieldProvider>
       </TemplateFieldsProvider>
     </div>

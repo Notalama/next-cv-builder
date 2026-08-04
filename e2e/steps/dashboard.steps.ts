@@ -31,8 +31,17 @@ When("I delete the CV titled {string}", async ({ page }, title: string) => {
   await dashboard.deleteCv(title);
 });
 
+When("I copy the CV titled {string}", async ({ page }, title: string) => {
+  const dashboard = new DashboardPage(page);
+  await dashboard.copyCv(title);
+});
+
 Then("I see a CV deleted confirmation", async ({ page }) => {
   await expect(page.getByText("CV deleted")).toBeVisible();
+});
+
+Then("I see a CV copied confirmation", async ({ page }) => {
+  await expect(page.getByText("CV copied")).toBeVisible();
 });
 
 Then("I see CV {string} in my list", async ({ page }, title: string) => {

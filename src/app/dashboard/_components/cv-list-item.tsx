@@ -1,8 +1,8 @@
 "use client";
 
-import { FileText, Trash2 } from "lucide-react";
+import { Copy, FileText, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { deleteCvDocument } from "@/app/dashboard/actions";
+import { deleteCvDocument, duplicateCvDocument } from "@/app/dashboard/actions";
 import { ActionButton } from "@/components/ui/action-button";
 
 interface CvListItemProps {
@@ -24,6 +24,16 @@ export function CvListItem({ id, title, updatedLabel }: CvListItemProps) {
           <p className="text-xs text-muted-foreground">{updatedLabel}</p>
         </div>
       </Link>
+      <ActionButton
+        type="button"
+        variant="ghost"
+        size="icon-sm"
+        className="shrink-0 text-muted-foreground"
+        aria-label={`Copy ${title}`}
+        action={() => duplicateCvDocument(id)}
+      >
+        <Copy className="size-4" />
+      </ActionButton>
       <ActionButton
         type="button"
         variant="ghost"

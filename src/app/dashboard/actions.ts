@@ -11,12 +11,17 @@ import { requireSession } from "@/lib/auth/session";
 import type { CvFormValues } from "@/models/cv";
 import type { CvPreviewTemplateId } from "@/models/cv-builder";
 import type { CvDocumentSummary } from "@/models/cv-document";
+import { titleWithCopySuffix } from "@/models/cv-document";
 import { resolveTemplateId } from "@/models/cv-template-fields";
 import type { ActionResult } from "@/models/ui";
 
 function titleFromCvData(data: CvFormValues) {
   const name = data.fullName.trim();
   return name.length > 0 ? name : "Untitled CV";
+}
+
+function cloneCvData(data: CvFormValues): CvFormValues {
+  return structuredClone(data);
 }
 
 export async function listUserCvs(): Promise<CvDocumentSummary[]> {
@@ -109,6 +114,68 @@ export async function saveCvDocument({
     templateId: resolvedTemplateId,
   });
 
+  return { id: newId };
+}
+
+export async function duplicateCvDocument(id: string): Promise<ActionResult> {
+  try {
+    if (!id.trim()) {
+      return { error: true, message: "Failed to copy CV" };
+    }
+
+    const session = await requireSession();
+    const db = getDb();
+
+    const [document] = await db
+      .select({
+        title: cvDocument.title,
+        data: cvDocument.data,
+        templateId: cvDocument.templateId,
+      })
+      .from(cvDocument)
+      .where(and(eq(cvDocument.id, id), eq(cvDocument.userId, session.user.id)))
+      .limit(1);
+
+    if (document == null || document.data == null) {
+      return { error: true, message: "Failed to copy CV" };
+    }
+
+    const newId = crypto.randomUUID();
+    await db.insert(cvDocument).values({
+      id: newId,
+      userId: session.user.id,
+      title: titleWithCopySuffix(document.title),
+      data: cloneCvData(document.data),
+      templateId: resolveTemplateId(document.templateId),
+    });
+
+    revalidatePath("/dashboard");
+    return { error: false, message: "CV copied" };
+  } catch {
+    return { error: true, message: "Failed to copy CV" };
+  }
+}
+
+export async function saveCvAsNew({
+  data,
+  templateId,
+}: {
+  data: CvFormValues;
+  templateId: CvPreviewTemplateId;
+}): Promise<{ id: string }> {
+  const session = await requireSession();
+  const db = getDb();
+  const newId = crypto.randomUUID();
+
+  await db.insert(cvDocument).values({
+    id: newId,
+    userId: session.user.id,
+    title: titleWithCopySuffix(titleFromCvData(data)),
+    data: cloneCvData(data),
+    templateId: resolveTemplateId(templateId),
+  });
+
+  revalidatePath("/dashboard");
   return { id: newId };
 }
 

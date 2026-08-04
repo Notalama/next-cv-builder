@@ -14,6 +14,10 @@ export class CvBuilderPage {
     return this.page.getByRole("button", { name: "Save CV" });
   }
 
+  saveAsNewButton() {
+    return this.page.getByRole("button", { name: "Save as new" });
+  }
+
   formScrollContainer() {
     return this.page.locator(".cv-hide-on-print.overflow-y-auto").first();
   }
@@ -40,6 +44,13 @@ export class CvBuilderPage {
 
   async save() {
     await this.saveButton().click();
+  }
+
+  async saveAsNew() {
+    await this.saveAsNewButton().click();
+    await this.page
+      .getByText("CV saved as new")
+      .waitFor({ state: "visible" });
   }
 
   templateSwitcher() {

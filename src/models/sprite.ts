@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const MAX_SPRITE_CANVAS_DIMENSION = 32000;
+export const MAX_SPRITE_CANVAS_DIMENSION = 16384;
 
 export type SpriteFrame = {
   id: string;

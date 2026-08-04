@@ -73,4 +73,12 @@ export class DashboardPage {
   async createFirstCv() {
     await this.page.getByRole("link", { name: "Create CV" }).click();
   }
+
+  spriteGeneratorLink() {
+    return this.page.getByRole("link", { name: "Sprite Sheet Generator" });
+  }
+
+  async openSpriteGenerator() {
+    await this.spriteGeneratorLink().click();
+  }
 }

@@ -26,6 +26,21 @@ When("I create the sprite sheet", async ({ page }) => {
   await sprite.createSprite();
 });
 
+When("I choose the sample video clip", async ({ page }) => {
+  const sprite = new SpriteGeneratorPage(page);
+  await sprite.chooseSampleVideo();
+});
+
+When("I convert the video to PNG frames", async ({ page }) => {
+  const sprite = new SpriteGeneratorPage(page);
+  await sprite.convertVideo();
+});
+
+When("I download the video frames zip", async ({ page }) => {
+  const sprite = new SpriteGeneratorPage(page);
+  await sprite.downloadVideoFramesZip();
+});
+
 Then("I am on the sprite sheet generator page", async ({ page }) => {
   const sprite = new SpriteGeneratorPage(page);
   await expect(page).toHaveURL(/\/sprite-generator/);
@@ -55,4 +70,36 @@ Then("I see the generated sprite sheet result", async ({ page }) => {
 Then("I see a download sprite sheet button", async ({ page }) => {
   const sprite = new SpriteGeneratorPage(page);
   await expect(sprite.downloadButton()).toBeVisible();
+});
+
+Then("the convert video button is disabled", async ({ page }) => {
+  const sprite = new SpriteGeneratorPage(page);
+  await expect(sprite.convertVideoButton()).toBeDisabled();
+});
+
+Then("the convert video button is enabled", async ({ page }) => {
+  const sprite = new SpriteGeneratorPage(page);
+  await expect(sprite.convertVideoButton()).toBeEnabled();
+});
+
+Then("the download video frames button is disabled", async ({ page }) => {
+  const sprite = new SpriteGeneratorPage(page);
+  await expect(sprite.downloadVideoFramesButton()).toBeDisabled();
+});
+
+Then("the download video frames button is enabled", async ({ page }) => {
+  const sprite = new SpriteGeneratorPage(page);
+  await expect(sprite.downloadVideoFramesButton()).toBeEnabled();
+});
+
+Then("I see video frames ready to download", async ({ page }) => {
+  const sprite = new SpriteGeneratorPage(page);
+  await expect(sprite.videoFramesReadyText()).toBeVisible();
+});
+
+Then("a video frames zip download starts", async ({ page }) => {
+  const sprite = new SpriteGeneratorPage(page);
+  const download = sprite.getLastVideoDownload();
+  expect(download).not.toBeNull();
+  expect(download?.suggestedFilename()).toBe("video-frames.zip");
 });

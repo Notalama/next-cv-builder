@@ -100,8 +100,6 @@
     "drizzle-kit": "^0.31.10",
     "jsdom": "^29.1.1",
     "mockdate": "^3.0.5",
-    "msw": "^2.14.6",
-    "msw-storybook-addon": "^2.0.7",
     "playwright": "^1.60.0",
     "playwright-bdd": "^9.2.0",
     "storybook": "^10.4.2",
@@ -110,10 +108,5 @@
     "typescript": "^5",
     "vite": "^8.0.16",
     "vitest": "^4.1.8"
-  },
-  "msw": {
-    "workerDirectory": [
-      "public"
-    ]
   }
 }

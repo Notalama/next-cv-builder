@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { LoadingSwap } from "@/components/ui/loading-swap";
+import { downloadBlob } from "@/lib/sprite/download-blob";
 import {
   fitScaleToMaxCanvas,
   packSpriteSheet,
@@ -24,6 +25,7 @@ import {
   type SpriteFrame,
   type SpriteSheetResult,
 } from "@/models/sprite";
+import { VideoToPngFrames } from "./video-to-png-frames";
 
 function isPngFile(file: File) {
   return file.type === "image/png" || file.name.toLowerCase().endsWith(".png");
@@ -178,10 +180,7 @@ export function SpriteGenerator() {
     if (result == null) {
       return;
     }
-    const anchor = document.createElement("a");
-    anchor.href = result.objectUrl;
-    anchor.download = "sprite-sheet.png";
-    anchor.click();
+    downloadBlob(result.blob, "sprite-sheet.png");
   };
 
   return (
@@ -200,11 +199,13 @@ export function SpriteGenerator() {
             Sprite Sheet Generator
           </h1>
           <p className="text-sm text-muted-foreground">
-            Upload PNG frames, pack them into one transparent sheet, and
-            download for Unity 2D.
+            Extract MP4 frames as a ZIP of PNGs, or upload PNG frames and pack
+            them into one transparent sheet for Unity 2D.
           </p>
         </div>
       </header>
+
+      <VideoToPngFrames />
 
       {result != null ? (
         <section aria-label="Generated sprite sheet">

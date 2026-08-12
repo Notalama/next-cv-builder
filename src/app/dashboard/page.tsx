@@ -12,13 +12,6 @@ import {
 } from "@/components/ui/card";
 import { requireSession } from "@/lib/auth/session";
 
-function formatDate(date: Date) {
-  return new Intl.DateTimeFormat("en", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(date);
-}
-
 export default async function DashboardPage() {
   const session = await requireSession();
   const cvs = await listUserCvs();
@@ -81,7 +74,7 @@ export default async function DashboardPage() {
                 key={cv.id}
                 id={cv.id}
                 title={cv.title}
-                updatedLabel={`Updated ${formatDate(cv.updatedAt)}`}
+                updatedAt={cv.updatedAt.toISOString()}
               />
             ))}
           </ul>

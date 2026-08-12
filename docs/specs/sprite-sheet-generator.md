@@ -12,11 +12,14 @@
 
 Signed-in members can open a Sprite Sheet Generator from the dashboard, upload multiple PNG frames, preview them, pack them into a single transparent sprite sheet on the client (HTML5 Canvas), preview the result on a checkerboard background, and download the PNG.
 
+They can also convert an MP4 into separate full-size PNG frames (fixed FPS, no scale/crop) and download those frames as a ZIP.
+
 ## 2. User stories
 
 - As a signed-in member, I want a Sprite Sheet Generator link on the dashboard, so that I can open the tool without leaving the app shell.
 - As a member, I want to upload several PNGs, review frames, and create one sheet, so that I can import it into Unity 2D with transparency preserved.
 - As a member, I want to download the generated sheet and return to the dashboard, so that the flow feels complete.
+- As a member, I want to convert an MP4 into PNG frames and download them as a ZIP, so that I can prepare animation frames without packing them into a sheet.
 
 ## 3. Acceptance criteria
 
@@ -31,6 +34,10 @@ Signed-in members can open a Sprite Sheet Generator from the dashboard, upload m
 - [ ] After success, a result section shows: checkerboard-backed preview, texture size (`{width}×{height}`), frame count, and **Download Sprite Sheet (.png)**.
 - [ ] Output PNG preserves RGBA transparency (canvas with alpha, `image/png` export).
 - [ ] Non-PNG files are ignored or rejected with a clear toast/message (no crash).
+- [ ] Page includes a **Video to PNG frames** section with an MP4 file input.
+- [ ] **Convert video to PNGs** is disabled until an MP4 is selected; **Download frames (.zip)** is disabled until conversion succeeds.
+- [ ] Conversion extracts frames at native resolution (no scale/crop) and reports when frames are ready.
+- [ ] Download produces `video-frames.zip` containing separate `frame-NNNN.png` files.
 
 ## 4. Routes & navigation
 
@@ -56,7 +63,10 @@ Signed-in members can open a Sprite Sheet Generator from the dashboard, upload m
 | --- | --- | --- |
 | `src/app/sprite-generator/page.tsx` | Server | `requireSession()`, render shell |
 | `src/app/sprite-generator/_components/sprite-generator.tsx` | Client | Dropzone, previews, actions, download |
+| `src/app/sprite-generator/_components/video-to-png-frames.tsx` | Client | MP4 → PNG frames → ZIP download |
 | `src/lib/sprite/pack-sprite-sheet.ts` | Client util | Load images, layout, canvas draw, blob export |
+| `src/lib/sprite/extract-video-frames.ts` | Client util | Seek video and export PNG frame blobs |
+| `src/lib/sprite/create-zip-blob.ts` | Client util | Store-mode ZIP for frame downloads |
 | `src/proxy.ts` | Middleware | Protect `/sprite-generator` |
 | Dashboard `page.tsx` | Server | Nav link only |
 
@@ -112,10 +122,12 @@ type SpriteSheetResult = {
 | --- | --- | --- |
 | Member opens generator from dashboard | `@dashboard @smoke` | Link → heading visible |
 | Member creates and downloads a sprite sheet | `@dashboard @ui` | Upload 2 fixture PNGs → Create → result visible → download button |
+| Member converts an MP4 into PNG frames | `@dashboard @ui` | Choose `e2e/data/sample-clip.mp4` → Convert → ready text → zip download |
 
 Feature: `e2e/features/dashboard/sprite-generator.feature`  
 Page object: `e2e/pages/sprite-generator.page.ts`  
-PNG inputs via Playwright `setInputFiles` buffers (minimal PNG), not committed binaries.
+PNG inputs via Playwright `setInputFiles` buffers (minimal PNG), not committed binaries.  
+Video input via committed tiny fixture `e2e/data/sample-clip.mp4`.
 
 ## 12. Open questions
 

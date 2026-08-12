@@ -21,3 +21,16 @@ Feature: Sprite Sheet Generator
     When I create the sprite sheet
     Then I see the generated sprite sheet result
     And I see a download sprite sheet button
+
+  @ui
+  Scenario: Member converts an MP4 into downloadable PNG frames
+    When I visit the sprite sheet generator
+    Then the convert video button is disabled
+    And the download video frames button is disabled
+    When I choose the sample video clip
+    Then the convert video button is enabled
+    When I convert the video to PNG frames
+    Then I see video frames ready to download
+    And the download video frames button is enabled
+    When I download the video frames zip
+    Then a video frames zip download starts

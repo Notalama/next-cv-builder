@@ -14,16 +14,11 @@ import {
 import { LoadingSwap } from "@/components/ui/loading-swap";
 import { blobToUint8Array, createZipBlob } from "@/lib/sprite/create-zip-blob";
 import { downloadBlob } from "@/lib/sprite/download-blob";
-import { extractFramesFromVideo } from "@/lib/sprite/extract-video-frames";
-
-function isMp4File(file: File) {
-  return file.type === "video/mp4" || file.name.toLowerCase().endsWith(".mp4");
-}
-
-function padFrameIndex(index: number, total: number) {
-  const digits = Math.max(4, String(total).length);
-  return String(index).padStart(digits, "0");
-}
+import {
+  extractFramesFromVideo,
+  VIDEO_EXTRACT_FPS,
+} from "@/lib/sprite/extract-video-frames";
+import { isMp4File, videoFrameFileName } from "@/lib/sprite/video-frame-utils";
 
 export function VideoToPngFrames() {
   const videoInputId = useId();
@@ -78,7 +73,7 @@ export function VideoToPngFrames() {
       try {
         const entries = await Promise.all(
           videoFrames.map(async (frame, index) => ({
-            name: `frame-${padFrameIndex(index + 1, videoFrames.length)}.png`,
+            name: videoFrameFileName(index + 1, videoFrames.length),
             data: await blobToUint8Array(frame),
           })),
         );
@@ -96,8 +91,9 @@ export function VideoToPngFrames() {
       <CardHeader>
         <CardTitle className="text-base">Video to PNG frames</CardTitle>
         <CardDescription>
-          Extract frames at 30 FPS at native resolution and download them as
-          separate PNGs in a ZIP. Frames are never scaled or cropped.
+          Extract frames at {VIDEO_EXTRACT_FPS} FPS at native resolution and
+          download them as separate PNGs in a ZIP. Frames are never scaled or
+          cropped.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">

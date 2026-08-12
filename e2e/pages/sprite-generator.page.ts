@@ -1,4 +1,5 @@
-import type { Page } from "@playwright/test";
+import path from "node:path";
+import type { Download, Page } from "@playwright/test";
 
 /** Minimal 1×1 opaque red PNG. */
 const PNG_1X1_RED = Buffer.from(
@@ -16,6 +17,10 @@ const FIXTURES: Record<string, { buffer: Buffer; mimeType: string }> = {
   "frame-a.png": { buffer: PNG_1X1_RED, mimeType: "image/png" },
   "frame-b.png": { buffer: PNG_2X2_BLUE, mimeType: "image/png" },
 };
+
+const SAMPLE_VIDEO_PATH = path.join(process.cwd(), "e2e/data/sample-clip.mp4");
+
+const lastVideoDownloads = new WeakMap<Page, Download>();
 
 export class SpriteGeneratorPage {
   constructor(private readonly page: Page) {}
@@ -39,8 +44,24 @@ export class SpriteGeneratorPage {
     return this.page.getByLabel("PNG frames", { exact: true });
   }
 
+  videoFileInput() {
+    return this.page.getByLabel("MP4 video", { exact: true });
+  }
+
   createSpriteButton() {
     return this.page.getByRole("button", { name: "Create Sprite" });
+  }
+
+  convertVideoButton() {
+    return this.page.getByRole("button", { name: "Convert video to PNGs" });
+  }
+
+  downloadVideoFramesButton() {
+    return this.page.getByRole("button", { name: "Download video frames" });
+  }
+
+  videoFramesReadyText() {
+    return this.page.getByText(/\d+ PNG frames? ready to download/);
   }
 
   downloadButton() {
@@ -54,9 +75,9 @@ export class SpriteGeneratorPage {
   }
 
   uploadedFrames() {
-    return this.page.getByRole("list", { name: "Uploaded frames" }).getByRole(
-      "listitem",
-    );
+    return this.page
+      .getByRole("list", { name: "Uploaded frames" })
+      .getByRole("listitem");
   }
 
   async uploadFrames(...fileNames: string[]) {
@@ -74,8 +95,29 @@ export class SpriteGeneratorPage {
     await this.fileInput().setInputFiles(files);
   }
 
+  async chooseSampleVideo() {
+    await this.videoFileInput().setInputFiles(SAMPLE_VIDEO_PATH);
+  }
+
   async createSprite() {
     await this.createSpriteButton().click();
     await this.resultSection().waitFor({ state: "visible" });
+  }
+
+  async convertVideo() {
+    await this.convertVideoButton().click();
+    await this.videoFramesReadyText().waitFor({ state: "visible" });
+  }
+
+  async downloadVideoFramesZip() {
+    const [download] = await Promise.all([
+      this.page.waitForEvent("download"),
+      this.downloadVideoFramesButton().click(),
+    ]);
+    lastVideoDownloads.set(this.page, download);
+  }
+
+  getLastVideoDownload() {
+    return lastVideoDownloads.get(this.page) ?? null;
   }
 }

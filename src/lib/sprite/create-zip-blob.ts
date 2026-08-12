@@ -70,7 +70,16 @@ export function createZipBlob(entries: ZipEntry[]): Blob {
   writeUint32LE(endRecord, 12, centralSize);
   writeUint32LE(endRecord, 16, offset);
 
-  return new Blob([...localParts, ...centralParts, endRecord], {
+  const parts = [...localParts, ...centralParts, endRecord];
+  const totalLength = parts.reduce((sum, part) => sum + part.length, 0);
+  const bytes = new Uint8Array(totalLength);
+  let writeOffset = 0;
+  for (const part of parts) {
+    bytes.set(part, writeOffset);
+    writeOffset += part.length;
+  }
+
+  return new Blob([bytes], {
     type: "application/zip",
   });
 }

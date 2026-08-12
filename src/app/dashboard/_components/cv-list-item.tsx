@@ -2,9 +2,13 @@
 
 import { Copy, FileText, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { deleteCvDocument, duplicateCvDocument, renameCvDocument } from "@/app/dashboard/actions";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
+import {
+  deleteCvDocument,
+  duplicateCvDocument,
+  renameCvDocument,
+} from "@/app/dashboard/actions";
 import { ActionButton } from "@/components/ui/action-button";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,13 +26,25 @@ import { renameCvSchema } from "@/models/cv-document";
 interface CvListItemProps {
   id: string;
   title: string;
-  updatedLabel: string;
+  updatedAt: string;
 }
 
-export function CvListItem({ id, title, updatedLabel }: CvListItemProps) {
+function formatUpdatedAt(isoDate: string) {
+  return new Intl.DateTimeFormat(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(new Date(isoDate));
+}
+
+export function CvListItem({ id, title, updatedAt }: CvListItemProps) {
   const [open, setOpen] = useState(false);
   const [draftTitle, setDraftTitle] = useState(title);
   const [isPending, startTransition] = useTransition();
+  const [updatedLabel, setUpdatedLabel] = useState("Updated");
+
+  useEffect(() => {
+    setUpdatedLabel(`Updated ${formatUpdatedAt(updatedAt)}`);
+  }, [updatedAt]);
 
   const openRename = () => {
     setDraftTitle(title);

@@ -1,6 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
-import { SpeedReader } from "@/app/cv-builder/speed-reader/_components/speed-reader";
+import { RemoteModule } from "@/components/remote-module";
 import { ButtonLink } from "@/components/ui/button";
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export default function SpeedReaderPage() {
           Back to Dashboard
         </ButtonLink>
       </div>
-      <SpeedReader />
+      <RemoteModule remote="speed_reader/SpeedReader" name="Speed Reader" />
     </div>
   );
 }

@@ -104,4 +104,8 @@ export class DashboardPage {
   async openSpriteGenerator() {
     await this.spriteGeneratorLink().click();
   }
+
+  async openSpeedReader() {
+    await this.speedReaderLink().click();
+  }
 }

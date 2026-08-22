@@ -7,9 +7,7 @@ let postmarkClient: ServerClient | undefined;
 function getPostmarkClient(): ServerClient {
   const token = process.env.POSTMARK_SERVER_TOKEN;
   if (!token) {
-    throw new Error(
-      "POSTMARK_SERVER_TOKEN is required when ENABLE_POSTMARK=true.",
-    );
+    throw new Error("POSTMARK_SERVER_TOKEN is required when POSTMARK=true.");
   }
 
   postmarkClient ??= new ServerClient(token);
@@ -17,16 +15,14 @@ function getPostmarkClient(): ServerClient {
 }
 
 export async function sendEmail({ to, subject, html, text }: SendEmailPayload) {
-  if (!isFeatureEnabled("enable_postmark")) {
+  if (!isFeatureEnabled("postmark")) {
     console.info("[email] Postmark disabled; skipped send", { to, subject });
     return;
   }
 
   const from = process.env.POSTMARK_FROM_EMAIL;
   if (!from) {
-    throw new Error(
-      "POSTMARK_FROM_EMAIL is required when ENABLE_POSTMARK=true.",
-    );
+    throw new Error("POSTMARK_FROM_EMAIL is required when POSTMARK=true.");
   }
 
   return getPostmarkClient().sendEmail({

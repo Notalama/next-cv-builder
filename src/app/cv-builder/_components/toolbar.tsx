@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  BookOpenText,
   ChevronDown,
   Eraser,
   Eye,
@@ -9,7 +8,7 @@ import {
   PanelLeftOpen,
 } from "lucide-react";
 import { CV_PREVIEW_TEMPLATES } from "@/app/cv-builder/_components/preview/templates";
-import { Button, ButtonLink } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,15 +33,6 @@ export function CvBuilderToolbar({
 
   return (
     <div className="flex shrink-0 flex-wrap gap-2 ps-8">
-      <ButtonLink
-        href="/cv-builder/speed-reader"
-        variant="outline"
-        size="sm"
-        className="gap-2"
-      >
-        <BookOpenText className="size-4" />
-        Speed reader
-      </ButtonLink>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button type="button" variant="outline" size="sm" className="gap-2">

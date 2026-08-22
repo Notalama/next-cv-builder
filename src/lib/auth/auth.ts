@@ -89,14 +89,14 @@ function createAuthInstance() {
     },
     emailAndPassword: {
       enabled: true,
-      requireEmailVerification: isFeatureEnabled("enable_email_confirmation"),
+      requireEmailVerification: isFeatureEnabled("email_confirmation"),
       sendResetPassword: async ({ user, url }) => {
         await sendPasswordResetEmail({ user, url });
       },
     },
     emailVerification: {
       autoSignInAfterVerification: true,
-      sendOnSignUp: isFeatureEnabled("enable_email_confirmation"),
+      sendOnSignUp: isFeatureEnabled("email_confirmation"),
       sendVerificationEmail: async ({ user, url }) => {
         await sendEmailVerificationEmail({ user, url });
       },

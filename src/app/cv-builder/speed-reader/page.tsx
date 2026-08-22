@@ -14,13 +14,13 @@ export default function SpeedReaderPage() {
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-2xl font-bold tracking-tight">Speed Reader</h1>
         <ButtonLink
-          href="/cv-builder"
+          href="/dashboard"
           variant="outline"
           size="sm"
           className="gap-2"
         >
           <ArrowLeft className="size-4" />
-          Back to form
+          Back to Dashboard
         </ButtonLink>
       </div>
       <SpeedReader />

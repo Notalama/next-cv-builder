@@ -112,7 +112,7 @@ export function SignInTab({
           </Button>
         </form>
       </Form>
-      {isFeatureEnabled("enable_passkey") && <PasskeyButton />}
+      {isFeatureEnabled("passkey") && <PasskeyButton />}
     </div>
   );
 }

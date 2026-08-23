@@ -1,4 +1,4 @@
-import { Grid2x2, LogOut, Plus } from "lucide-react";
+import { BookOpenText, Grid2x2, LogOut, Plus } from "lucide-react";
 import { CvListItem } from "@/app/dashboard/_components/cv-list-item";
 import { listUserCvs, signOut } from "@/app/dashboard/actions";
 import { BrandLink } from "@/components/brand-link";
@@ -27,6 +27,14 @@ export default async function DashboardPage() {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <ButtonLink
+            href="/cv-builder/speed-reader"
+            variant="outline"
+            className="gap-2"
+          >
+            <BookOpenText className="size-4" />
+            Speed reader
+          </ButtonLink>
           <ButtonLink
             href="/sprite-generator"
             variant="outline"

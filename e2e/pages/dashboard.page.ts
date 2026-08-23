@@ -97,7 +97,15 @@ export class DashboardPage {
     return this.page.getByRole("link", { name: "Sprite Sheet Generator" });
   }
 
+  speedReaderLink() {
+    return this.page.getByRole("link", { name: "Speed reader" });
+  }
+
   async openSpriteGenerator() {
     await this.spriteGeneratorLink().click();
+  }
+
+  async openSpeedReader() {
+    await this.speedReaderLink().click();
   }
 }

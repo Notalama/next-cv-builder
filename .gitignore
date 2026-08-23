@@ -40,6 +40,9 @@ yarn-error.log*
 !.env.example
 !.env.test.example
 
+# Module Federation remotes checked out for local/CI BDD
+.remotes/
+
 # vercel
 .vercel
 

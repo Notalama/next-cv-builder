@@ -100,7 +100,8 @@ Push to `main` (or your production branch). Vercel builds and deploys automatica
 
 ## Project structure
 
-- `src/app/cv-builder/` — CV form, preview, speed reader
+- `src/app/cv-builder/` — CV form and preview (Speed Reader is a host page that loads a Vite remote)
+- `src/app/sprite-generator/` — host page that loads the Sprite Sheet Generator remote
 - `src/app/auth/` — Login, 2FA, password reset
 - `src/app/api/auth/` — Better Auth API route
 - `src/models/` — Shared TypeScript types and Zod schemas

@@ -11,9 +11,9 @@ export type FeatureFlagTarget = {
 export type FeatureFlagValue = boolean | FeatureFlagTarget;
 
 const defaults = {
-  enable_postmark: false,
-  enable_email_confirmation: false,
-  enable_passkey: false,
+  postmark: false,
+  email_confirmation: false,
+  passkey: false,
 } satisfies Record<string, FeatureFlagValue>;
 
 export type FeatureFlagKey = keyof typeof defaults;
@@ -33,11 +33,10 @@ function isEnvTrue(name: string): boolean {
 export function getAppConfig(): AppConfig {
   return {
     features: {
-      enable_postmark: isEnvTrue("ENABLE_POSTMARK"),
-      enable_email_confirmation: isEnvTrue("ENABLE_EMAIL_CONFIRMATION"),
+      postmark: isEnvTrue("POSTMARK"),
+      email_confirmation: isEnvTrue("EMAIL_CONFIRMATION"),
       // NEXT_PUBLIC_ so the login client UI can read it.
-      enable_passkey:
-        isEnvTrue("ENABLE_PASSKEY") || isEnvTrue("NEXT_PUBLIC_ENABLE_PASSKEY"),
+      passkey: isEnvTrue("PASSKEY") || isEnvTrue("NEXT_PUBLIC_PASSKEY"),
     },
   };
 }

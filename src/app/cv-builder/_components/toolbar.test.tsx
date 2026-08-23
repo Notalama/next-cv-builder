@@ -4,22 +4,6 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { CvBuilderControlsProps } from "@/models/cv-builder";
 import "@/test/rtl-cleanup";
 
-vi.mock("next/link", () => ({
-  default: ({
-    href,
-    children,
-    ...props
-  }: {
-    href: string;
-    children: React.ReactNode;
-    className?: string;
-  }) => (
-    <a href={href} {...props}>
-      {children}
-    </a>
-  ),
-}));
-
 vi.mock("@/app/cv-builder/_components/preview/templates", () => ({
   CV_PREVIEW_TEMPLATES: {
     classic: {
@@ -59,15 +43,6 @@ function renderToolbar(overrides: Partial<CvBuilderControlsProps> = {}) {
 describe("CvBuilderToolbar", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-  });
-
-  it("links to the speed reader page", () => {
-    renderToolbar();
-
-    expect(screen.getByRole("link", { name: /speed reader/i })).toHaveAttribute(
-      "href",
-      "/cv-builder/speed-reader",
-    );
   });
 
   it("shows the selected template label", () => {

@@ -70,6 +70,19 @@ function webServerEnv(): Record<string, string> {
   return env;
 }
 
+function remotePreviewEnv(port: number): Record<string, string> {
+  const env: Record<string, string> = {};
+
+  for (const [key, value] of Object.entries(process.env)) {
+    if (value != null) {
+      env[key] = value;
+    }
+  }
+
+  env.VITE_PUBLIC_ORIGIN = `http://localhost:${port}`;
+  return env;
+}
+
 function remotePreviewCommand(port: number) {
   return `npm install --no-audit --no-fund && npm run build && npm run preview -- --host --port ${port}`;
 }
@@ -108,6 +121,7 @@ export default defineConfig({
       url: speedReaderEntry,
       reuseExistingServer: !isCI,
       timeout: 300_000,
+      env: remotePreviewEnv(3002),
     },
     {
       command: remotePreviewCommand(3003),
@@ -115,6 +129,7 @@ export default defineConfig({
       url: spriteGeneratorEntry,
       reuseExistingServer: !isCI,
       timeout: 300_000,
+      env: remotePreviewEnv(3003),
     },
     {
       command: `npm run build && npm run start -- --port ${webServerPort}`,

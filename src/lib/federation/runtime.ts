@@ -1,15 +1,27 @@
 "use client";
 
-import { init, registerRemotes } from "@module-federation/runtime";
+import {
+  init,
+  type ModuleFederationRuntimePlugin,
+  registerRemotes,
+} from "@module-federation/runtime";
 import * as React from "react";
 import * as JsxDevRuntime from "react/jsx-dev-runtime";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as ReactDOM from "react-dom";
 import * as ReactDOMClient from "react-dom/client";
 
-const DEFAULT_SPEED_READER_ENTRY = "http://localhost:3002/mf-manifest.json";
-const DEFAULT_SPRITE_GENERATOR_ENTRY = "http://localhost:3003/mf-manifest.json";
 const reactVersion = React.version;
+
+function requiredRemoteEntry(name: string, value: string | undefined) {
+  const entry = value?.trim();
+  if (!entry) {
+    throw new Error(
+      `Missing ${name}. Set it in .env (see .env.example).`,
+    );
+  }
+  return entry;
+}
 
 function shareHostLib(lib: object) {
   return {
@@ -17,7 +29,7 @@ function shareHostLib(lib: object) {
     lib: () => lib,
     shareConfig: {
       singleton: true,
-      requiredVersion: false,
+      requiredVersion: false as const,
       eager: true,
       strictVersion: false,
     },
@@ -30,16 +42,18 @@ function federationRemotes() {
     {
       name: "speed_reader",
       alias: "speed_reader",
-      entry:
-        process.env.NEXT_PUBLIC_SPEED_READER_REMOTE_ENTRY ||
-        DEFAULT_SPEED_READER_ENTRY,
+      entry: requiredRemoteEntry(
+        "NEXT_PUBLIC_SPEED_READER_REMOTE_ENTRY",
+        process.env.NEXT_PUBLIC_SPEED_READER_REMOTE_ENTRY,
+      ),
     },
     {
       name: "sprite_generator",
       alias: "sprite_generator",
-      entry:
-        process.env.NEXT_PUBLIC_SPRITE_GENERATOR_REMOTE_ENTRY ||
-        DEFAULT_SPRITE_GENERATOR_ENTRY,
+      entry: requiredRemoteEntry(
+        "NEXT_PUBLIC_SPRITE_GENERATOR_REMOTE_ENTRY",
+        process.env.NEXT_PUBLIC_SPRITE_GENERATOR_REMOTE_ENTRY,
+      ),
     },
   ];
 }
@@ -50,6 +64,28 @@ const shared = {
   "react-dom/client": shareHostLib(ReactDOMClient),
   "react/jsx-runtime": shareHostLib(JsxRuntime),
   "react/jsx-dev-runtime": shareHostLib(JsxDevRuntime),
+};
+
+const rewritePublicPathToEntryOrigin: ModuleFederationRuntimePlugin = {
+  name: "rewrite-public-path-to-entry-origin",
+  loadRemoteSnapshot(args) {
+    const { remoteSnapshot, manifestUrl } = args;
+    if (!manifestUrl || !remoteSnapshot || !("publicPath" in remoteSnapshot)) {
+      return args;
+    }
+
+    try {
+      return {
+        ...args,
+        remoteSnapshot: {
+          ...remoteSnapshot,
+          publicPath: `${new URL(manifestUrl).origin}/`,
+        },
+      };
+    } catch {
+      return args;
+    }
+  },
 };
 
 let initialized = false;
@@ -85,5 +121,6 @@ export function ensureFederation() {
     remotes,
     shared,
     shareStrategy: "loaded-first",
+    plugins: [rewritePublicPathToEntryOrigin],
   });
 }

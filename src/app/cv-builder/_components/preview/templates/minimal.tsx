@@ -119,6 +119,7 @@ function WorkExperienceEntry({
   location?: string;
 }) {
   const bullets = descriptionBullets(project.description);
+  const technologies = splitCommaList(project.technologies);
 
   return (
     <div className="break-inside-avoid mb-5 last:mb-0">
@@ -131,6 +132,12 @@ function WorkExperienceEntry({
           {project.period}
         </span>
       </div>
+      {technologies.length > 0 && (
+        <p className="mt-1 text-[10pt] leading-snug text-black print:text-black">
+          <span className="font-semibold">Tools and Technologies:</span>{" "}
+          {technologies.join(", ")}
+        </p>
+      )}
       {bullets.length > 0 && (
         <ul className="mt-1.5 list-disc space-y-1 pl-5 text-[10pt] leading-snug text-black">
           {bullets.map((bullet, index) => (

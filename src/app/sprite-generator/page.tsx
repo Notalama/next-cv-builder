@@ -1,9 +1,15 @@
 import { ArrowLeft } from "lucide-react";
+import { notFound } from "next/navigation";
 import { RemoteModule } from "@/components/remote-module";
 import { ButtonLink } from "@/components/ui/button";
 import { requireSession } from "@/lib/auth/session";
+import { isFeatureEnabled } from "@/lib/features/flags";
 
 export default async function SpriteGeneratorPage() {
+  if (!isFeatureEnabled("sprite_generator")) {
+    notFound();
+  }
+
   await requireSession();
 
   return (

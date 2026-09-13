@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { requireSession } from "@/lib/auth/session";
+import { isFeatureEnabled } from "@/lib/features/flags";
 
 export default async function DashboardPage() {
   const session = await requireSession();
@@ -27,22 +28,26 @@ export default async function DashboardPage() {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <ButtonLink
-            href="/cv-builder/speed-reader"
-            variant="outline"
-            className="gap-2"
-          >
-            <BookOpenText className="size-4" />
-            Speed reader
-          </ButtonLink>
-          <ButtonLink
-            href="/sprite-generator"
-            variant="outline"
-            className="gap-2"
-          >
-            <Grid2x2 className="size-4" />
-            Sprite Sheet Generator
-          </ButtonLink>
+          {isFeatureEnabled("speed_reader") ? (
+            <ButtonLink
+              href="/cv-builder/speed-reader"
+              variant="outline"
+              className="gap-2"
+            >
+              <BookOpenText className="size-4" />
+              Speed reader
+            </ButtonLink>
+          ) : null}
+          {isFeatureEnabled("sprite_generator") ? (
+            <ButtonLink
+              href="/sprite-generator"
+              variant="outline"
+              className="gap-2"
+            >
+              <Grid2x2 className="size-4" />
+              Sprite Sheet Generator
+            </ButtonLink>
+          ) : null}
           <ButtonLink href="/cv-builder" className="gap-2">
             <Plus className="size-4" />
             New CV

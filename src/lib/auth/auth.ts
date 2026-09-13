@@ -34,6 +34,10 @@ const stripeClient = new Stripe(
 let authInstance: ReturnType<typeof createAuthInstance> | null = null;
 
 function getSocialProviders() {
+  if (!isFeatureEnabled("social_auth")) {
+    return {};
+  }
+
   const providers: Record<string, object> = {};
 
   if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {

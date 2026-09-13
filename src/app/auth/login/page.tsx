@@ -3,14 +3,7 @@
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { BrandLink } from "@/components/brand-link";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { authClient } from "@/lib/auth/auth-client";
 import { type AuthTab, parseAuthTab } from "@/models/auth";
@@ -18,7 +11,7 @@ import { EmailVerification } from "./_components/email-verification";
 import { ForgotPassword } from "./_components/forgot-password";
 import { SignInTab } from "./_components/sign-in-tab";
 import { SignUpTab } from "./_components/sign-up-tab";
-import { SocialAuthButtons } from "./_components/social-auth-buttons";
+import { SocialAuthFooter } from "./_components/social-auth-buttons";
 
 export default function LoginPage({
   searchParams,
@@ -71,12 +64,7 @@ export default function LoginPage({
                 openForgotPassword={() => setSelectedTab("forgot-password")}
               />
             </CardContent>
-
-            <Separator />
-
-            <CardFooter className="grid grid-cols-2 gap-3">
-              <SocialAuthButtons />
-            </CardFooter>
+            <SocialAuthFooter />
           </Card>
         </TabsContent>
 
@@ -88,12 +76,7 @@ export default function LoginPage({
             <CardContent>
               <SignUpTab openEmailVerificationTab={openEmailVerificationTab} />
             </CardContent>
-
-            <Separator />
-
-            <CardFooter className="grid grid-cols-2 gap-3">
-              <SocialAuthButtons />
-            </CardFooter>
+            <SocialAuthFooter />
           </Card>
         </TabsContent>
 

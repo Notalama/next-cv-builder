@@ -1,7 +1,9 @@
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { RemoteModule } from "@/components/remote-module";
 import { ButtonLink } from "@/components/ui/button";
+import { isFeatureEnabled } from "@/lib/features/flags";
 
 export const metadata: Metadata = {
   title: "Speed Reader",
@@ -9,6 +11,10 @@ export const metadata: Metadata = {
 };
 
 export default function SpeedReaderPage() {
+  if (!isFeatureEnabled("speed_reader")) {
+    notFound();
+  }
+
   return (
     <div className="mx-auto flex h-svh w-full max-w-4xl flex-col gap-4 p-4">
       <div className="flex items-center justify-between gap-4">

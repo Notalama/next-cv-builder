@@ -58,7 +58,7 @@ Copy from [`.env.example`](./.env.example) into **Vercel → Project → Setting
 | `BETTER_AUTH_URL` | Auth | Production URL, e.g. `https://your-app.vercel.app` |
 | `POSTMARK_SERVER_TOKEN` | Email sign-up / reset | From [Postmark](https://postmarkapp.com) |
 | `POSTMARK_FROM_EMAIL` | Email | Verified sender address |
-| `GITHUB_*` / `DISCORD_*` | OAuth | Optional; omit to hide providers |
+| `GITHUB_*` / `DISCORD_*` | OAuth | Optional; also set `NEXT_PUBLIC_SOCIAL_AUTH=true` |
 | `STRIPE_*` | Billing | Optional |
 | `ARCJET_API_KEY` | Rate limiting | Optional; auth works without it |
 

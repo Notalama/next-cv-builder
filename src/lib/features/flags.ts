@@ -14,6 +14,10 @@ const defaults = {
   postmark: false,
   email_confirmation: false,
   passkey: false,
+  speed_reader: false,
+  sprite_generator: false,
+  import_saved_data: false,
+  social_auth: false,
 } satisfies Record<string, FeatureFlagValue>;
 
 export type FeatureFlagKey = keyof typeof defaults;
@@ -35,8 +39,21 @@ export function getAppConfig(): AppConfig {
     features: {
       postmark: isEnvTrue("POSTMARK"),
       email_confirmation: isEnvTrue("EMAIL_CONFIRMATION"),
-      // NEXT_PUBLIC_ so the login client UI can read it.
-      passkey: isEnvTrue("PASSKEY") || isEnvTrue("NEXT_PUBLIC_PASSKEY"),
+      // NEXT_PUBLIC_ so client UI can read these flags (must be static env access).
+      passkey:
+        isEnvTrue("PASSKEY") || process.env.NEXT_PUBLIC_PASSKEY === "true",
+      speed_reader:
+        isEnvTrue("SPEED_READER") ||
+        process.env.NEXT_PUBLIC_SPEED_READER === "true",
+      sprite_generator:
+        isEnvTrue("SPRITE_GENERATOR") ||
+        process.env.NEXT_PUBLIC_SPRITE_GENERATOR === "true",
+      import_saved_data:
+        isEnvTrue("IMPORT_SAVED_DATA") ||
+        process.env.NEXT_PUBLIC_IMPORT_SAVED_DATA === "true",
+      social_auth:
+        isEnvTrue("SOCIAL_AUTH") ||
+        process.env.NEXT_PUBLIC_SOCIAL_AUTH === "true",
     },
   };
 }

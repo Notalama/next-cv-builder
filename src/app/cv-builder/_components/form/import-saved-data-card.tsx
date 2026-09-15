@@ -12,9 +12,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { isFeatureEnabled } from "@/lib/features/flags";
 import type { CvFormValues } from "@/models/cv";
 
 export function ImportSavedDataCard() {
+  if (!isFeatureEnabled("import_saved_data")) {
+    return null;
+  }
+
+  return <ImportSavedDataCardFields />;
+}
+
+function ImportSavedDataCardFields() {
   const [savedFormPayload, setSavedFormPayload] = useState("");
   const [importError, setImportError] = useState<string | null>(null);
 

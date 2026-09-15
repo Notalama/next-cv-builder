@@ -10,15 +10,14 @@ import * as JsxDevRuntime from "react/jsx-dev-runtime";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as ReactDOM from "react-dom";
 import * as ReactDOMClient from "react-dom/client";
+import { isFeatureEnabled } from "@/lib/features/flags";
 
 const reactVersion = React.version;
 
 function requiredRemoteEntry(name: string, value: string | undefined) {
   const entry = value?.trim();
   if (!entry) {
-    throw new Error(
-      `Missing ${name}. Set it in .env (see .env.example).`,
-    );
+    throw new Error(`Missing ${name}. Set it in .env (see .env.example).`);
   }
   return entry;
 }
@@ -38,24 +37,35 @@ function shareHostLib(lib: object) {
 }
 
 function federationRemotes() {
-  return [
-    {
+  const remotes: Array<{
+    name: string;
+    alias: string;
+    entry: string;
+  }> = [];
+
+  if (isFeatureEnabled("speed_reader")) {
+    remotes.push({
       name: "speed_reader",
       alias: "speed_reader",
       entry: requiredRemoteEntry(
         "NEXT_PUBLIC_SPEED_READER_REMOTE_ENTRY",
         process.env.NEXT_PUBLIC_SPEED_READER_REMOTE_ENTRY,
       ),
-    },
-    {
+    });
+  }
+
+  if (isFeatureEnabled("sprite_generator")) {
+    remotes.push({
       name: "sprite_generator",
       alias: "sprite_generator",
       entry: requiredRemoteEntry(
         "NEXT_PUBLIC_SPRITE_GENERATOR_REMOTE_ENTRY",
         process.env.NEXT_PUBLIC_SPRITE_GENERATOR_REMOTE_ENTRY,
       ),
-    },
-  ];
+    });
+  }
+
+  return remotes;
 }
 
 const shared = {

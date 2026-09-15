@@ -1,9 +1,18 @@
 import { getSessionCookie } from "better-auth/cookies";
 import { type NextRequest, NextResponse } from "next/server";
+import { isFeatureEnabled } from "@/lib/features/flags";
 
-const PROTECTED_PATHS = ["/dashboard", "/cv-builder", "/sprite-generator"];
+const PROTECTED_PATHS = ["/dashboard", "/cv-builder"];
 
 function isProtectedPath(pathname: string) {
+  if (
+    isFeatureEnabled("sprite_generator") &&
+    (pathname === "/sprite-generator" ||
+      pathname.startsWith("/sprite-generator/"))
+  ) {
+    return true;
+  }
+
   return PROTECTED_PATHS.some(
     (path) => pathname === path || pathname.startsWith(`${path}/`),
   );

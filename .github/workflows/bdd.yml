@@ -38,6 +38,10 @@ jobs:
       POSTMARK: "false"
       EMAIL_CONFIRMATION: "false"
       NEXT_PUBLIC_PASSKEY: "false"
+      NEXT_PUBLIC_SPEED_READER: "true"
+      NEXT_PUBLIC_SPRITE_GENERATOR: "true"
+      NEXT_PUBLIC_IMPORT_SAVED_DATA: "false"
+      NEXT_PUBLIC_SOCIAL_AUTH: "false"
       DISABLE_AUTH_RATE_LIMIT: "true"
       AI_IMPROVE_MOCK: "true"
       CI: "true"
@@ -83,6 +87,10 @@ jobs:
             'POSTMARK=false' \
             'EMAIL_CONFIRMATION=false' \
             'NEXT_PUBLIC_PASSKEY=false' \
+            'NEXT_PUBLIC_SPEED_READER=true' \
+            'NEXT_PUBLIC_SPRITE_GENERATOR=true' \
+            'NEXT_PUBLIC_IMPORT_SAVED_DATA=false' \
+            'NEXT_PUBLIC_SOCIAL_AUTH=false' \
             'DISABLE_AUTH_RATE_LIMIT=true' \
             'AI_IMPROVE_MOCK=true' \
             'NEXT_PUBLIC_SPEED_READER_REMOTE_ENTRY=http://localhost:3002/mf-manifest.json' \

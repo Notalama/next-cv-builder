@@ -19,6 +19,7 @@ import { sendOrganizationInviteEmail } from "../emails/organization-invite-email
 import { sendPasswordResetEmail } from "../emails/password-reset-email";
 import { sendWelcomeEmail } from "../emails/welcome-email";
 import { STRIPE_PLANS } from "./stripe";
+import { getAuthBaseURLConfig } from "./trusted-origins";
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 const stripeConfigured =
@@ -63,17 +64,7 @@ function createAuthInstance() {
   return betterAuth({
     appName: "CV Builder",
     secret: process.env.BETTER_AUTH_SECRET,
-    baseURL: process.env.BETTER_AUTH_URL,
-    trustedOrigins: process.env.BETTER_AUTH_URL
-      ? [
-          process.env.BETTER_AUTH_URL,
-          "http://localhost:3000",
-          "http://localhost:3001",
-          "http://127.0.0.1:3000",
-          "http://127.0.0.1:3001",
-          "https://next-cv-builder-16xij28hm-borys-koblents-projects.vercel.app",
-        ]
-      : undefined,
+    baseURL: getAuthBaseURLConfig(),
     user: {
       changeEmail: {
         enabled: true,
